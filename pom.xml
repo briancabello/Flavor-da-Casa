@@ -12,6 +12,7 @@
     <modules>
         <module>app-web</module>
         <module>restaurant</module>
+        <module>common</module>
     </modules>
 
     <properties>
