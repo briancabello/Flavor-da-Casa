@@ -26,7 +26,6 @@ classDiagram
     class Seating {
       +long id
       +long eventId
-      +boolean status
       +String name
       +DateTime startDateTime
       +int duration
@@ -63,6 +62,11 @@ classDiagram
       +update(Event event) Result~Event~
       +delete(long id) Result~Event~
       +search(String query, DateTime start, DateTime end) Result~Collection~Event~~
+    }
+
+     class EventValidationService {
+      <<interface>>
+      +validate(Event event) Collection~ValidationError~
     }
 
     class DiningTableService {
@@ -110,21 +114,7 @@ classDiagram
       +search(String name, DateTime start, DateTime end) Collection~Event~
       +exists(String name) boolean
     }
-
-    class EventService {
-      <<interface>>
-      +getAll() Result~Collection~Event~~
-      +get(long id) Result~Event~
-      +create(Event event) Result~Event~
-      +update(Event event) Result~Event~
-      +delete(long id) Result~Event~
-      +search(String query, DateTime start, DateTime end) Result~Collection~Event~~
-    }
-
-    class EventValidationService {
-      <<interface>>
-      +validate(Event event) Collection~ValidationError~
-    }
+   
   }
   %% Persistence Layer: Database Entities
   namespace Persistence {
