@@ -21,3 +21,4 @@ public interface ValidatedResult<T> extends Result<T>, HasValidationErrors {
         return !isInvalid() && !isError();
     }
 }
+
