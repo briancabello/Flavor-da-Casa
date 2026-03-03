@@ -8,7 +8,10 @@ public class NavViewModel {
     private final boolean showLogoutButton;
     private final boolean showRegisterLink;
     private final boolean showUserName;
-    private final boolean showAlbums;
+
+    private final boolean showEvents;
+    private final boolean showTables;
+    private final boolean showSeating;
 
     public NavViewModel(boolean isLoggedIn, String username) {
 
@@ -18,7 +21,10 @@ public class NavViewModel {
         this.showLoginLink = !isLoggedIn;
         this.showLogoutButton = isLoggedIn;
         this.showRegisterLink = !isLoggedIn;
-        this.showAlbums = true;
+
+        this.showEvents = !isLoggedIn;
+        this.showTables = !isLoggedIn;
+        this.showSeating = !isLoggedIn;
     }
 
     public boolean isShowUserName() {
@@ -41,7 +47,15 @@ public class NavViewModel {
         return showRegisterLink;
     }
 
-    public boolean isShowAlbums() {
-        return showAlbums;
+    public boolean isShowEvents() {
+        return showEvents;
+    }
+
+    public boolean isShowTables() {
+        return showTables;
+    }
+
+    public boolean isShowSeating() {
+        return showSeating;
     }
 }
