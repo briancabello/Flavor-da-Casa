@@ -6,16 +6,24 @@
 </head>
 <body>
 <header>
-    <nav th:fragment="navbar" class="navbar navbar-expand-lg">
+    <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-light bg-light">
         <!--/*@thymesVar id="navViewModel" type="nbcc.common.viewmodel.NavViewModel"*/-->
         <div class="container-fluid">
-            <a class="navbar-brand" th:href="@{/}">Home</a>
-            <ul class="navbar-nav flex-grow-1">
-                <li class="nav-item nav-link px-2" th:if="${navViewModel.showAlbums}">
-                    <a th:href="@{/album}">Albums</a>
+            <a class="navbar-brand" th:href="@{/}">Flavor da Casa</a>
+
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item" th:if="${navViewModel.showEvents}">
+                    <a class="nav-link" th:href="@{/table}">Events</a>
+                </li>
+                <li class="nav-item" th:if="${navViewModel.showTables}">
+                    <a class="nav-link" th:href="@{/table}">Tables</a>
+                </li>
+                <li class="nav-item" th:if="${navViewModel.showSeating}">
+                    <a class="nav-link" th:href="@{/seating}">Seating</a>
                 </li>
             </ul>
-            <ul class="navbar-nav flex-grow-1">
+
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item" th:if="${navViewModel.showRegisterLink}">
                     <a class="nav-link" th:href="@{/register}">Register</a>
                 </li>
@@ -23,11 +31,11 @@
                     <a class="nav-link" th:href="@{/login}">Login</a>
                 </li>
                 <li class="nav-item" th:if="${navViewModel.showUserName}">
-                    <span class="nav-link" th:text="*{navViewModel.username}"></span>
+                    <span class="nav-link fw-bold text-primary" th:text="${navViewModel.username}"></span>
                 </li>
                 <li class="nav-item" th:if="${navViewModel.showLogoutButton}">
-                    <form class="form-inline" th:action="@{/logout}" method="post">
-                        <input class="nav-link btn btn-link text-dark" type="submit" value="Logout"/>
+                    <form class="d-inline" th:action="@{/logout}" method="post">
+                        <input class="btn btn-link nav-link text-dark" type="submit" value="Logout"/>
                     </form>
                 </li>
             </ul>
