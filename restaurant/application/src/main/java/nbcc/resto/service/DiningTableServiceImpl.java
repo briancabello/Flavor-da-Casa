@@ -8,9 +8,11 @@ import nbcc.resto.repository.DiningTableRepository;
 import nbcc.resto.validation.DiningTableValidationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
+@Service
 public class DiningTableServiceImpl implements DiningTableService {
 
     private final Logger logger = LoggerFactory.getLogger(DiningTableServiceImpl.class);

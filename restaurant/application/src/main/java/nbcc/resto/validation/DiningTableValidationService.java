@@ -2,10 +2,12 @@ package nbcc.resto.validation;
 
 import nbcc.common.validation.ValidationError;
 import nbcc.resto.dto.DiningTable;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+@Service
 public class DiningTableValidationService {
 
     public Collection<ValidationError> validate(DiningTable diningTable) {
