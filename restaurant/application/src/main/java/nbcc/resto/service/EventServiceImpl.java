@@ -2,6 +2,7 @@ package nbcc.resto.service;
 
 
 import nbcc.common.result.Result;
+import nbcc.common.result.ValidatedResult;
 import nbcc.common.result.ValidationResults;
 import nbcc.common.validation.ValidationError;
 import nbcc.resto.dto.Event;
@@ -39,7 +40,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Result<Event> get(Long id) {
+    public ValidatedResult<Event> get(Long id) {
         try {
             Optional<Event> event = eventRepository.get(id);
             if(event.isEmpty()){
@@ -53,7 +54,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Result<Event> create(Event event) {
+    public ValidatedResult<Event> create(Event event) {
 
         try {
             var errors = validationService.validate(event);
@@ -73,7 +74,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Result<Event> update(Event event) {
+    public ValidatedResult<Event> update(Event event) {
         try {
             var errors = validationService.validate(event);
 
@@ -93,7 +94,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Result<Event> delete(Long id) {
+    public ValidatedResult<Event> delete(Long id) {
         try {
             var existing = eventRepository.get(id);
 
