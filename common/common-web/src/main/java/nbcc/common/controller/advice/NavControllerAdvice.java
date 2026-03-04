@@ -1,6 +1,6 @@
 package nbcc.common.controller.advice;
 
-import nbcc.auth.service.LoginService;
+import nbcc.common.service.LoginService;
 import nbcc.common.viewmodel.NavViewModel;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;

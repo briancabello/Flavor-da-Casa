@@ -2,20 +2,21 @@ package nbcc.resto.mapper;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
-public interface EntityMapper<D, E> {
+public interface EntityMapper<DTO, ENTITY> {
 
-    E toEntity(D domain);
-    D toDomain(E entity);
-
-    default Collection<E> toEntity(Collection<D> domainList){
-        if (domainList == null) return List.of();
-        return domainList.stream().map(this::toEntity).collect(Collectors.toList());
+    default List<DTO> toDTO(Collection<ENTITY> entities){
+        return entities.stream().map(this::toDTO).toList();
     }
 
-    default Collection<D> toDomain(Collection<E> entityList){
-        if (entityList == null) return List.of();
-        return entityList.stream().map(this::toDomain).collect(Collectors.toList());
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+    default Optional<DTO> toDTO(Optional<ENTITY> entity){
+        return entity.map(this::toDTO);
     }
+
+    DTO toDTO(ENTITY entity);
+
+    ENTITY toEntity(DTO dto);
+
 }

@@ -10,10 +10,11 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>app-web</module>
-        <module>restaurant</module>
-        <module>common</module>
         <module>auth</module>
+        <module>common</module>
+        <module>restaurant</module>
+        <module>app-web</module>
+        <module>app-auth-rest-api</module>
     </modules>
 
     <properties>
