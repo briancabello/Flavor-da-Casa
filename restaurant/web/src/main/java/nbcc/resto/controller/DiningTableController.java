@@ -43,14 +43,12 @@ public class DiningTableController {
         return "table/list";
     }
 
-    @PreAuthorize("permitAll()")
     @GetMapping("/create")
     public String create(Model model) {
         model.addAttribute("diningTable", new DiningTable());
         return "table/create";
     }
 
-    @PreAuthorize("permitAll()")
     @PostMapping("/create")
     public String create(@ModelAttribute("diningTable") DiningTable diningTable, BindingResult br) {
         var result = tableService.create(diningTable);

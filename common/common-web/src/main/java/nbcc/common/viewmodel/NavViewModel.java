@@ -22,9 +22,9 @@ public class NavViewModel {
         this.showLogoutButton = isLoggedIn;
         this.showRegisterLink = !isLoggedIn;
 
-        this.showEvents = !isLoggedIn;
-        this.showTables = !isLoggedIn;
-        this.showSeatings = !isLoggedIn;
+        this.showEvents = isLoggedIn;
+        this.showTables = isLoggedIn;
+        this.showSeatings = isLoggedIn;
     }
 
     public boolean isShowUserName() {
