@@ -2,29 +2,30 @@ package nbcc.resto.mapper;
 
 import nbcc.resto.dto.Event;
 import nbcc.resto.entity.EventEntity;
+import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
+@Component
+public class EventMapper implements EntityMapper<Event, EventEntity>{
 
-public class EventMapper  implements EntityMapper<Event, EventEntity>{
     @Override
-    public EventEntity toEntity(Event domain) {
-        if (domain == null) return null;
+    public EventEntity toEntity(Event dto) {
+        if (dto == null) return null;
         EventEntity entity = new EventEntity();
-        entity.setId(domain.getId())
-                .setName(domain.getName())
-                .setDescription(domain.getDescription())
-                .setStartDate(domain.getStartDate())
-                .setEndDate(domain.getEndDate())
-                .setDuration(domain.getDuration())
-                .setPrice(domain.getPrice())
-                .setActive(domain.isActive())
-                .setCreatedDate(domain.getCreatedDate())
-                .setLastUpdatedDate(domain.getLastUpdatedDate());
+        entity.setId(dto.getId())
+                .setName(dto.getName())
+                .setDescription(dto.getDescription())
+                .setStartDate(dto.getStartDate())
+                .setEndDate(dto.getEndDate())
+                .setDuration(dto.getDuration())
+                .setPrice(dto.getPrice())
+                .setActive(dto.isActive())
+                .setCreatedDate(dto.getCreatedDate())
+                .setLastUpdatedDate(dto.getLastUpdatedDate());
         return entity;
     }
 
     @Override
-    public Event toDomain(EventEntity entity) {
+    public Event toDTO(EventEntity entity) {
         if (entity == null) return null;
         Event domain = new Event();
         domain.setId(entity.getId())
