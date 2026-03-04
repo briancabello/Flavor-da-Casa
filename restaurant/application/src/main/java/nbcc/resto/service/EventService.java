@@ -11,6 +11,6 @@ public interface EventService {
     Result<Event> get(Long id);
     Result<Event> create(Event event);
     Result<Event> update(Event event);
-    Result<Void> delete(Long id);
+    Result<Event> delete(Long id);
     Result<Collection<Event>> search(String query, LocalDateTime start, LocalDateTime end);
 }
