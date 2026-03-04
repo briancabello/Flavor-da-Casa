@@ -34,12 +34,12 @@ public class Event {
 
     private boolean active;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime createdDate;
     private LocalDateTime lastUpdatedDate;
 
     public Event() {}
 
-    public Event(Long id, Long menuId, String name, String description, LocalDateTime startDate, LocalDateTime endDate, int duration, double price, boolean active, LocalDateTime createdAt, LocalDateTime lastUpdatedDate) {
+    public Event(Long id, Long menuId, String name, String description, LocalDateTime startDate, LocalDateTime endDate, int duration, double price, boolean active, LocalDateTime createdDate, LocalDateTime lastUpdatedDate) {
         this.id = id;
         this.menuId = menuId;
         this.name = name;
@@ -49,7 +49,7 @@ public class Event {
         this.duration = duration;
         this.price = price;
         this.active = active;
-        this.createdAt = createdAt;
+        this.createdDate = createdDate;
         this.lastUpdatedDate = lastUpdatedDate;
     }
 
@@ -134,12 +134,12 @@ public class Event {
         return this;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
     }
 
-    public Event setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public Event setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
         return this;
     }
 
