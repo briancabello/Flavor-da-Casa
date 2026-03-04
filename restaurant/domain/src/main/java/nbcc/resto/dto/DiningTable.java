@@ -1,13 +1,13 @@
 package nbcc.resto.dto;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class DiningTable {
 
     private Long id;
     private String name;
     private int capacity;
-    private LocalDate createdDate;
+    private LocalDateTime createdDate;
 
     public DiningTable() {
     }
@@ -39,11 +39,11 @@ public class DiningTable {
         return this;
     }
 
-    public LocalDate getCreatedDate() {
+    public LocalDateTime getCreatedDate() {
         return createdDate;
     }
 
-    public DiningTable setCreatedDate(LocalDate createdDate) {
+    public DiningTable setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
         return this;
     }
