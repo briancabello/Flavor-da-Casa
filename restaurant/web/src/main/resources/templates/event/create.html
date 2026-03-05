@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Event</title>
+    <link th:replace="~{partial :: bootstrap}"/>
+</head>
+<body>
+<div th:insert="~{nav :: navbar}"></div>
+
+<div class="container">
+    <main role="main" class="pb-3">
+        <h1>Create New Event</h1>
+
+        <!--/*@thymesVar id="event" type="nbcc.resto.dto.Event"*/-->
+        <form th:action="@{/events/create}" th:object="${event}" method="post">
+
+            <div class="mb-3">
+                <label for="name" class="form-label">Event Name</label>
+                <input type="text" th:field="*{name}" class="form-control" th:errorclass="is-invalid">
+                <div class="alert alert-warning" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="startDate" class="form-label">Start Date</label>
+                <input type="datetime-local" th:field="*{startDate}" class="form-control" th:errorclass="is-invalid">
+                <div class="alert alert-warning" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></div>
+            </div>
+            <div class="mb-3">
+                <label for="endDate" class="form-label">End Date</label>
+                <input type="datetime-local" th:field="*{endDate}" class="form-control" th:errorclass="is-invalid">
+                <div class="alert alert-warning" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="duration" class="form-label">Duration (Minutes)</label>
+                <input type="number" th:field="*{duration}" class="form-control" th:errorclass="is-invalid">
+                <div class="alert alert-warning" th:if="${#fields.hasErrors('duration')}" th:errors="*{duration}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="price" class="form-label">Price ($)</label>
+                <input type="number" step="0.01" th:field="*{price}" class="form-control" th:errorclass="is-invalid">
+                <div class="alert alert-warning" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save Event</button>
+            <a th:href="@{/}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </main>
+</div>
+</body>
+</html>
