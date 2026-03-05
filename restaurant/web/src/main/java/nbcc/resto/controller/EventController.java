@@ -4,6 +4,7 @@ package nbcc.resto.controller;
 import nbcc.common.service.LoginService;
 import nbcc.resto.dto.Event;
 import nbcc.resto.service.EventService;
+import nbcc.resto.viewmodels.EventListViewModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -49,6 +50,21 @@ public class EventController {
 
 
         return "redirect:/";
+    }
+
+    @PreAuthorize("permitAll()")
+    @GetMapping
+    public String getAll(Model model){
+        var result = eventService.getAll();
+
+        if(result.isError()){
+            model.addAttribute("message", "Error retrieving events");
+            return "error/errorPage";
+        }
+
+        EventListViewModel viewModel = new EventListViewModel(result.getValue(), loginService.isLoggedIn());
+        model.addAttribute("viewModel", viewModel);
+        return "event/list";
     }
 
 
