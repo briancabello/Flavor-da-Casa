@@ -14,7 +14,6 @@
         <module>common</module>
         <module>restaurant</module>
         <module>app-web</module>
-        <module>app-auth-rest-api</module>
     </modules>
 
     <properties>
@@ -36,6 +35,11 @@
     </dependencyManagement>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-validation</artifactId>

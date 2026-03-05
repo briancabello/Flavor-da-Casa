@@ -19,4 +19,6 @@ public interface Result<T> {
     default boolean isError() {
         return false;
     }
+
+    boolean isInvalid();
 }

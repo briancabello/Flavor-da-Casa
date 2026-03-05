@@ -4,12 +4,13 @@ import nbcc.resto.dto.Event;
 import nbcc.resto.entity.EventEntity;
 import nbcc.resto.mapper.EventMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Optional;
 
-@Component
+@Repository
 public class EventRepositoryAdapter implements EventRepository {
 
     private final EventJpaRepository jpaRepository;
@@ -23,26 +24,26 @@ public class EventRepositoryAdapter implements EventRepository {
 
     @Override
     public Collection<Event> getAll() {
-        return mapper.toDomain(jpaRepository.findAll());
+        return mapper.toDTO(jpaRepository.findAll());
     }
 
     @Override
     public Optional<Event> get(Long id) {
-        return jpaRepository.findById(id).map(mapper::toDomain);
+        return jpaRepository.findById(id).map(mapper::toDTO);
     }
 
     @Override
     public Event create(Event event) {
         EventEntity entity = mapper.toEntity(event);
         entity.setCreatedDate(LocalDateTime.now());
-        return mapper.toDomain(jpaRepository.save(entity));
+        return mapper.toDTO(jpaRepository.save(entity));
     }
 
     @Override
     public Event update(Event event) {
         EventEntity entity = mapper.toEntity(event);
         entity.setLastUpdatedDate(LocalDateTime.now());
-        return mapper.toDomain(jpaRepository.save(entity));
+        return mapper.toDTO(jpaRepository.save(entity));
     }
 
     @Override
@@ -52,7 +53,7 @@ public class EventRepositoryAdapter implements EventRepository {
 
     @Override
     public Collection<Event> search(String name, LocalDateTime start, LocalDateTime end) {
-        return mapper.toDomain(jpaRepository.findByNameContainingIgnoreCaseAndStartDateGreaterThanEqualAndEndDateLessThanEqual(name, start, end));
+        return mapper.toDTO(jpaRepository.findByNameContainingIgnoreCaseAndStartDateGreaterThanEqualAndEndDateLessThanEqual(name, start, end));
     }
 
     @Override
