@@ -54,12 +54,12 @@ public class DiningTableServiceImpl implements DiningTableService {
             if (errors.isEmpty()) {
                 return ValidationResults.success(diningTableRepository.create(table));
             } else {
-                logger.debug("Validation errors for table create: {}", errors);
+                logger.debug("Validation errors for table create {}: {}", table, errors);
                 return ValidationResults.invalid(table, errors);
             }
         } catch (Exception e) {
-            logger.error("Error creating dining table", e);
-            return ValidationResults.error(e);
+            logger.error("Error creating dining table {}", table, e);
+            return ValidationResults.error(table);
         }
     }
 
@@ -70,27 +70,23 @@ public class DiningTableServiceImpl implements DiningTableService {
 
             if (errors.isEmpty()) {
                 return ValidationResults.success(diningTableRepository.update(table));
-            } else {
-                logger.debug("Validation errors for table update: {}", errors);
-                return ValidationResults.invalid(table, errors);
             }
+
+            logger.debug("Validation errors for table update {}: {}", table, errors);
+            return ValidationResults.invalid(table, errors);
+
         } catch (Exception e) {
-            logger.error("Error updating dining table", e);
-            return ValidationResults.error(e);
+            logger.error("Error updating dining table {}", table, e);
+            return ValidationResults.error(table);
         }
     }
 
     @Override
-    public ValidatedResult<DiningTable> delete(Long id) {
+    public ValidatedResult<Void> delete(Long id) {
         try {
-            var existing = diningTableRepository.get(id);
-
-            if (existing.isEmpty()) {
-                return ValidationResults.invalid(null, "Dining table not found", "id");
-            }
-
             diningTableRepository.delete(id);
-            return ValidationResults.success(existing.get());
+            logger.debug("Dining table with id {} deleted", id);
+            return ValidationResults.success();
         } catch (Exception e) {
             logger.error("Error deleting dining table with id: {}", id, e);
             return ValidationResults.error(e);

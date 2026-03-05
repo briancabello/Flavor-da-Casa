@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Table Fragments</title>
+</head>
+<body>
+
+<!--/*@thymesVar id="diningTable" type="nbcc.resto.dto.DiningTable"*/-->
+
+<th:block th:fragment="input" th:object="${diningTable}">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h5 class="card-title mb-0">Dining Table Information</h5>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-danger" role="alert" th:if="${#fields.hasGlobalErrors()}">
+                <strong>Error!</strong>
+                <div th:each="err : ${#fields.globalErrors()}" th:text="${err}"></div>
+            </div>
+
+            <input th:field="*{id}" type="hidden"/>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">
+                    Name (optional - auto-generates if blank)
+                    <input class="form-control mt-1" placeholder="e.g. VIP Table" th:field="*{name}"/>
+                </label>
+                <div class="text-danger small mt-1" th:errors="*{name}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">
+                    Capacity
+                    <input class="form-control mt-1" min="1" placeholder="Number of seats" th:field="*{capacity}"
+                           type="number"/>
+                </label>
+                <div class="text-danger small mt-1" th:errors="*{capacity}"></div>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+<th:block th:fragment="details" th:object="${diningTable}">
+    <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white">
+            <h5 class="card-title mb-0">Dining Table Details</h5>
+        </div>
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-4">Name</dt>
+                <dd class="col-sm-8" th:text="*{name}"></dd>
+                <dt class="col-sm-4">Capacity</dt>
+                <dd class="col-sm-8" th:text="*{capacity}"></dd>
+            </dl>
+        </div>
+    </div>
+</th:block>
+
+</body>
+</html>

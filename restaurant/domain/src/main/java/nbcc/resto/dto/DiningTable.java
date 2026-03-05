@@ -1,15 +1,31 @@
 package nbcc.resto.dto;
 
+import jakarta.validation.constraints.Positive;
+
 import java.time.LocalDateTime;
 
 public class DiningTable {
 
     private Long id;
     private String name;
-    private int capacity;
+
+    @Positive
+    private Integer capacity;
+
     private LocalDateTime createdDate;
 
     public DiningTable() {
+    }
+
+    public DiningTable(DiningTable table) {
+        this(table.getId(), table.getName(), table.getCapacity(), table.getCreatedDate());
+    }
+
+    public DiningTable(Long id, String name, int capacity, LocalDateTime createdDate) {
+        this.id = id;
+        this.name = name;
+        this.capacity = capacity;
+        this.createdDate = createdDate;
     }
 
     public Long getId() {
@@ -30,11 +46,11 @@ public class DiningTable {
         return this;
     }
 
-    public int getCapacity() {
+    public Integer getCapacity() {
         return capacity;
     }
 
-    public DiningTable setCapacity(int capacity) {
+    public DiningTable setCapacity(Integer capacity) {
         this.capacity = capacity;
         return this;
     }

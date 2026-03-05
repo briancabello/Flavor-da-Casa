@@ -7,6 +7,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class DiningTableMapper implements EntityMapper<DiningTable, DiningTableEntity> {
 
+    public DiningTableMapper() {
+    }
+
+    @Override
     public DiningTable toDTO(DiningTableEntity entity) {
         if (entity == null) {
             return null;
@@ -19,6 +23,7 @@ public class DiningTableMapper implements EntityMapper<DiningTable, DiningTableE
                 .setCreatedDate(entity.getCreatedDate());
     }
 
+    @Override
     public DiningTableEntity toEntity(DiningTable dto) {
         if (dto == null) {
             return null;
