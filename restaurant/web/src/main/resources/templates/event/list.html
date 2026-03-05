@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{partial :: head('Events')}"></head>
+<body>
+<div th:replace="~{nav :: nav}"></div>
+
+<div class="container mt-4">
+    <h1>Events</h1>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Start Date</th>
+            <th>Price</th>
+            <th th:if="${viewModel.showManage}">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="event : ${viewModel.events}">
+            <td th:text="${event.name}"></td>
+            <td th:text="${#temporals.format(event.startDate, 'yyyy-MM-dd HH:mm')}"></td>
+            <td th:text="${'$' + event.price}"></td>
+            <td th:if="${viewModel.showManage}">
+                <a class="btn btn-sm btn-info" th:href="@{/events/edit/{id}(id=${event.id})}">Edit</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a th:if="${viewModel.showManage}" class="btn btn-primary" th:href="@{/events/create}">Create New Event</a>
+</div>
+</body>
+</html>
