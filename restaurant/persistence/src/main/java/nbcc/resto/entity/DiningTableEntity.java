@@ -17,7 +17,7 @@ public class DiningTableEntity {
 
     private String name;
 
-//    @Positive // JAKARTA VALIDATION
+    @Column(nullable = false)
     private int capacity;
 
     @CreatedDate
