@@ -10,7 +10,7 @@ public class DiningTable {
     private String name;
 
     @Positive
-    private int capacity;
+    private Integer capacity;
 
     private LocalDateTime createdDate;
 
@@ -46,11 +46,11 @@ public class DiningTable {
         return this;
     }
 
-    public int getCapacity() {
+    public Integer getCapacity() {
         return capacity;
     }
 
-    public DiningTable setCapacity(int capacity) {
+    public DiningTable setCapacity(Integer capacity) {
         this.capacity = capacity;
         return this;
     }

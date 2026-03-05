@@ -26,7 +26,7 @@ public class DiningTableValidationService {
     }
 
     private Collection<ValidationError> validateCapacity(DiningTable table) {
-        if (table.getCapacity() <= 0) {
+        if (table.getCapacity() == null || table.getCapacity() <= 0) {
             return List.of(new ValidationError("Capacity must be greater than 0", "capacity"));
         }
         return List.of();
