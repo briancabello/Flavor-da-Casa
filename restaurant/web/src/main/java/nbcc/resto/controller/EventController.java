@@ -96,6 +96,17 @@ public class EventController {
         return "event/delete";
     }
 
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Long id) {
+        var result = eventService.delete(id);
+
+        if (result.isError()) {
+            return "error/errorPage";
+        }
+
+        return "redirect:/events";
+    }
+
 
 
 
