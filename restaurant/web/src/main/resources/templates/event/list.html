@@ -31,7 +31,9 @@
         </thead>
         <tbody>
         <tr th:each="event : ${viewModel.events}">
-            <td th:text="${event.name}" class="fw-semibold"></td>
+            <td class="fw-semibold">
+                <a th:href="@{/events/details/{id}(id=${event.id})}" th:text="${event.name}" class="text-decoration-none text-dark fw-bold"></a>
+            </td>
 
             <td th:text="${#temporals.format(event.startDate, 'MMMM dd, yyyy')}"></td>
 
@@ -40,7 +42,7 @@
             <td th:text="${'$' + #numbers.formatDecimal(event.price, 1, 2)}"></td>
 
             <td th:if="${viewModel.showManage}">
-                <a class="text-primary text-decoration-none me-3 fw-bold" th:href="@{/events/edit/{id}(id=${event.id})}">EDIT...</a>
+                <a class="text-primary text-decoration-none me-3 fw-bold" th:href="@{/events/edit/{id}(id=${event.id})}">EDIT</a>
                 <a class="text-danger text-decoration-none fw-bold" th:href="@{/events/delete/{id}(id=${event.id})}">DELETE</a>
             </td>
         </tr>
