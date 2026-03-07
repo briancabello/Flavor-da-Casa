@@ -41,6 +41,7 @@
 
             <td th:if="${viewModel.showManage}">
                 <a class="text-primary text-decoration-none me-3 fw-bold" th:href="@{/events/edit/{id}(id=${event.id})}">EDIT...</a>
+                <a class="text-danger text-decoration-none fw-bold" th:href="@{/events/delete/{id}(id=${event.id})}">DELETE</a>
             </td>
         </tr>
         <tr th:if="${#lists.isEmpty(viewModel.events)}">

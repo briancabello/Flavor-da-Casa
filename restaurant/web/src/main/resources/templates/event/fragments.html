@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Event Fragments</title>
+</head>
+<body>
+
+<!--/*@thymesVar id="event" type="nbcc.resto.dto.Event"*/-->
+
+<th:block th:fragment="details" th:object="${event}">
+    <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white">
+            <h5 class="card-title mb-0">Event Details</h5>
+        </div>
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-4">Name</dt>
+                <dd class="col-sm-8" th:text="*{name}"></dd>
+
+                <dt class="col-sm-4">Description</dt>
+                <dd class="col-sm-8" th:text="*{description} ?: 'N/A'"></dd>
+
+                <dt class="col-sm-4">Start Date</dt>
+                <dd class="col-sm-8" th:text="${#temporals.format(event.startDate, 'MMMM dd, yyyy HH:mm')}"></dd>
+
+                <dt class="col-sm-4">End Date</dt>
+                <dd class="col-sm-8" th:text="${#temporals.format(event.endDate, 'MMMM dd, yyyy HH:mm')}"></dd>
+
+                <dt class="col-sm-4">Duration</dt>
+                <dd class="col-sm-8" th:text="*{duration} + ' minutes'"></dd>
+
+                <dt class="col-sm-4">Price</dt>
+                <dd class="col-sm-8" th:text="'$' + ${#numbers.formatDecimal(event.price, 1, 2)}"></dd>
+
+                <dt class="col-sm-4">Active</dt>
+                <dd class="col-sm-8" th:text="*{active} ? 'Yes' : 'No'"></dd>
+            </dl>
+        </div>
+    </div>
+</th:block>
+
+</body>
+</html>
