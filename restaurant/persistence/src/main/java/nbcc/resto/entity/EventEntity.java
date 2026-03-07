@@ -38,6 +38,9 @@ public class EventEntity {
     @Column(nullable = false)
     private boolean active;
 
+    @Column(nullable = false)
+    private boolean archived;
+
     @Column(name = "created_date", updatable = false)
     private LocalDateTime createdDate;
 
@@ -124,6 +127,15 @@ public class EventEntity {
 
     public EventEntity setActive(boolean active) {
         this.active = active;
+        return this;
+    }
+
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public EventEntity setArchived(boolean archived) {
+        this.archived = archived;
         return this;
     }
 

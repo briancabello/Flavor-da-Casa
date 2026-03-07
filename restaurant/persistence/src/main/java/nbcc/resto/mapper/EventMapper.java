@@ -19,6 +19,7 @@ public class EventMapper implements EntityMapper<Event, EventEntity>{
                 .setDuration(dto.getDuration())
                 .setPrice(dto.getPrice())
                 .setActive(dto.isActive())
+                .setArchived(dto.isArchived())
                 .setCreatedDate(dto.getCreatedDate())
                 .setLastUpdatedDate(dto.getLastUpdatedDate());
         return entity;
@@ -37,6 +38,7 @@ public class EventMapper implements EntityMapper<Event, EventEntity>{
                 .setDuration(entity.getDuration())
                 .setPrice(entity.getPrice())
                 .setActive(entity.isActive())
+                .setArchived(entity.isArchived())
                 .setCreatedDate(entity.getCreatedDate())
                 .setLastUpdatedDate(entity.getLastUpdatedDate());
         return domain;

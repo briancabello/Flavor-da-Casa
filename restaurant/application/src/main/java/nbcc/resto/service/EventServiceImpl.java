@@ -96,14 +96,31 @@ public class EventServiceImpl implements EventService {
     @Override
     public ValidatedResult<Event> delete(Long id) {
         try {
-            var existing = eventRepository.get(id);
+            var existingOpt  = eventRepository.get(id);
 
-            if (existing.isEmpty()) {
+            if (existingOpt.isEmpty()) {
                 return ValidationResults.invalid(null, "Event not found", "id");
             }
 
-            eventRepository.delete(id);
-            return ValidationResults.success(existing.get());
+            Event event = existingOpt.get();
+
+            
+            if (event.getEndDate() != null && event.getEndDate().isBefore(LocalDateTime.now())) {
+                
+                event.setArchived(true);
+                event.setActive(false);
+
+                eventRepository.update(event);
+                logger.debug("Event with id {} archived (past event)", id);
+
+                return ValidationResults.success(event);
+
+            } else {
+                eventRepository.delete(id);
+                logger.debug("Event with id {} deleted", id);
+            }
+
+            return ValidationResults.success(event);
         } catch (Exception e) {
             logger.error("Error deleting event with id: {}", id, e);
             return ValidationResults.error(e);

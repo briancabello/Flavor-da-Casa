@@ -13,6 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static nbcc.common.validation.ModelErrorConverter.addErrorsToBindingResults;
 
 @Controller
@@ -93,7 +95,11 @@ public class EventController {
         }
 
         model.addAttribute("event", result.getValue());
+
+        model.addAttribute("seatings", List.of()); // Placeholder for future seating data
+
         return "event/delete";
+        
     }
 
     @PostMapping("/delete/{id}")
