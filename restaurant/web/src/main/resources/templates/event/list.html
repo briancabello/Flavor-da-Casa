@@ -1,57 +1,54 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Events List</title>
-    <link th:replace="~{partial :: bootstrap}"/>
-</head>
+<html lang="en" th:replace="~{layout :: layout(title='Events', content=~{::content})}"
+      xmlns:th="http://www.thymeleaf.org">
 <body>
-<div th:insert="~{nav :: navbar}"></div>
+<div th:fragment="content">
+    <div class="container py-4">
 
-<div class="container mt-4">
+        <nav aria-label="breadcrumb" class="mb-4">
+            <span class="text-muted">Home / Events</span>
+        </nav>
 
-    <nav aria-label="breadcrumb" class="mb-4">
-        <span class="text-muted">Home / Events</span>
-    </nav>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="text-uppercase fw-bold mb-0">Events</h3>
+            <a class="btn btn-primary" th:href="@{/event/create}" th:if="${viewModel.showManage}">Create Event</a>
+        </div>
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3 class="text-uppercase fw-bold mb-0">Events</h3>
-        <a th:if="${viewModel.showManage}" class="btn btn-primary" th:href="@{/events/create}">Create Event</a>
+        <table class="table table-bordered table-striped align-middle">
+            <thead class="table-light">
+            <tr class="text-uppercase" style="font-size: 0.9rem;">
+                <th>Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Price</th>
+                <th th:if="${viewModel.showManage}">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="event : ${viewModel.events}">
+                <td class="fw-semibold">
+                    <a class="text-decoration-none text-dark fw-bold" th:href="@{/event/details/{id}(id=${event.id})}"
+                       th:text="${event.name}"></a>
+                </td>
+
+                <td th:text="${#temporals.format(event.startDate, 'MMMM dd, yyyy')}"></td>
+
+                <td th:text="${#temporals.format(event.endDate, 'MMMM dd, yyyy')}"></td>
+
+                <td th:text="${'$' + #numbers.formatDecimal(event.price, 1, 2)}"></td>
+
+                <td th:if="${viewModel.showManage}">
+                    <a class="text-primary text-decoration-none me-3 fw-bold"
+                       th:href="@{/event/edit/{id}(id=${event.id})}">EDIT</a>
+                    <a class="text-danger text-decoration-none fw-bold" th:href="@{/event/delete/{id}(id=${event.id})}">DELETE</a>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(viewModel.events)}">
+                <td class="text-center text-muted py-4" colspan="6">No events found.</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
-
-    <table class="table table-bordered table-striped align-middle">
-        <thead class="table-light">
-        <tr class="text-uppercase" style="font-size: 0.9rem;">
-            <th>Name</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Price</th>
-            <th th:if="${viewModel.showManage}">Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="event : ${viewModel.events}">
-            <td class="fw-semibold">
-                <a th:href="@{/events/details/{id}(id=${event.id})}" th:text="${event.name}" class="text-decoration-none text-dark fw-bold"></a>
-            </td>
-
-            <td th:text="${#temporals.format(event.startDate, 'MMMM dd, yyyy')}"></td>
-
-            <td th:text="${#temporals.format(event.endDate, 'MMMM dd, yyyy')}"></td>
-
-            <td th:text="${'$' + #numbers.formatDecimal(event.price, 1, 2)}"></td>
-
-            <td th:if="${viewModel.showManage}">
-                <a class="text-primary text-decoration-none me-3 fw-bold" th:href="@{/events/edit/{id}(id=${event.id})}">EDIT</a>
-                <a class="text-danger text-decoration-none fw-bold" th:href="@{/events/delete/{id}(id=${event.id})}">DELETE</a>
-            </td>
-        </tr>
-        <tr th:if="${#lists.isEmpty(viewModel.events)}">
-            <td colspan="6" class="text-center text-muted py-4">No events found.</td>
-        </tr>
-        </tbody>
-    </table>
 </div>
-
 </body>
 </html>

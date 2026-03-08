@@ -1,15 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <th:block th:replace="~{partial :: bootstrap}"/>
-    <title>Event Details</title>
-</head>
+<html lang="en" th:replace="~{layout :: layout(title='Event Details', content=~{::content})}"
+      xmlns:th="http://www.thymeleaf.org">
 <body>
-<header>
-    <nav th:replace="~{nav :: navbar}"></nav>
-</header>
-<div class="container mt-4">
-    <main class="pb-3" role="main">
+<div th:fragment="content">
+    <div class="container py-4">
         <h1 th:text="${event.name}">Event Name</h1>
 
         <div class="row">
@@ -21,10 +15,12 @@
                     <div class="card-body">
                         <dl class="row mb-0">
                             <dt class="col-sm-4">Start Date</dt>
-                            <dd class="col-sm-8" th:text="${#temporals.format(event.startDate, 'MMMM dd, yyyy HH:mm')}"></dd>
+                            <dd class="col-sm-8"
+                                th:text="${#temporals.format(event.startDate, 'MMMM dd, yyyy HH:mm')}"></dd>
 
                             <dt class="col-sm-4">End Date</dt>
-                            <dd class="col-sm-8" th:text="${#temporals.format(event.endDate, 'MMMM dd, yyyy HH:mm')}"></dd>
+                            <dd class="col-sm-8"
+                                th:text="${#temporals.format(event.endDate, 'MMMM dd, yyyy HH:mm')}"></dd>
 
                             <dt class="col-sm-4">Name</dt>
                             <dd class="col-sm-8" th:text="${event.name}"></dd>
@@ -36,10 +32,12 @@
                             <dd class="col-sm-8" th:text="'$' + ${#numbers.formatDecimal(event.price, 1, 2)}"></dd>
 
                             <dt class="col-sm-4">Created Date</dt>
-                            <dd class="col-sm-8" th:text="${#temporals.format(event.createdDate, 'MMMM dd, yyyy HH:mm')}"></dd>
+                            <dd class="col-sm-8"
+                                th:text="${#temporals.format(event.createdDate, 'MMMM dd, yyyy HH:mm')}"></dd>
 
                             <dt class="col-sm-4">Last Updated Date</dt>
-                            <dd class="col-sm-8" th:text="${#temporals.format(event.lastUpdatedDate, 'MMMM dd, yyyy HH:mm')}"></dd>
+                            <dd class="col-sm-8"
+                                th:text="${#temporals.format(event.lastUpdatedDate, 'MMMM dd, yyyy HH:mm')}"></dd>
                         </dl>
                     </div>
                 </div>
@@ -47,9 +45,9 @@
         </div>
 
         <div class="mt-3">
-            <a th:href="@{/events}">Go Back to Events List</a>
+            <a th:href="@{/event}">Go Back to Events List</a>
         </div>
-    </main>
+    </div>
 </div>
 </body>
 </html>

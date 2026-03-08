@@ -1,53 +1,50 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0 sticky-top shadow-sm"
-     th:fragment="navbar">
-    <a class="navbar-brand p-0" th:href="@{/}">
-        <h1 class="text-primary m-0 fs-3"><i class="fa fa-fire me-2"></i>Flavor da Casa</h1>
-    </a>
+<th:block th:fragment="nav">
+    <nav class="navbar navbar-expand-lg bg-white border-bottom shadow-sm">
+        <!--/*@thymesVar id="navViewModel" type="nbcc.common.viewmodel.NavViewModel"*/-->
+        <div class="container">
+            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" th:href="@{/}">
+                <i class="fa fa-utensils text-primary"></i>
+                <span>Flavor da Casa</span>
+            </a>
 
-    <button class="navbar-toggler" data-bs-target="#navbarCollapse" data-bs-toggle="collapse" type="button">
-        <span class="fa fa-bars text-light"></span>
-    </button>
+            <button aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+                    data-bs-target="#mainNav" data-bs-toggle="collapse" type="button">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-    <div class="collapse navbar-collapse" id="navbarCollapse">
-        <div class="navbar-nav ms-auto py-0 pe-4 text-uppercase fw-medium fs-6">
-            <a class="nav-item nav-link" th:classappend="${#httpServletRequest.requestURI == '/' ? 'active' : ''}"
-               th:href="@{/}">Home</a>
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item" th:if="${navViewModel.showEvents}">
+                        <a class="nav-link" th:href="@{/event}">Events</a>
+                    </li>
+                    <li class="nav-item" th:if="${navViewModel.showTables}">
+                        <a class="nav-link" th:href="@{/table}">Tables</a>
+                    </li>
+                    <li class="nav-item" th:if="${navViewModel.showSeating}">
+                        <a class="nav-link" th:href="@{/seating}">Seating</a>
+                    </li>
+                </ul>
 
-            <div class="nav-item dropdown" th:if="${navViewModel.showEvents}">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Events</a>
-                <div class="dropdown-menu m-0 shadow">
-                    <a class="dropdown-item" th:href="@{/event}">Event List</a>
-                </div>
-            </div>
-
-            <div class="nav-item dropdown" th:if="${navViewModel.showTables or navViewModel.showSeating}">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Seating</a>
-                <div class="dropdown-menu m-0 shadow">
-                    <a class="dropdown-item" th:href="@{/table}" th:if="${navViewModel.showTables}">Dining Tables</a>
-                    <a class="dropdown-item" th:href="@{/seating}" th:if="${navViewModel.showSeating}">Seating List</a>
-                </div>
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+                    <li class="nav-item" th:if="${navViewModel.showRegisterLink}">
+                        <a class="nav-link" th:href="@{/register}">Register</a>
+                    </li>
+                    <li class="nav-item" th:if="${navViewModel.showLoginLink}">
+                        <a class="nav-link" th:href="@{/login}">Login</a>
+                    </li>
+                    <li class="nav-item" th:if="${navViewModel.showUserName}">
+                        <span class="nav-link fw-bold text-primary" th:text="${navViewModel.username}"></span>
+                    </li>
+                    <li class="nav-item" th:if="${navViewModel.showLogoutButton}">
+                        <form class="d-inline" method="post" th:action="@{/logout}">
+                            <input class="btn btn-link nav-link text-dark" type="submit" value="Logout"/>
+                        </form>
+                    </li>
+                </ul>
             </div>
         </div>
-
-        <span class="d-flex align-items-center gap-2 text-light small">
-                <i class="bi bi-person-circle text-primary fs-5" th:if="${navViewModel.showUserName}"></i>
-                <span th:if="${navViewModel.showUserName}" th:text="${navViewModel.username}"></span>
-
-                <a class="text-primary text-decoration-none ms-2" th:href="@{/login}"
-                   th:if="${navViewModel.showLoginLink}">Login</a>
-                <a class="text-primary text-decoration-none ms-2" th:href="@{/register}"
-                   th:if="${navViewModel.showRegisterLink}">Register</a>
-
-                <form class="m-0 p-0 ms-2" method="post" th:action="@{/logout}"
-                      th:if="${navViewModel.showLogoutButton}">
-                    <button class="btn btn-link text-primary text-decoration-none p-0 m-0 align-baseline small"
-                            type="submit">Logout</button>
-                </form>
-            </span>
-    </div>
-</nav>
-</body>
+    </nav>
+</th:block>
 </html>
