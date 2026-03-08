@@ -1,47 +1,50 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <th:block th:replace="~{partial :: bootstrap}"/>
-    <title>Dining Tables</title>
-</head>
+<html lang="en" th:replace="~{layout :: layout(title='Dining Tables', content=~{::content})}"
+      xmlns:th="http://www.thymeleaf.org">
 <body>
-<header>
-    <nav th:replace="~{nav :: navbar}"></nav>
-</header>
-<div class="container mt-4">
-    <main class="pb-3" role="main">
+<div th:fragment="content">
+    <div class="container py-4">
         <!--/*@thymesVar id="viewModel" type="nbcc.resto.viewmodels.DiningTableListViewModel"*/-->
         <p class="alert alert-warning" th:if="${viewModel.message}" th:text="${viewModel.message}"></p>
 
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2>Dining Tables</h2>
-            <a class="btn btn-success" th:href="@{/table/create}" th:if="${viewModel.canAdd}">+ Add Table</a>
+            <h2 class="fw-bold">Dining Tables</h2>
+            <a class="btn btn-primary" th:href="@{/table/create}" th:if="${viewModel.canAdd}">
+                <i class="fa fa-plus me-1"></i> Add Table
+            </a>
         </div>
 
-        <p class="alert alert-info" th:if="${viewModel.isEmpty()}">No dining tables have been created yet.</p>
+        <div class="alert alert-info" th:if="${viewModel.isEmpty()}">No dining tables have been created yet.</div>
 
-        <table class="table table-striped table-hover" th:unless="${viewModel.isEmpty()}">
-            <thead class="table-dark">
-            <tr>
-                <th>Name</th>
-                <th>Capacity</th>
-                <th class="text-center" th:if="${viewModel.canEdit}">Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="table : ${viewModel.tables}">
-                <td th:text="${table.name}"></td>
-                <td th:text="${table.capacity}"></td>
-                <td class="text-center" th:if="${viewModel.canEdit}">
-                    <div class="btn-group btn-group-sm">
-                        <a class="btn btn-outline-primary" th:href="@{/table/edit/{id}(id=${table.id})}">Edit</a>
-                        <a class="btn btn-outline-danger" th:href="@{/table/delete/{id}(id=${table.id})}">Delete</a>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </main>
+        <div class="card shadow-sm" th:unless="${viewModel.isEmpty()}">
+            <div class="card-body p-0">
+                <table class="table table-hover mb-0">
+                    <thead class="bg-dark text-white">
+                    <tr>
+                        <th>Name</th>
+                        <th>Capacity</th>
+                        <th class="text-center" th:if="${viewModel.canEdit}">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="table : ${viewModel.tables}">
+                        <td th:text="${table.name}"></td>
+                        <td th:text="${table.capacity}"></td>
+                        <td class="text-center" th:if="${viewModel.canEdit}">
+                            <a class="btn btn-sm btn-outline-primary me-1"
+                               th:href="@{/table/edit/{id}(id=${table.id})}">
+                                <i class="fa fa-edit"></i> Edit
+                            </a>
+                            <a class="btn btn-sm btn-outline-danger" th:href="@{/table/delete/{id}(id=${table.id})}">
+                                <i class="fa fa-trash"></i> Delete
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

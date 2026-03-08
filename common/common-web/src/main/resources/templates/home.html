@@ -1,13 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <link th:replace="~{partial :: bootstrap}"/>
-    <title>Home</title>
-</head>
+<html lang="en" th:replace="~{layout :: layout(title='Home', content=~{::content})}"
+      xmlns:th="http://www.thymeleaf.org">
 <body>
-<header>
-    <nav th:replace="~{nav :: nav}"></nav>
-</header>
-<p>Home Page</p>
+<div class="container py-5" th:fragment="content">
+    <h1>Welcome to Flavor da Casa</h1>
+</div>
 </body>
 </html>

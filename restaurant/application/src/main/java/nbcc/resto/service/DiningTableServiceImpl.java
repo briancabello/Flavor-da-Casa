@@ -25,7 +25,6 @@ public class DiningTableServiceImpl implements DiningTableService {
         this.validationService = validationService;
     }
 
-
     @Override
     public Result<Collection<DiningTable>> getAll() {
         try {

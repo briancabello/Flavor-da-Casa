@@ -1,64 +1,60 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Create Event</title>
-    <link th:replace="~{partial :: bootstrap}"/>
-</head>
+<html lang="en" th:replace="~{layout :: layout(title='Create Event', content=~{::content})}"
+      xmlns:th="http://www.thymeleaf.org">
 <body>
-<div th:insert="~{nav :: navbar}"></div>
-
-<div class="container">
-    <main role="main" class="pb-3">
+<div th:fragment="content">
+    <div class="container py-4">
         <h1>Create New Event</h1>
 
         <!--/*@thymesVar id="event" type="nbcc.resto.dto.Event"*/-->
-        <form th:action="@{/events/create}" th:object="${event}" method="post">
+        <form method="post" th:action="@{/event/create}" th:object="${event}">
 
             <div class="mb-3">
-                <label for="name" class="form-label">Event Name</label>
-                <input type="text" th:field="*{name}" class="form-control" th:errorclass="is-invalid">
-                <div class="alert alert-warning" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
-            </div>
-
-             <div class="mb-3">
-                <label for="description" class="form-label">Description</label>
-                <textarea th:field="*{description}" class="form-control" rows="3" th:errorclass="is-invalid"></textarea>
-                <div class="alert alert-warning" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+                <label class="form-label" for="name">Event Name</label>
+                <input class="form-control" th:errorclass="is-invalid" th:field="*{name}" type="text">
+                <div class="alert alert-warning" th:errors="*{name}" th:if="${#fields.hasErrors('name')}"></div>
             </div>
 
             <div class="mb-3">
-                <label for="startDate" class="form-label">Start Date</label>
-                <input type="datetime-local" th:field="*{startDate}" class="form-control" th:errorclass="is-invalid">
-                <div class="alert alert-warning" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></div>
-            </div>
-            <div class="mb-3">
-                <label for="endDate" class="form-label">End Date</label>
-                <input type="datetime-local" th:field="*{endDate}" class="form-control" th:errorclass="is-invalid">
-                <div class="alert alert-warning" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></div>
+                <label class="form-label" for="description">Description</label>
+                <textarea class="form-control" rows="3" th:errorclass="is-invalid" th:field="*{description}"></textarea>
+                <div class="alert alert-warning" th:errors="*{description}"
+                     th:if="${#fields.hasErrors('description')}"></div>
             </div>
 
             <div class="mb-3">
-                <label for="duration" class="form-label">Duration (Minutes)</label>
-                <input type="number" th:field="*{duration}" class="form-control" th:errorclass="is-invalid">
-                <div class="alert alert-warning" th:if="${#fields.hasErrors('duration')}" th:errors="*{duration}"></div>
+                <label class="form-label" for="startDate">Start Date</label>
+                <input class="form-control" th:errorclass="is-invalid" th:field="*{startDate}" type="datetime-local">
+                <div class="alert alert-warning" th:errors="*{startDate}"
+                     th:if="${#fields.hasErrors('startDate')}"></div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="endDate">End Date</label>
+                <input class="form-control" th:errorclass="is-invalid" th:field="*{endDate}" type="datetime-local">
+                <div class="alert alert-warning" th:errors="*{endDate}" th:if="${#fields.hasErrors('endDate')}"></div>
             </div>
 
             <div class="mb-3">
-                <label for="price" class="form-label">Price ($)</label>
-                <input type="number" step="0.01" th:field="*{price}" class="form-control" th:errorclass="is-invalid">
-                <div class="alert alert-warning" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+                <label class="form-label" for="duration">Duration (Minutes)</label>
+                <input class="form-control" th:errorclass="is-invalid" th:field="*{duration}" type="number">
+                <div class="alert alert-warning" th:errors="*{duration}" th:if="${#fields.hasErrors('duration')}"></div>
             </div>
 
-             <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" th:field="*{active}" id="activeCheckbox">
+            <div class="mb-3">
+                <label class="form-label" for="price">Price ($)</label>
+                <input class="form-control" step="0.01" th:errorclass="is-invalid" th:field="*{price}" type="number">
+                <div class="alert alert-warning" th:errors="*{price}" th:if="${#fields.hasErrors('price')}"></div>
+            </div>
+
+            <div class="mb-3 form-check">
+                <input class="form-check-input" id="activeCheckbox" th:field="*{active}" type="checkbox">
                 <label class="form-check-label" for="activeCheckbox">Active</label>
             </div>
 
-            <button type="submit" class="btn btn-primary">Save Event</button>
-            <a th:href="@{/}" class="btn btn-secondary">Cancel</a>
+            <button class="btn btn-primary" type="submit">Save Event</button>
+            <a class="btn btn-secondary" th:href="@{/event}">Cancel</a>
         </form>
-    </main>
+    </div>
 </div>
 </body>
 </html>
