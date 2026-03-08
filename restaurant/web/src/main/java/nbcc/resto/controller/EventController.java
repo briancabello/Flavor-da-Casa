@@ -17,7 +17,7 @@ import static nbcc.common.validation.ModelErrorConverter.addErrorsToBindingResul
 
 @Controller
 //@PreAuthorize("isAuthenticated()") commented until fix login/register
-@RequestMapping("/events")
+@RequestMapping("/event")
 public class EventController {
 
     private final Logger logger = LoggerFactory.getLogger(EventController.class);
