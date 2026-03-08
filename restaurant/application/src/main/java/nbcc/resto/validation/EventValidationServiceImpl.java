@@ -22,7 +22,7 @@ public class EventValidationServiceImpl implements EventValidationService {
 
         if (event.getStartDate() != null && event.getEndDate() != null){
             if(event.getEndDate().isBefore(event.getStartDate())){
-                errors.add(new ValidationError("endDate", "End date cannot be before start date"));
+                errors.add(new ValidationError("End date cannot be before start date", "endDate"));
             }
         }
         return errors;
