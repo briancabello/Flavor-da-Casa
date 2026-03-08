@@ -24,7 +24,9 @@ public class EventRepositoryAdapter implements EventRepository {
 
     @Override
     public Collection<Event> getAll() {
-        return mapper.toDTO(jpaRepository.findAll());
+        return jpaRepository.findByArchivedFalse().stream()
+                .map(mapper::toDTO)
+                .toList();
     }
 
     @Override

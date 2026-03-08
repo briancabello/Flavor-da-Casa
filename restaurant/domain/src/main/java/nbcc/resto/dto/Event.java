@@ -34,6 +34,8 @@ public class Event {
 
     private boolean active;
 
+    private boolean archived;
+
     private LocalDateTime createdDate;
     private LocalDateTime lastUpdatedDate;
 
@@ -131,6 +133,15 @@ public class Event {
 
     public Event setActive(boolean active) {
         this.active = active;
+        return this;
+    }
+
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public Event setArchived(boolean archived) {
+        this.archived = archived;
         return this;
     }
 

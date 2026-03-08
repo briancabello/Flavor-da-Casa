@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Event</title>
+    <link th:replace="~{partial :: bootstrap}"/>
+</head>
+<body>
+<div th:insert="~{nav :: navbar}"></div>
+
+<div class="container mt-5">
+    <main role="main" class="pb-3">
+        <h1 class="mb-4 text-uppercase fw-bold">Edit Event</h1>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form th:action="@{/events/edit/{id}(id=${event.id})}" th:object="${event}" method="post">
+
+                    <input type="hidden" th:field="*{id}" />
+
+                    <div class="mb-3">
+                        <label for="name" class="form-label fw-semibold">Event Name</label>
+                        <input type="text" th:field="*{name}" class="form-control" th:errorclass="is-invalid">
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label fw-semibold">Description</label>
+                        <textarea th:field="*{description}" class="form-control" rows="3" th:errorclass="is-invalid"></textarea>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="startDate" class="form-label fw-semibold">Start Date</label>
+                            <input type="datetime-local" th:field="*{startDate}" class="form-control" th:errorclass="is-invalid">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="endDate" class="form-label fw-semibold">End Date</label>
+                            <input type="datetime-local" th:field="*{endDate}" class="form-control" th:errorclass="is-invalid">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="duration" class="form-label fw-semibold">Duration (Minutes)</label>
+                            <input type="number" th:field="*{duration}" class="form-control" th:errorclass="is-invalid">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('duration')}" th:errors="*{duration}"></div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="price" class="form-label fw-semibold">Price ($)</label>
+                            <input type="number" step="0.01" th:field="*{price}" class="form-control" th:errorclass="is-invalid">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4 form-check">
+                        <input type="checkbox" class="form-check-input" th:field="*{active}" id="activeCheckbox">
+                        <label class="form-check-label" for="activeCheckbox">Event is Active</label>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a th:href="@{/events}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Update Event</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>
