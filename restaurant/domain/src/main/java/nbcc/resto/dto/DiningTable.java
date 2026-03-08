@@ -1,12 +1,15 @@
 package nbcc.resto.dto;
 
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 
 public class DiningTable {
 
     private Long id;
+
+    @Size(max = 100, message = "Table name cannot exceed 100 characters")
     private String name;
 
     @Positive
