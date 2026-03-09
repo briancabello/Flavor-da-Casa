@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Optional;
@@ -128,8 +129,12 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Result<Collection<Event>> search(String query, LocalDateTime start, LocalDateTime end) {
+    public ValidatedResult<Collection<Event>> search(String query, LocalDate startDate, LocalDate endDate) {
         try {
+
+            LocalDateTime start = (startDate != null) ? startDate.atStartOfDay() : null;
+            LocalDateTime end = (endDate != null) ? endDate.atTime(23, 59, 59) : null;
+
             return ValidationResults.success(eventRepository.search(query, start, end));
         } catch (Exception e) {
             logger.error("Error searching events", e);
