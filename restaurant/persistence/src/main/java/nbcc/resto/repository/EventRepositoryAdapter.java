@@ -55,8 +55,9 @@ public class EventRepositoryAdapter implements EventRepository {
 
     @Override
     public Collection<Event> search(String name, LocalDateTime start, LocalDateTime end) {
-        return mapper.toDTO(jpaRepository.findByNameContainingIgnoreCaseAndStartDateGreaterThanEqualAndEndDateLessThanEqual(name, start, end));
+        return mapper.toDTO(jpaRepository.searchEvents(name, start, end));
     }
+
 
     @Override
     public boolean exists(String name) {

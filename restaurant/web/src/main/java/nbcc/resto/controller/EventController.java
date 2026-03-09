@@ -7,11 +7,15 @@ import nbcc.resto.service.EventService;
 import nbcc.resto.viewmodels.EventListViewModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static nbcc.common.validation.ModelErrorConverter.addErrorsToBindingResults;
 
@@ -54,8 +58,11 @@ public class EventController {
 
     @PreAuthorize("permitAll()")
     @GetMapping
-    public String getAll(Model model){
-        var result = eventService.getAll();
+    public String getAll(@RequestParam(required = false) String name,
+                         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+                         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
+            Model model){
+        var result = eventService.search(name, startDate, endDate);
 
         if(result.isError()){
             model.addAttribute("message", "Error retrieving events");
@@ -64,6 +71,10 @@ public class EventController {
 
         EventListViewModel viewModel = new EventListViewModel(result.getValue(), loginService.isLoggedIn());
         model.addAttribute("viewModel", viewModel);
+
+        model.addAttribute("searchName", name);
+        model.addAttribute("searchStartDate", startDate);
+        model.addAttribute("searchEndDate", endDate);
         return "event/list";
     }
 

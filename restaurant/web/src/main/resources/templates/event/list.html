@@ -14,6 +14,34 @@
             <a class="btn btn-primary" th:href="@{/event/create}" th:if="${viewModel.showManage}">Create Event</a>
         </div>
 
+        <div class="mb-4">
+            <h5 class="text-muted fw-bold mb-3">Find events by name or date range</h5>
+
+            <form th:action="@{/event}" method="get" class="row g-3 align-items-end">
+
+                <div class="col-md-3">
+                    <label for="name" class="form-label text-muted fw-bold text-uppercase" style="font-size: 0.85rem;">Name</label>
+                    <input type="text" id="name" name="name" class="form-control" placeholder="Search by name ..." th:value="${searchName}">
+                </div>
+
+                <div class="col-md-3">
+                    <label for="startDate" class="form-label text-muted fw-bold text-uppercase" style="font-size: 0.85rem;">Start Date</label>
+                    <input type="date" id="startDate" name="startDate" class="form-control" th:value="${searchStartDate}">
+                </div>
+
+                <div class="col-md-3">
+                    <label for="endDate" class="form-label text-muted fw-bold text-uppercase" style="font-size: 0.85rem;">End Date</label>
+                    <input type="date" id="endDate" name="endDate" class="form-control" th:value="${searchEndDate}">
+                </div>
+
+                <div class="col-md-3 d-flex gap-2">
+                    <button type="submit" class="btn text-white fw-bold px-4" style="background-color: #B0724A;">Search</button>
+
+                    <a th:href="@{/event}" class="btn bg-white border border-secondary text-secondary fw-bold px-4">Clear</a>
+                </div>
+            </form>
+        </div>
+
         <table class="table table-bordered table-striped align-middle">
             <thead class="table-light">
             <tr class="text-uppercase" style="font-size: 0.9rem;">
