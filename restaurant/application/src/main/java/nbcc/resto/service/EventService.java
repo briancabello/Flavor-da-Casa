@@ -4,6 +4,7 @@ import nbcc.common.result.Result;
 import nbcc.common.result.ValidatedResult;
 import nbcc.resto.dto.Event;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
@@ -13,5 +14,5 @@ public interface EventService {
     ValidatedResult<Event> create(Event event);
     ValidatedResult<Event> update(Event event);
     ValidatedResult<Event> delete(Long id);
-    Result<Collection<Event>> search(String query, LocalDateTime start, LocalDateTime end);
+    ValidatedResult<Collection<Event>> search(String query, LocalDate start, LocalDate end);
 }
