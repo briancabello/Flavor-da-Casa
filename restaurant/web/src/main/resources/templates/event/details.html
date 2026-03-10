@@ -4,7 +4,7 @@
 <body>
 <div th:fragment="content">
     <div class="container py-4">
-        <h1 th:text="${event.name}">Event Name</h1>
+        <h1 th:text="${eventDto.name}">Event Name</h1>
 
         <div class="row">
             <div class="col-md-8">
@@ -16,28 +16,28 @@
                         <dl class="row mb-0">
                             <dt class="col-sm-4">Start Date</dt>
                             <dd class="col-sm-8"
-                                th:text="${#temporals.format(event.startDate, 'MMMM dd, yyyy HH:mm')}"></dd>
+                                th:text="${#temporals.format(eventDto.startDate, 'MMMM dd, yyyy HH:mm')}"></dd>
 
                             <dt class="col-sm-4">End Date</dt>
                             <dd class="col-sm-8"
-                                th:text="${#temporals.format(event.endDate, 'MMMM dd, yyyy HH:mm')}"></dd>
+                                th:text="${#temporals.format(eventDto.endDate, 'MMMM dd, yyyy HH:mm')}"></dd>
 
                             <dt class="col-sm-4">Name</dt>
-                            <dd class="col-sm-8" th:text="${event.name}"></dd>
+                            <dd class="col-sm-8" th:text="${eventDto.name}"></dd>
 
                             <dt class="col-sm-4">Description</dt>
-                            <dd class="col-sm-8" th:text="${event.description} ?: 'N/A'"></dd>
+                            <dd class="col-sm-8" th:text="${eventDto.description} ?: 'N/A'"></dd>
 
                             <dt class="col-sm-4">Price</dt>
-                            <dd class="col-sm-8" th:text="'$' + ${#numbers.formatDecimal(event.price, 1, 2)}"></dd>
+                            <dd class="col-sm-8" th:text="'$' + ${#numbers.formatDecimal(eventDto.price, 1, 2)}"></dd>
 
                             <dt class="col-sm-4">Created Date</dt>
                             <dd class="col-sm-8"
-                                th:text="${#temporals.format(event.createdDate, 'MMMM dd, yyyy HH:mm')}"></dd>
+                                th:text="${#temporals.format(eventDto.createdDate, 'MMMM dd, yyyy HH:mm')}"></dd>
 
                             <dt class="col-sm-4">Last Updated Date</dt>
                             <dd class="col-sm-8"
-                                th:text="${#temporals.format(event.lastUpdatedDate, 'MMMM dd, yyyy HH:mm')}"></dd>
+                                th:text="${#temporals.format(eventDto.lastUpdatedDate, 'MMMM dd, yyyy HH:mm')}"></dd>
                         </dl>
                     </div>
                 </div>
@@ -45,7 +45,7 @@
         </div>
 
         <div class="mt-3">
-            <a th:href="@{/event}">Go Back to Events List</a>
+            <a th:href="@{/eventDto}">Go Back to Events List</a>
         </div>
     </div>
 </div>

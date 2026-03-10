@@ -1,9 +1,8 @@
 package nbcc.resto.repository;
 
-import nbcc.resto.dto.Event;
+import nbcc.resto.dto.EventDto;
 import nbcc.resto.entity.EventEntity;
 import nbcc.resto.mapper.EventMapper;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -23,27 +22,27 @@ public class EventRepositoryAdapter implements EventRepository {
 
 
     @Override
-    public Collection<Event> getAll() {
+    public Collection<EventDto> getAll() {
         return jpaRepository.findByArchivedFalse().stream()
                 .map(mapper::toDTO)
                 .toList();
     }
 
     @Override
-    public Optional<Event> get(Long id) {
+    public Optional<EventDto> get(Long id) {
         return jpaRepository.findById(id).map(mapper::toDTO);
     }
 
     @Override
-    public Event create(Event event) {
-        EventEntity entity = mapper.toEntity(event);
+    public EventDto create(EventDto eventDto) {
+        EventEntity entity = mapper.toEntity(eventDto);
         entity.setCreatedDate(LocalDateTime.now());
         return mapper.toDTO(jpaRepository.save(entity));
     }
 
     @Override
-    public Event update(Event event) {
-        EventEntity entity = mapper.toEntity(event);
+    public EventDto update(EventDto eventDto) {
+        EventEntity entity = mapper.toEntity(eventDto);
         entity.setLastUpdatedDate(LocalDateTime.now());
         return mapper.toDTO(jpaRepository.save(entity));
     }
@@ -54,7 +53,7 @@ public class EventRepositoryAdapter implements EventRepository {
     }
 
     @Override
-    public Collection<Event> search(String name, LocalDateTime start, LocalDateTime end) {
+    public Collection<EventDto> search(String name, LocalDateTime start, LocalDateTime end) {
         return mapper.toDTO(jpaRepository.searchEvents(name, start, end));
     }
 

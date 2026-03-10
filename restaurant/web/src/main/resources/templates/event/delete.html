@@ -6,7 +6,7 @@
     <div class="container py-4">
         <h1>Are you sure you want to delete this Event?</h1>
 
-        <div class="alert alert-info mt-3" th:if="${event.endDate.isBefore(T(java.time.LocalDateTime).now())}">
+        <div class="alert alert-info mt-3" th:if="${event.endDate.isBefore(T(java.time.LocalDate).now())}">
             <strong>Note:</strong> This event is in the past and will be archived instead of permanently deleted.
         </div>
 

@@ -6,7 +6,7 @@
     <div class="container py-4">
         <h1>Create New Event</h1>
 
-        <!--/*@thymesVar id="event" type="nbcc.resto.dto.Event"*/-->
+        <!--/*@thymesVar id="event" type="nbcc.resto.dto.EventDto"*/-->
         <form method="post" th:action="@{/event/create}" th:object="${event}">
 
             <div class="mb-3">
@@ -24,13 +24,13 @@
 
             <div class="mb-3">
                 <label class="form-label" for="startDate">Start Date</label>
-                <input class="form-control" th:errorclass="is-invalid" th:field="*{startDate}" type="datetime-local">
+                <input class="form-control" th:errorclass="is-invalid" th:field="*{startDate}" type="date">
                 <div class="alert alert-warning" th:errors="*{startDate}"
                      th:if="${#fields.hasErrors('startDate')}"></div>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="endDate">End Date</label>
-                <input class="form-control" th:errorclass="is-invalid" th:field="*{endDate}" type="datetime-local">
+                <input class="form-control" th:errorclass="is-invalid" th:field="*{endDate}" type="date">
                 <div class="alert alert-warning" th:errors="*{endDate}" th:if="${#fields.hasErrors('endDate')}"></div>
             </div>
 

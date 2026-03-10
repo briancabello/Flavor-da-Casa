@@ -30,7 +30,7 @@
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-semibold" for="startDate">Start Date</label>
                             <input class="form-control" th:errorclass="is-invalid" th:field="*{startDate}"
-                                   type="datetime-local">
+                                   type="date">
                             <div class="invalid-feedback" th:errors="*{startDate}"
                                  th:if="${#fields.hasErrors('startDate')}"></div>
                         </div>
@@ -38,7 +38,7 @@
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-semibold" for="endDate">End Date</label>
                             <input class="form-control" th:errorclass="is-invalid" th:field="*{endDate}"
-                                   type="datetime-local">
+                                   type="date">
                             <div class="invalid-feedback" th:errors="*{endDate}"
                                  th:if="${#fields.hasErrors('endDate')}"></div>
                         </div>

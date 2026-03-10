@@ -5,9 +5,10 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class Event {
+public class EventDto {
 
     private Long id;
 
@@ -19,12 +20,12 @@ public class Event {
     private String description;
 
     @NotNull(message = "Start date is required")
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    private LocalDateTime startDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate startDate;
 
     @NotNull(message = "End date is required")
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    private LocalDateTime endDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate endDate;
 
     @Positive(message = "Duration must be positive")
     private int duration;
@@ -39,9 +40,9 @@ public class Event {
     private LocalDateTime createdDate;
     private LocalDateTime lastUpdatedDate;
 
-    public Event() {}
+    public EventDto() {}
 
-    public Event(Long id, Long menuId, String name, String description, LocalDateTime startDate, LocalDateTime endDate, int duration, double price, boolean active, LocalDateTime createdDate, LocalDateTime lastUpdatedDate) {
+    public EventDto(Long id, Long menuId, String name, String description, LocalDate startDate, LocalDate endDate, int duration, double price, boolean active, LocalDateTime createdDate, LocalDateTime lastUpdatedDate) {
         this.id = id;
         this.menuId = menuId;
         this.name = name;
@@ -59,7 +60,7 @@ public class Event {
         return id;
     }
 
-    public Event setId(Long id) {
+    public EventDto setId(Long id) {
         this.id = id;
         return this;
     }
@@ -68,7 +69,7 @@ public class Event {
         return menuId;
     }
 
-    public Event setMenuId(Long menuId) {
+    public EventDto setMenuId(Long menuId) {
         this.menuId = menuId;
         return this;
     }
@@ -77,7 +78,7 @@ public class Event {
         return name;
     }
 
-    public Event setName(String name) {
+    public EventDto setName(String name) {
         this.name = name;
         return this;
     }
@@ -86,25 +87,25 @@ public class Event {
         return description;
     }
 
-    public Event setDescription(String description) {
+    public EventDto setDescription(String description) {
         this.description = description;
         return this;
     }
 
-    public LocalDateTime getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public Event setStartDate(LocalDateTime startDate) {
+    public EventDto setStartDate(LocalDate startDate) {
         this.startDate = startDate;
         return this;
     }
 
-    public LocalDateTime getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public Event setEndDate(LocalDateTime endDate) {
+    public EventDto setEndDate(LocalDate endDate) {
         this.endDate = endDate;
         return this;
     }
@@ -113,7 +114,7 @@ public class Event {
         return duration;
     }
 
-    public Event setDuration(int duration) {
+    public EventDto setDuration(int duration) {
         this.duration = duration;
         return this;
     }
@@ -122,7 +123,7 @@ public class Event {
         return price;
     }
 
-    public Event setPrice(double price) {
+    public EventDto setPrice(double price) {
         this.price = price;
         return this;
     }
@@ -131,7 +132,7 @@ public class Event {
         return active;
     }
 
-    public Event setActive(boolean active) {
+    public EventDto setActive(boolean active) {
         this.active = active;
         return this;
     }
@@ -140,7 +141,7 @@ public class Event {
         return archived;
     }
 
-    public Event setArchived(boolean archived) {
+    public EventDto setArchived(boolean archived) {
         this.archived = archived;
         return this;
     }
@@ -149,7 +150,7 @@ public class Event {
         return createdDate;
     }
 
-    public Event setCreatedDate(LocalDateTime createdDate) {
+    public EventDto setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
         return this;
     }
@@ -158,7 +159,7 @@ public class Event {
         return lastUpdatedDate;
     }
 
-    public Event setLastUpdatedDate(LocalDateTime lastUpdatedDate) {
+    public EventDto setLastUpdatedDate(LocalDateTime lastUpdatedDate) {
         this.lastUpdatedDate = lastUpdatedDate;
         return this;
     }
