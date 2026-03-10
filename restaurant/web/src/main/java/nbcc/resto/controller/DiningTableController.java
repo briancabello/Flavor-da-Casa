@@ -30,7 +30,6 @@ public class DiningTableController {
         this.tableService = tableService;
     }
 
-    @PreAuthorize("permitAll()")
     @GetMapping
     public String getAll(Model model) {
         var result = tableService.getAll();
