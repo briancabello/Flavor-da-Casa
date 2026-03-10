@@ -24,7 +24,7 @@ public class DiningTable {
         this(table.getId(), table.getName(), table.getCapacity(), table.getCreatedDate());
     }
 
-    public DiningTable(Long id, String name, int capacity, LocalDateTime createdDate) {
+    public DiningTable(Long id, String name, Integer capacity, LocalDateTime createdDate) {
         this.id = id;
         this.name = name;
         this.capacity = capacity;
