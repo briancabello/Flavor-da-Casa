@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<!--/*@thymesVar id="event" type="nbcc.resto.dto.Event"*/-->
+<!--/*@thymesVar id="event" type="nbcc.resto.dto.EventDto"*/-->
 
 <th:block th:fragment="details" th:object="${event}">
     <div class="card shadow-sm">
@@ -22,10 +22,10 @@
                 <dd class="col-sm-8" th:text="*{description} ?: 'N/A'"></dd>
 
                 <dt class="col-sm-4">Start Date</dt>
-                <dd class="col-sm-8" th:text="${#temporals.format(event.startDate, 'MMMM dd, yyyy HH:mm')}"></dd>
+                <dd class="col-sm-8" th:text="${#temporals.format(event.startDate, 'MMMM dd, yyyy')}"></dd>
 
                 <dt class="col-sm-4">End Date</dt>
-                <dd class="col-sm-8" th:text="${#temporals.format(event.endDate, 'MMMM dd, yyyy HH:mm')}"></dd>
+                <dd class="col-sm-8" th:text="${#temporals.format(event.endDate, 'MMMM dd, yyyy')}"></dd>
 
                 <dt class="col-sm-4">Duration</dt>
                 <dd class="col-sm-8" th:text="*{duration} + ' minutes'"></dd>

@@ -2,7 +2,7 @@ package nbcc.resto.controller;
 
 
 import nbcc.common.service.LoginService;
-import nbcc.resto.dto.Event;
+import nbcc.resto.dto.EventDto;
 import nbcc.resto.service.EventService;
 import nbcc.resto.viewmodels.EventListViewModel;
 import org.slf4j.Logger;
@@ -15,7 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.List;
 
 import static nbcc.common.validation.ModelErrorConverter.addErrorsToBindingResults;
 
@@ -35,13 +35,13 @@ public class EventController {
 
     @GetMapping("/create")
     public String create(Model model) {
-        model.addAttribute("event", new Event());
+        model.addAttribute("event", new EventDto());
         return "event/create";
     }
 
     @PostMapping("/create")
-    public String create(@ModelAttribute("event") Event event, BindingResult br) {
-        var result = eventService.create(event);
+    public String create(@ModelAttribute("event") EventDto eventDto, BindingResult br) {
+        var result = eventService.create(eventDto);
 
         if (result.isError()) {
             return "error/errorPage";
@@ -55,6 +55,66 @@ public class EventController {
 
         return "redirect:/";
     }
+
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable Long id, Model model){
+        var result = eventService.get(id);
+
+        if(result.isError() || result.isEmpty()){
+            model.addAttribute("message", "Event not found");
+            return "error/errorPage";
+        }
+
+        model.addAttribute("event", result.getValue());
+        return "event/edit";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String edit(@PathVariable Long id, @ModelAttribute("event") EventDto eventDto, BindingResult br){
+        eventDto.setId(id);
+
+        var result = eventService.update(eventDto);
+
+        if (result.isError()) {
+            return "error/errorPage";
+        }
+
+        if (result.isInvalid()) {
+            addErrorsToBindingResults(br, result, "event");
+            return "event/edit";
+        }
+
+        return "redirect:/event";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteConfirm(@PathVariable Long id, Model model){
+        var result = eventService.get(id);
+
+        if(result.isError() || result.isEmpty()){
+            model.addAttribute("message", "Event not found");
+            return "error/errorPage";
+        }
+
+        model.addAttribute("event", result.getValue());
+
+        model.addAttribute("seatings", List.of()); // Placeholder for future seating data
+
+        return "event/delete";
+
+    }
+
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Long id) {
+        var result = eventService.delete(id);
+
+        if (result.isError()) {
+            return "error/errorPage";
+        }
+
+        return "redirect:/event";
+    }
+
 
     @PreAuthorize("permitAll()")
     @GetMapping

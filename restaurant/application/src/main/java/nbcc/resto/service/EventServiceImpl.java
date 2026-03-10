@@ -5,7 +5,7 @@ import nbcc.common.result.Result;
 import nbcc.common.result.ValidatedResult;
 import nbcc.common.result.ValidationResults;
 import nbcc.common.validation.ValidationError;
-import nbcc.resto.dto.Event;
+import nbcc.resto.dto.EventDto;
 import nbcc.resto.repository.EventRepository;
 import nbcc.resto.validation.EventValidationService;
 import org.slf4j.Logger;
@@ -31,7 +31,7 @@ public class EventServiceImpl implements EventService {
 
 
     @Override
-    public Result<Collection<Event>> getAll() {
+    public Result<Collection<EventDto>> getAll() {
         try {
             return ValidationResults.success(eventRepository.getAll());
         } catch (Exception e) {
@@ -41,9 +41,9 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public ValidatedResult<Event> get(Long id) {
+    public ValidatedResult<EventDto> get(Long id) {
         try {
-            Optional<Event> event = eventRepository.get(id);
+            Optional<EventDto> event = eventRepository.get(id);
             if(event.isEmpty()){
                 return ValidationResults.invalid(null, "Event not found", "id");
             }
@@ -55,19 +55,19 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public ValidatedResult<Event> create(Event event) {
+    public ValidatedResult<EventDto> create(EventDto eventDto) {
 
         try {
-            var errors = validationService.validate(event);
+            var errors = validationService.validate(eventDto);
 
-            if(eventRepository.exists(event.getName())){
+            if(eventRepository.exists(eventDto.getName())){
                 errors.add(new ValidationError("name", "Event with this name already exists"));
             }
             if(!errors.isEmpty()){
                 logger.debug("Validation errors for event create: {}", errors);
-                return ValidationResults.invalid(event, errors);
+                return ValidationResults.invalid(eventDto, errors);
             }
-            return ValidationResults.success(eventRepository.create(event));
+            return ValidationResults.success(eventRepository.create(eventDto));
         } catch (Exception e) {
             logger.error("Error creating event", e);
             return ValidationResults.error(e);
@@ -75,18 +75,18 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public ValidatedResult<Event> update(Event event) {
+    public ValidatedResult<EventDto> update(EventDto eventDto) {
         try {
-            var errors = validationService.validate(event);
+            var errors = validationService.validate(eventDto);
 
-            if(event.getId() == null || eventRepository.get(event.getId()).isEmpty()){
-                errors.add(new ValidationError("id", "Cannot update: Event does not exist", event.getId()));
+            if(eventDto.getId() == null || eventRepository.get(eventDto.getId()).isEmpty()){
+                errors.add(new ValidationError("id", "Cannot update: Event does not exist", eventDto.getId()));
             }
             if (!errors.isEmpty()) {
                 logger.debug("Validation errors for event update: {}", errors);
-                return ValidationResults.invalid(event, errors);
+                return ValidationResults.invalid(eventDto, errors);
             }
-            return ValidationResults.success(eventRepository.update(event));
+            return ValidationResults.success(eventRepository.update(eventDto));
 
         } catch (Exception e) {
             logger.error("Error updating event", e);
@@ -95,7 +95,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public ValidatedResult<Event> delete(Long id) {
+    public ValidatedResult<EventDto> delete(Long id) {
         try {
             var existingOpt  = eventRepository.get(id);
 
@@ -103,25 +103,25 @@ public class EventServiceImpl implements EventService {
                 return ValidationResults.invalid(null, "Event not found", "id");
             }
 
-            Event event = existingOpt.get();
+            EventDto eventDto = existingOpt.get();
 
             
-            if (event.getEndDate() != null && event.getEndDate().isBefore(LocalDateTime.now())) {
+            if (eventDto.getEndDate() != null && eventDto.getEndDate().isBefore(LocalDate.now())) {
                 
-                event.setArchived(true);
-                event.setActive(false);
+                eventDto.setArchived(true);
+                eventDto.setActive(false);
 
-                eventRepository.update(event);
+                eventRepository.update(eventDto);
                 logger.debug("Event with id {} archived (past event)", id);
 
-                return ValidationResults.success(event);
+                return ValidationResults.success(eventDto);
 
             } else {
                 eventRepository.delete(id);
                 logger.debug("Event with id {} deleted", id);
             }
 
-            return ValidationResults.success(event);
+            return ValidationResults.success(eventDto);
         } catch (Exception e) {
             logger.error("Error deleting event with id: {}", id, e);
             return ValidationResults.error(e);
@@ -129,7 +129,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public ValidatedResult<Collection<Event>> search(String query, LocalDate startDate, LocalDate endDate) {
+    public ValidatedResult<Collection<EventDto>> search(String query, LocalDate startDate, LocalDate endDate) {
         try {
 
             LocalDateTime start = (startDate != null) ? startDate.atStartOfDay() : null;

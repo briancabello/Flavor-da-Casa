@@ -1,19 +1,19 @@
 package nbcc.resto.viewmodels;
 
-import nbcc.resto.dto.Event;
+import nbcc.resto.dto.EventDto;
 
 import java.util.Collection;
 
 public class EventListViewModel {
-    private final Collection<Event> events;
+    private final Collection<EventDto> eventDtos;
     private final boolean showManage;
 
-    public EventListViewModel(Collection<Event> events, boolean showManage) {
-        this.events = events;
+    public EventListViewModel(Collection<EventDto> eventDtos, boolean showManage) {
+        this.eventDtos = eventDtos;
         this.showManage = showManage;
     }
-    public Collection<Event> getEvents() {
-        return events;
+    public Collection<EventDto> getEvents() {
+        return eventDtos;
     }
 
     public boolean isShowManage() {
