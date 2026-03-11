@@ -3,39 +3,37 @@ package nbcc.resto.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import org.jspecify.annotations.NonNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class Seating {
 
     private Long id;
 
-    @NonNull
+    @NotNull(message = "An event must be selected.")
     private Long eventId;
 
-    @NotBlank
+    @NotBlank(message = "Seating name is required.")
     private String name;
 
-    @NotNull
+    @NotNull(message = "Start date and time are required.")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime startDateTime;
 
+    @NotNull(message = "Duration is required")
     @Positive(message = "Duration must be greater than 0")
     private Integer duration;
 
     private LocalDateTime createdDate;
 
     private Collection<DiningTable> tables;
-    private List<Long> selectedTableIds;
+    private Set<Long> selectedTableIds;
 
     public Seating() {
         this.tables = new ArrayList<>();
-        this.selectedTableIds = new ArrayList<>();
+        this.selectedTableIds = new HashSet<>();
     }
 
     public Seating(Seating seating) {
@@ -52,7 +50,7 @@ public class Seating {
         }
 
         if (seating.getSelectedTableIds() != null) {
-            this.selectedTableIds = new ArrayList<>(seating.getSelectedTableIds());
+            this.selectedTableIds = new HashSet<>(seating.getSelectedTableIds());
         }
     }
 
@@ -65,11 +63,11 @@ public class Seating {
         return this;
     }
 
-    public @NonNull Long getEventId() {
+    public Long getEventId() {
         return eventId;
     }
 
-    public Seating setEventId(@NonNull Long eventId) {
+    public Seating setEventId(Long eventId) {
         this.eventId = eventId;
         return this;
     }
@@ -119,11 +117,11 @@ public class Seating {
         return this;
     }
 
-    public List<Long> getSelectedTableIds() {
+    public Set<Long> getSelectedTableIds() {
         return selectedTableIds;
     }
 
-    public Seating setSelectedTableIds(List<Long> selectedTableIds) {
+    public Seating setSelectedTableIds(Set<Long> selectedTableIds) {
         this.selectedTableIds = selectedTableIds;
         return this;
     }
