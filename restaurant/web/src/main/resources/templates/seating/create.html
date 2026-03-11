@@ -9,7 +9,7 @@
             <div class="col-md-8">
                 <div class="card shadow-sm">
                     <div class="card-body">
-                        <form th:action="@{/seating/create}" method="post" th:object="${seating}">
+                        <form th:action="@{/seating/create}" method="post" th:object="${seating}" novalidate>
 
                             <div class="alert alert-danger" th:if="${#fields.hasGlobalErrors()}" role="alert">
                                 <div th:each="err : ${#fields.globalErrors()}" th:text="${err}"></div>
