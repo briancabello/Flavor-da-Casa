@@ -58,15 +58,15 @@ classDiagram
       <<interface>>
       +getAll() Result~Collection~Event~~
       +get(long id) Result~Event~
-      +create(Event event) Result~Event~
-      +update(Event event) Result~Event~
+      +create(Event eventDto) Result~Event~
+      +update(Event eventDto) Result~Event~
       +delete(long id) Result~Event~
       +search(String query, DateTime start, DateTime end) Result~Collection~Event~~
     }
 
      class EventValidationService {
       <<interface>>
-      +validate(Event event) Collection~ValidationError~
+      +validate(Event eventDto) Collection~ValidationError~
     }
 
     class DiningTableService {
@@ -108,8 +108,8 @@ classDiagram
       <<interface>>
       +getAll() Collection~Event~
       +get(long id) Optional~Event~
-      +create(Event event) Event
-      +update(Event event) Event
+      +create(Event eventDto) Event
+      +update(Event eventDto) Event
       +delete(long id) void
       +search(String name, DateTime start, DateTime end) Collection~Event~
       +exists(String name) boolean
