@@ -20,7 +20,7 @@ import java.util.List;
 import static nbcc.common.validation.ModelErrorConverter.addErrorsToBindingResults;
 
 @Controller
-//@PreAuthorize("isAuthenticated()") commented until fix login/register
+@PreAuthorize("isAuthenticated()")
 @RequestMapping("/event")
 public class EventController {
 
@@ -116,7 +116,7 @@ public class EventController {
     }
 
 
-    @PreAuthorize("permitAll()")
+
     @GetMapping
     public String getAll(@RequestParam(required = false) String name,
                          @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
