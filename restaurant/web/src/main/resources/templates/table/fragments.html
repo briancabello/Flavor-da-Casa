@@ -1,41 +1,50 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <body>
-
 <!--/*@thymesVar id="diningTable" type="nbcc.resto.dto.DiningTable"*/-->
-
 <th:block th:fragment="input" th:object="${diningTable}">
-    <div class="alert alert-danger" role="alert" th:if="${#fields.hasGlobalErrors()}">
-        <div th:each="err : ${#fields.globalErrors()}" th:text="${err}"></div>
+    <div class="alert alert-danger shadow-sm" role="alert" th:if="${#fields.hasGlobalErrors()}">
+        <i class="fa fa-exclamation-circle me-2"></i>
+        <span th:each="err : ${#fields.globalErrors()}" th:text="${err}"></span>
     </div>
 
     <input th:field="*{id}" type="hidden"/>
 
-    <div class="mb-3">
-        <label class="form-label fw-bold" for="name">Name</label>
-        <input class="form-control" id="name" placeholder="Leave blank to auto-generate (e.g. Table 1, Table 2...)"
-               th:field="*{name}"/>
-        <div class="form-text text-muted">Optional. If left blank, a name will be generated automatically.</div>
-        <div class="text-danger small mt-1" th:errors="*{name}"></div>
-    </div>
+    <div class="row gx-3">
+        <div class="col-md-7 mb-3">
+            <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="name">Table Name</label>
+            <input class="form-control" id="name" placeholder="e.g., Patio 1, Window A (Optional)"
+                   th:field="*{name}"/>
+            <div class="small text-muted" th:if="${diningTable.id == null}">
+                Leave blank to auto-assign a table number.
+            </div>
+            <div class="text-danger small mt-1" th:errors="*{name}"></div>
+        </div>
 
-    <div class="mb-3">
-        <label class="form-label fw-bold" for="capacity">Capacity</label>
-        <input class="form-control" id="capacity" min="1" placeholder="Enter number of seats"
-               th:field="*{capacity}" type="number"/>
-        <div class="text-danger small mt-1" th:errors="*{capacity}"></div>
+        <div class="col-md-5 mb-3">
+            <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="capacity">Seating Capacity</label>
+            <input class="form-control" id="capacity" min="1" placeholder="Number of guests"
+                   th:field="*{capacity}" type="number"/>
+            <div class="text-danger small mt-1" th:errors="*{capacity}"></div>
+        </div>
     </div>
 </th:block>
 
 <th:block th:fragment="details">
-    <!--/*@thymesVar id="diningTable" type="nbcc.resto.dto.DiningTable"*/-->
-    <dl class="row mb-0">
-        <dt class="col-sm-4">Name</dt>
-        <dd class="col-sm-8" th:text="${diningTable.name}"></dd>
-        <dt class="col-sm-4">Capacity</dt>
-        <dd class="col-sm-8" th:text="${diningTable.capacity}"></dd>
-    </dl>
-</th:block>
+    <div class="row mb-0">
+        <div class="col-6">
+            <h6 class="text-muted text-uppercase fw-bold ls-wide mb-1">Name</h6>
+            <p class="fs-5 mb-0" th:text="${diningTable.name}">Table 1</p>
+        </div>
 
+        <div class="col-6">
+            <h6 class="text-muted text-uppercase fw-bold ls-wide mb-1">Capacity</h6>
+            <p class="fs-5 mb-0"
+               th:text="${diningTable.capacity + ' ' + (diningTable.capacity == 1 ? 'guest' : 'guests')}"
+            >
+            </p>
+        </div>
+    </div>
+</th:block>
 </body>
 </html>
