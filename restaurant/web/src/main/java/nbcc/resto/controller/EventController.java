@@ -53,7 +53,7 @@ public class EventController {
         }
 
 
-        return "redirect:/";
+        return "redirect:/event";
     }
 
     @GetMapping("/edit/{id}")
