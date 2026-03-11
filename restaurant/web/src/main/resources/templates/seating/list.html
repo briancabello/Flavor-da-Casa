@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{layout :: layout(title='Seatings', content=~{::content})}"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+    <div class="container py-4">
+        <p class="alert alert-warning" th:if="${viewModel.message}" th:text="${viewModel.message}"></p>
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="fw-bold">Seatings</h2>
+            <a class="btn btn-primary" th:href="@{/seating/create}" th:if="${viewModel.canAdd}">
+                <i class="fa fa-plus me-1"></i> Add Seating
+            </a>
+        </div>
+
+        <div class="alert alert-info" th:if="${viewModel.isEmpty()}">No events have been created yet.</div>
+
+        <div th:unless="${viewModel.isEmpty()}">
+            <div class="card shadow-sm mb-4" th:each="event : ${viewModel.events}">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0"><i class="fa fa-calendar-alt me-2"></i>
+                        <span th:text="${event.name}">Event Name</span>
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Start</th>
+                            <th>End</th>
+                            <th>Duration</th>
+                            <th>Tables</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr th:each="seating : ${viewModel.seatings}" th:if="${seating.eventId == event.id}">
+                            <td th:text="${seating.name}"></td>
+                            <td th:text="${#temporals.format(seating.startDateTime, 'yyyy-MM-dd h:mm a')}"></td>
+                            <td th:text="${seating.endDateTime != null ? #temporals.format(seating.endDateTime, 'h:mm a') : '-'}"></td>
+                            <td><span th:text="${seating.duration}"></span> min</td>
+                            <td>
+                                <span th:each="table, stat : ${seating.tables}">
+                                    <span class="badge bg-secondary" th:text="${table.name}"></span>
+                                </span>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

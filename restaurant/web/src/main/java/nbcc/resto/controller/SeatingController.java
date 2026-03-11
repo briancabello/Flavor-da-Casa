@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import static nbcc.common.validation.ModelErrorConverter.addErrorsToBindingResults;
 
 @Controller
-
 @RequestMapping("/seating")
 public class SeatingController {
 
@@ -39,6 +38,24 @@ public class SeatingController {
         this.seatingService = seatingService;
         this.eventService = eventService;
         this.diningTableService = diningTableService;
+    }
+
+    @GetMapping
+    public String getAll(Model model) {
+        var eventsResult = eventService.getAll();
+        var seatingsResult = seatingService.getAll();
+
+        if (eventsResult.isError() || seatingsResult.isError()) {
+            model.addAttribute("message", "Error retrieving seatings");
+            return "error/errorPage";
+        }
+
+        var events = eventsResult.getValue();
+        var seatings = seatingsResult.getValue();
+
+        var viewModel = new SeatingListViewModel(events, seatings, loginService.isLoggedIn());
+        model.addAttribute("viewModel", viewModel);
+        return "seating/list";
     }
 
     @GetMapping("/create")
