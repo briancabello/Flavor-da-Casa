@@ -41,4 +41,12 @@ public class SeatingListViewModel {
     public boolean isEmpty() {
         return events == null || events.isEmpty();
     }
+
+    public boolean hasSeatings(Long eventId) {
+        if (seatings == null || seatings.isEmpty()) {
+            return false;
+        }
+
+        return seatings.stream().anyMatch(s -> s.getEventId().equals(eventId));
+    }
 }

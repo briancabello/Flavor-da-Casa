@@ -13,7 +13,9 @@
             </a>
         </div>
 
-        <div class="alert alert-info" th:if="${viewModel.isEmpty()}">No events have been created yet.</div>
+        <div class="alert alert-info" th:if="${viewModel.isEmpty()}">
+            There are currently no upcoming events scheduled.
+        </div>
 
         <div th:unless="${viewModel.isEmpty()}">
             <div class="card rounded-2 shadow-sm mb-4 overflow-hidden" th:each="event : ${viewModel.events}">
@@ -29,28 +31,28 @@
                         <thead>
                         <tr>
                             <th class="w-25">Seating Name</th>
-                            <th class="text-nowrap">Date</th>
+                            <th class="w-25">Date</th>
                             <th class="text-nowrap">Time</th>
                             <th class="text-nowrap">Duration</th>
                             <th class="w-25">Tables</th>
                         </tr>
                         </thead>
                         <tbody>
+                        <tr th:if="${!viewModel.hasSeatings(event.id)}">
+                            <td class="text-muted text-center" colspan="5">
+                                There are currently no seatings booked for this event.
+                            </td>
+                        </tr>
+
                         <tr th:each="seating : ${viewModel.seatings}" th:if="${seating.eventId == event.id}">
                             <td th:text="${seating.name}"></td>
-                            <td th:text="${#temporals.format(seating.startDateTime, 'MMMM dd, yyyy')}"></td>
+                            <td th:text="${#temporals.format(seating.startDateTime, 'yyyy-MM-dd h:mm a')}"></td>
+                            <td th:text="${seating.endDateTime != null ? #temporals.format(seating.endDateTime, 'h:mm a') : '-'}"></td>
+                            <td><span th:text="${seating.duration}"></span> min</td>
                             <td>
-                                <span th:text="${#temporals.format(seating.startDateTime, 'h:mm a')}"></span>
-                                -
-                                <span th:text="${seating.endDateTime != null ? #temporals.format(seating.endDateTime, 'h:mm a') : '-'}"></span>
-                            </td>
-                            <td>
-                                <span th:text="${seating.duration}"></span> min
-                            </td>
-                            <td>
-                                <span th:each="table : ${seating.tables}">
-                                    <span class="badge bg-secondary me-1" th:text="${table.name}"></span>
-                                </span>
+                                    <span th:each="table, stat : ${seating.tables}">
+                                        <span class="badge bg-secondary" th:text="${table.name}"></span>
+                                    </span>
                             </td>
                         </tr>
                         </tbody>
