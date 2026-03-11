@@ -36,17 +36,32 @@ public class SeatingRepositoryAdapter implements SeatingRepository {
 
     @Override
     public Collection<Seating> getAll() {
-        return List.of();
+        var seatings = seatingMapper.toDTO(seatingJpa.findAll());
+
+        for (Seating seating : seatings) {
+            seating.setTables(getTablesForSeating(seating.getId()));
+        }
+
+        return seatings;
     }
 
     @Override
     public Collection<Seating> getByEvent(Long eventId) {
-        return List.of();
+        var seatings = seatingMapper.toDTO(seatingJpa.findByEventId(eventId));
+
+        for (Seating seating : seatings) {
+            seating.setTables(getTablesForSeating(seating.getId()));
+        }
+
+        return seatings;
     }
 
     @Override
     public Collection<Seating> getSeatingsByTableId(Long tableId) {
-        return List.of();
+        var entities = seatingTableJpa.findSeatingsByTableId(tableId);
+        return entities.stream()
+                .map(seatingMapper::toDTO)
+                .toList();
     }
 
     @Override

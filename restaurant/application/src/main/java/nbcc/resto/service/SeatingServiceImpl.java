@@ -33,17 +33,32 @@ public class SeatingServiceImpl implements SeatingService {
 
     @Override
     public Result<Collection<Seating>> getAll() {
-        return null;
+        try {
+            return ValidationResults.success(seatingRepository.getAll());
+        } catch (Exception e) {
+            logger.error("Error retrieving all seatings", e);
+            return ValidationResults.error(e);
+        }
     }
 
     @Override
     public Result<Collection<Seating>> getByEvent(Long eventId) {
-        return null;
+        try {
+            return ValidationResults.success(seatingRepository.getByEvent(eventId));
+        } catch (Exception e) {
+            logger.error("Error retrieving seatings for event with id: {}", eventId, e);
+            return ValidationResults.error(e);
+        }
     }
 
     @Override
     public Result<Collection<Seating>> getSeatingsByTableId(Long tableId) {
-        return null;
+        try {
+            return ValidationResults.success(seatingRepository.getSeatingsByTableId(tableId));
+        } catch (Exception e) {
+            logger.error("Error retrieving seatings for table with id: {}", tableId, e);
+            return ValidationResults.error(e);
+        }
     }
 
     @Override
