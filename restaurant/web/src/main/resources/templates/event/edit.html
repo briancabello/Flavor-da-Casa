@@ -47,7 +47,7 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-semibold" for="duration">Duration (Minutes)</label>
-                            <input class="form-control" th:errorclass="is-invalid" th:field="*{duration}" type="number">
+                            <input class="form-control" th:errorclass="is-invalid" th:field="*{duration}" type="number" min="1">
                             <div class="invalid-feedback" th:errors="*{duration}"
                                  th:if="${#fields.hasErrors('duration')}"></div>
                         </div>
@@ -55,7 +55,7 @@
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-semibold" for="price">Price ($)</label>
                             <input class="form-control" step="0.01" th:errorclass="is-invalid" th:field="*{price}"
-                                   type="number">
+                                   type="number" min="0.01">
                             <div class="invalid-feedback" th:errors="*{price}"
                                  th:if="${#fields.hasErrors('price')}"></div>
                         </div>
