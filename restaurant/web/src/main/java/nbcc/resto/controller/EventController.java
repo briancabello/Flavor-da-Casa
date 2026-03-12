@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -40,7 +41,9 @@ public class EventController {
     }
 
     @PostMapping("/create")
-    public String create(@ModelAttribute("event") EventDto eventDto, BindingResult br) {
+    public String create(@ModelAttribute("event") EventDto eventDto,
+                         BindingResult br,
+                         RedirectAttributes redirectAttributes) {
         if (br.hasErrors()) {
             return "event/create";
         }
@@ -56,15 +59,17 @@ public class EventController {
             return "event/create";
         }
 
+        redirectAttributes.addFlashAttribute("eventName", eventDto.getName());
+        redirectAttributes.addFlashAttribute("action", "created");
 
         return "redirect:/event";
     }
 
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable Long id, Model model){
+    public String edit(@PathVariable Long id, Model model) {
         var result = eventService.get(id);
 
-        if(result.isError() || result.isEmpty()){
+        if (result.isError() || result.isEmpty()) {
             model.addAttribute("message", "Event not found");
             return "error/errorPage";
         }
@@ -74,7 +79,9 @@ public class EventController {
     }
 
     @PostMapping("/edit/{id}")
-    public String edit(@PathVariable Long id, @ModelAttribute("event") EventDto eventDto, BindingResult br){
+    public String edit(@PathVariable Long id, @ModelAttribute("event") EventDto eventDto,
+                       BindingResult br,
+                       RedirectAttributes redirectAttributes) {
         eventDto.setId(id);
 
         if (br.hasErrors()) {
@@ -92,14 +99,17 @@ public class EventController {
             return "event/edit";
         }
 
+        redirectAttributes.addFlashAttribute("eventName", eventDto.getName());
+        redirectAttributes.addFlashAttribute("action", "updated");
+
         return "redirect:/event";
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteConfirm(@PathVariable Long id, Model model){
+    public String deleteConfirm(@PathVariable Long id, Model model) {
         var result = eventService.get(id);
 
-        if(result.isError() || result.isEmpty()){
+        if (result.isError() || result.isEmpty()) {
             model.addAttribute("message", "Event not found");
             return "error/errorPage";
         }
@@ -113,20 +123,29 @@ public class EventController {
     }
 
     @PostMapping("/delete/{id}")
-    public String delete(@PathVariable Long id) {
-        var result = eventService.delete(id);
+    public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        var eventResult = eventService.get(id);
+        if (eventResult.isError() || eventResult.isEmpty()) {
+            return "error/errorPage";
+        }
 
+        var name = eventResult.getValue().getName();
+        var result = eventService.delete(id);
         if (result.isError()) {
             return "error/errorPage";
         }
 
+        redirectAttributes.addFlashAttribute("eventName", name);
+        redirectAttributes.addFlashAttribute("action", "deleted");
+
         return "redirect:/event";
     }
+
     @GetMapping("/details/{id}")
-    public String details(@PathVariable Long id, Model model){
+    public String details(@PathVariable Long id, Model model) {
         var result = eventService.get(id);
 
-        if(result.isError() || result.isEmpty()){
+        if (result.isError() || result.isEmpty()) {
             model.addAttribute("message", "Event not found");
             return "error/errorPage";
         }
@@ -135,16 +154,14 @@ public class EventController {
         return "event/details";
     }
 
-
-
     @GetMapping
     public String getAll(@RequestParam(required = false) String name,
                          @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
                          @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
-            Model model){
+                         Model model) {
         var result = eventService.search(name, startDate, endDate);
 
-        if(result.isError()){
+        if (result.isError()) {
             model.addAttribute("message", "Error retrieving events");
             return "error/errorPage";
         }
@@ -157,9 +174,4 @@ public class EventController {
         model.addAttribute("searchEndDate", endDate);
         return "event/list";
     }
-
-
-
 }
-
-

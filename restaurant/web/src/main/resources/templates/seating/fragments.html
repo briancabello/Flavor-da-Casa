@@ -1,6 +1,55 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <body>
+<nav aria-label="breadcrumb" class="bg-light-subtle py-3 border-bottom mb-4"
+     th:fragment="seatingBreadcrumb(currentPage, seatingName, seatingUrl)">
+    <div class="container small">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none text-coffee" th:href="@{/}">
+                    <i class="fa fa-home me-1"></i> Home
+                </a>
+            </li>
+
+            <li class="breadcrumb-item"
+                th:classappend="${currentPage == 'Seatings'} ? ' active text-muted' : ''">
+                <a th:if="${currentPage != 'Seatings'}"
+                   class="text-decoration-none text-coffee"
+                   th:href="@{/seating}">
+                    Seatings
+                </a>
+                <span th:if="${currentPage == 'Seatings'}">Seatings</span>
+            </li>
+
+            <li class="breadcrumb-item" th:if="${seatingName != null and seatingUrl != null}">
+                <a class="text-decoration-none text-coffee"
+                   th:href="${seatingUrl}"
+                   th:text="${seatingName}">
+                    Seating
+                </a>
+            </li>
+
+            <li aria-current="page"
+                class="breadcrumb-item active text-muted"
+                th:if="${currentPage != 'Seatings'}"
+                th:text="${currentPage}">
+                Page
+            </li>
+        </ol>
+    </div>
+</nav>
+
+<div th:fragment="successAlert(eventName, action)" class="alert alert-success alert-dismissible fade show small"
+     th:if="${action}" role="alert"
+>
+    <i class="fa fa-check-circle me-2"></i>
+
+    Successfully <span th:text="${action}"></span>
+    event <strong th:text="${eventName}"></strong>.
+
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
 <!--/*@thymesVar id="seating" type="nbcc.resto.dto.Seating"*/-->
 <!--/*@thymesVar id="tables" type="nbcc.resto.dto.DiningTable"*/-->
 <!--/*@thymesVar id="events" type="nbcc.resto.dto.EventDto"*/-->

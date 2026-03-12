@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static nbcc.common.validation.ModelErrorConverter.addErrorsToBindingResults;
 
@@ -79,7 +80,8 @@ public class SeatingController {
     @PostMapping("/create")
     public String create(@ModelAttribute("seating") Seating seating,
                          BindingResult br,
-                         Model model) {
+                         Model model,
+                         RedirectAttributes redirectAttributes) {
         var result = seatingService.create(seating);
 
         if (result.isError()) {
@@ -91,6 +93,13 @@ public class SeatingController {
             loadFormData(model);
             return "seating/create";
         }
+
+        var eventResult = eventService.get(seating.getEventId());
+        if (eventResult.hasValue()) {
+            redirectAttributes.addFlashAttribute("eventName", eventResult.getValue().getName());
+        }
+
+        redirectAttributes.addFlashAttribute("action", "added seating to");
 
         return "redirect:/seating";
     }

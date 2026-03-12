@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static nbcc.common.validation.ModelErrorConverter.addErrorsToBindingResults;
 
@@ -51,7 +52,9 @@ public class DiningTableController {
     }
 
     @PostMapping("/create")
-    public String create(@ModelAttribute("diningTable") DiningTable diningTable, BindingResult br) {
+    public String create(@ModelAttribute("diningTable") DiningTable diningTable,
+                         BindingResult br,
+                         RedirectAttributes redirectAttributes) {
         var result = tableService.create(diningTable);
 
         if (result.isError()) {
@@ -62,6 +65,9 @@ public class DiningTableController {
             addErrorsToBindingResults(br, result);
             return "table/create";
         }
+
+        redirectAttributes.addFlashAttribute("tableName", diningTable.getName());
+        redirectAttributes.addFlashAttribute("action", "created");
 
         return "redirect:/table";
     }
@@ -82,7 +88,8 @@ public class DiningTableController {
     @PostMapping("/edit/{id}")
     public String edit(@PathVariable Long id,
                        @ModelAttribute("diningTable") DiningTable diningTable,
-                       BindingResult br) {
+                       BindingResult br,
+                       RedirectAttributes redirectAttributes) {
         diningTable.setId(id);
         var result = tableService.update(diningTable);
 
@@ -94,6 +101,9 @@ public class DiningTableController {
             addErrorsToBindingResults(br, result);
             return "table/edit";
         }
+
+        redirectAttributes.addFlashAttribute("tableName", diningTable.getName());
+        redirectAttributes.addFlashAttribute("action", "updated");
 
         return "redirect:/table";
     }
@@ -112,12 +122,23 @@ public class DiningTableController {
     }
 
     @PostMapping("/delete/{id}")
-    public String delete(@PathVariable Long id) {
+    public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        var existingTable = tableService.get(id);
+
+        if (existingTable.isError() || existingTable.isEmpty()) {
+            return "error/errorPage";
+        }
+
+        var name = existingTable.getValue().getName();
+
         var result = tableService.delete(id);
 
         if (result.isError()) {
             return "error/errorPage";
         }
+
+        redirectAttributes.addFlashAttribute("tableName", name);
+        redirectAttributes.addFlashAttribute("action", "deleted");
 
         return "redirect:/table";
     }
