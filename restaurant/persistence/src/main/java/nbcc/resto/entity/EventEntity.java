@@ -3,6 +3,7 @@ package nbcc.resto.entity;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 
@@ -14,8 +15,8 @@ public class EventEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "menu_id")
-    private Long menuId;
+    // @Column(name = "menu_id")
+    // private Long menuId;
 
     @Column(nullable = false, unique = true)
     private String name;
@@ -33,7 +34,7 @@ public class EventEntity {
     private int duration;
 
     @Column(nullable = false)
-    private double price;
+    private BigDecimal price;
 
     @Column(nullable = false)
     private boolean active;
@@ -58,14 +59,14 @@ public class EventEntity {
         return this;
     }
 
-    public Long getMenuId() {
-        return menuId;
-    }
+    // public Long getMenuId() {
+    //     return menuId;
+    // }
 
-    public EventEntity setMenuId(Long menuId) {
-        this.menuId = menuId;
-        return this;
-    }
+    // public EventEntity setMenuId(Long menuId) {
+    //     this.menuId = menuId;
+    //     return this;
+    // }
 
     public String getName() {
         return name;
@@ -112,11 +113,11 @@ public class EventEntity {
         return this;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public EventEntity setPrice(double price) {
+    public EventEntity setPrice(BigDecimal price) {
         this.price = price;
         return this;
     }
