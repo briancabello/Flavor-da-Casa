@@ -4,44 +4,52 @@
 <body>
 <div th:fragment="content">
     <div class="container py-4">
-        <!--/*@thymesVar id="viewModel" type="nbcc.resto.viewmodels.DiningTableListViewModel"*/-->
-        <p class="alert alert-warning" th:if="${viewModel.message}" th:text="${viewModel.message}"></p>
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-9 col-xl-8">
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="fw-bold">Dining Tables</h2>
-            <a class="btn btn-primary" th:href="@{/table/create}" th:if="${viewModel.canAdd}">
-                <i class="fa fa-plus me-1"></i> Add Table
-            </a>
-        </div>
+                <p class="alert alert-warning" th:if="${viewModel.message}" th:text="${viewModel.message}"></p>
 
-        <div class="alert alert-info" th:if="${viewModel.isEmpty()}">No dining tables have been created yet.</div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2>Dining Tables</h2>
+                    <a class="btn btn-primary" th:href="@{/table/create}" th:if="${viewModel.canAdd}">
+                        <i class="fa fa-plus me-1"></i> Create Table
+                    </a>
+                </div>
 
-        <div class="card shadow-sm" th:unless="${viewModel.isEmpty()}">
-            <div class="card-body p-0">
-                <table class="table table-hover mb-0">
-                    <thead class="bg-dark text-white">
-                    <tr>
-                        <th>Name</th>
-                        <th>Capacity</th>
-                        <th class="text-center" th:if="${viewModel.canEdit}">Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="table : ${viewModel.tables}">
-                        <td th:text="${table.name}"></td>
-                        <td th:text="${table.capacity}"></td>
-                        <td class="text-center" th:if="${viewModel.canEdit}">
-                            <a class="btn btn-sm btn-outline-primary me-1"
-                               th:href="@{/table/edit/{id}(id=${table.id})}">
-                                <i class="fa fa-edit"></i> Edit
-                            </a>
-                            <a class="btn btn-sm btn-outline-danger" th:href="@{/table/delete/{id}(id=${table.id})}">
-                                <i class="fa fa-trash"></i> Delete
-                            </a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div class="alert alert-info" th:if="${viewModel.isEmpty()}">
+                    There are currently no dining tables configured in the system.
+                </div>
+
+                <div class="card rounded-2 shadow-sm overflow-hidden" th:unless="${viewModel.isEmpty()}">
+                    <div class="card-body p-0">
+                        <table class="table table-hover mb-0">
+                            <thead class="bg-dark">
+                            <tr>
+                                <th>Name</th>
+                                <th class="text-center">Capacity</th>
+                                <th class="text-center" th:if="${viewModel.canEdit}">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="table : ${viewModel.tables}">
+                                <td th:text="${table.name}"></td>
+                                <td class="text-center" th:text="${table.capacity}"></td>
+                                <td class="text-center" th:if="${viewModel.canEdit}">
+                                    <a class="text-decoration-none me-3" th:href="@{/table/edit/{id}(id=${table.id})}"
+                                       title="Edit Table">
+                                        <i class="fa fa-edit text-primary fs-5"></i>
+                                    </a>
+
+                                    <a class="text-decoration-none" th:href="@{/table/delete/{id}(id=${table.id})}"
+                                       title="Delete Table">
+                                        <i class="fa fa-trash text-danger fs-5"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

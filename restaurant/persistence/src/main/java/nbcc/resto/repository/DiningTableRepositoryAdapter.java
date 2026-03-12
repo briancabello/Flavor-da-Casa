@@ -3,6 +3,7 @@ package nbcc.resto.repository;
 import nbcc.resto.dto.DiningTable;
 import nbcc.resto.mapper.DiningTableMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -12,10 +13,16 @@ public class DiningTableRepositoryAdapter implements DiningTableRepository {
 
     private final DiningTableMapper mapper;
     private final DiningTableJpaRepository jpaRepository;
+    private final SeatingTableJpaRepository seatingTableJpaRepository;
 
-    public DiningTableRepositoryAdapter(DiningTableMapper mapper, DiningTableJpaRepository jpaRepository) {
+    public DiningTableRepositoryAdapter(
+            DiningTableMapper mapper,
+            DiningTableJpaRepository jpaRepository,
+            SeatingTableJpaRepository seatingTableJpaRepository
+    ) {
         this.mapper = mapper;
         this.jpaRepository = jpaRepository;
+        this.seatingTableJpaRepository = seatingTableJpaRepository;
     }
 
     @Override
@@ -58,7 +65,9 @@ public class DiningTableRepositoryAdapter implements DiningTableRepository {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
+        seatingTableJpaRepository.deleteByDiningTableId(id);
         jpaRepository.deleteById(id);
     }
 }

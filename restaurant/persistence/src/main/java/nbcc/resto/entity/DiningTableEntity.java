@@ -7,7 +7,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "DiningTable")
+@Table(name = "dining_table")
 @EntityListeners(AuditingEntityListener.class)
 public class DiningTableEntity {
 
@@ -15,14 +15,14 @@ public class DiningTableEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 100)
+    @Column(name = "name", length = 100)
     private String name;
 
-    @Column(nullable = false)
-    private int capacity;
+    @Column(name = "capacity", nullable = false)
+    private Integer capacity;
 
     @CreatedDate
-    @Column(updatable = false, nullable = false)
+    @Column(name = "created_date", updatable = false, nullable = false)
     private LocalDateTime createdDate;
 
     public DiningTableEntity() {
@@ -46,11 +46,11 @@ public class DiningTableEntity {
         return this;
     }
 
-    public int getCapacity() {
+    public Integer getCapacity() {
         return capacity;
     }
 
-    public DiningTableEntity setCapacity(int capacity) {
+    public DiningTableEntity setCapacity(Integer capacity) {
         this.capacity = capacity;
         return this;
     }
