@@ -3,24 +3,32 @@
       xmlns:th="http://www.thymeleaf.org">
 <body>
 <div th:fragment="content">
-    <div class="container py-4">
-        <h1>Are you sure you want to delete this Event?</h1>
+    <div class="container py-5">
+        <div class="row justify-content-center text-center">
+            <div class="col-12 col-md-8 col-lg-6">
+                <i class="fas fa-exclamation-triangle text-danger fa-4x mb-3"></i>
 
-        <div class="alert alert-info mt-3" th:if="${event.endDate.isBefore(T(java.time.LocalDate).now())}">
-            <strong>Note:</strong> This event is in the past and will be archived instead of permanently deleted.
-        </div>
+                <h2>Delete Event</h2>
 
-        <div class="row">
-            <div class="col-md-8">
-                <div th:replace="~{event/fragments :: details}"></div>
-                <form class="mt-3" method="post" th:action="@{/event/delete/{id}(id=${event.id})}">
-                    <input class="btn btn-danger" type="submit" value="Delete"/>
+                <p class="text-accent mb-4">
+                    Are you sure you want to delete this event? This action cannot be undone.
+                </p>
+
+                <div class="alert alert-info shadow-sm mb-4 text-start" th:if="${event.endDate.isBefore(T(java.time.LocalDate).now())}">
+                    <i class="fa fa-info-circle me-1"></i> <strong>Note:</strong> This event is in the past and will be archived instead of permanently deleted.
+                </div>
+
+                <div class="mb-4 text-start">
+                    <div th:replace="~{event/fragments :: details}"></div>
+                </div>
+
+                <form method="post" th:action="@{/event/delete/{id}(id=${event.id})}">
+                    <button class="btn btn-danger px-4 fw-medium" type="submit">
+                        <i class="fa fa-trash me-2"></i> Confirm Delete
+                    </button>
+                    <a class="btn btn-outline-secondary ms-2 px-4 fw-medium" th:href="@{/event}">Cancel</a>
                 </form>
             </div>
-        </div>
-
-        <div class="mt-3">
-            <a th:href="@{/event}">Go Back to Events List</a>
         </div>
     </div>
 </div>

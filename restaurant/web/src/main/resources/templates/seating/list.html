@@ -31,7 +31,7 @@
                         <thead>
                         <tr>
                             <th class="w-25">Seating Name</th>
-                            <th class="w-25">Date</th>
+                            <th class="text-nowrap">Date</th>
                             <th class="text-nowrap">Time</th>
                             <th class="text-nowrap">Duration</th>
                             <th class="w-25">Tables</th>
@@ -45,14 +45,17 @@
                         </tr>
 
                         <tr th:each="seating : ${viewModel.seatings}" th:if="${seating.eventId == event.id}">
-                            <td th:text="${seating.name}"></td>
-                            <td th:text="${#temporals.format(seating.startDateTime, 'yyyy-MM-dd h:mm a')}"></td>
-                            <td th:text="${seating.endDateTime != null ? #temporals.format(seating.endDateTime, 'h:mm a') : '-'}"></td>
+                            <td class="fw-medium text-dark" th:text="${seating.name}"></td>
+                            <td th:text="${#temporals.format(seating.startDateTime, 'MMMM dd, yyyy')}"></td>
+                            <td>
+                                <span th:text="${#temporals.format(seating.startDateTime, 'h:mm a')}"></span>
+                                <span class="text-muted mx-1">&mdash;</span>
+                                <span th:text="${seating.endDateTime != null ? #temporals.format(seating.endDateTime, 'h:mm a') : '-'}"></span>
+                            </td>
                             <td><span th:text="${seating.duration}"></span> min</td>
                             <td>
-                                    <span th:each="table, stat : ${seating.tables}">
-                                        <span class="badge bg-secondary" th:text="${table.name}"></span>
-                                    </span>
+                                <span class="badge bg-secondary me-1" th:each="table, stat : ${seating.tables}"
+                                      th:text="${table.name}"></span>
                             </td>
                         </tr>
                         </tbody>
