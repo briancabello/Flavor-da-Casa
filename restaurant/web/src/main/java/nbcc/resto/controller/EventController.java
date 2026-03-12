@@ -122,6 +122,18 @@ public class EventController {
 
         return "redirect:/event";
     }
+    @GetMapping("/details/{id}")
+    public String details(@PathVariable Long id, Model model){
+        var result = eventService.get(id);
+
+        if(result.isError() || result.isEmpty()){
+            model.addAttribute("message", "Event not found");
+            return "error/errorPage";
+        }
+
+        model.addAttribute("event", result.getValue());
+        return "event/details";
+    }
 
 
 
