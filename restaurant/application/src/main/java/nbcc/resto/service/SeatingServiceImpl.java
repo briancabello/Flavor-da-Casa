@@ -87,15 +87,15 @@ public class SeatingServiceImpl implements SeatingService {
         }
     }
 
-    @Override
-    public ValidatedResult<Void> delete(Long id) {
-        try {
-            seatingRepository.delete(id);
-            logger.debug("Seating with id {} deleted", id);
-            return ValidationResults.success();
-        } catch (Exception e) {
-            logger.error("Error deleting seating with id: {}", id, e);
-            return ValidationResults.error(e);
-        }
-    }
+    // @Override
+    // public ValidatedResult<Void> delete(Long id) {
+    //     try {
+    //         seatingRepository.delete(id);
+    //         logger.debug("Seating with id {} deleted", id);
+    //         return ValidationResults.success();
+    //     } catch (Exception e) {
+    //         logger.error("Error deleting seating with id: {}", id, e);
+    //         return ValidationResults.error(e);
+    //     }
+    // }
 }
