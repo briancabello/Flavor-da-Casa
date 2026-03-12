@@ -11,7 +11,7 @@ classDiagram
       +DateTime startDate
       +DateTime endDate
       +int duration
-      +double price
+      +BigDecimal price
       +boolean active
       +DateTime createdDate
       +DateTime lastUpdatedDate
@@ -111,6 +111,7 @@ classDiagram
       <<interface>>
       +getAll() Result~Collection~Seating~~
       +getByEvent(long eventId) Result~Collection~Seating~~
+      +getSeatingsByTableId(long tableId) Result~Collection~Seating~~
       +create(Seating seating) Result~Seating~
       +delete(long id) Result~Seating~
     }
@@ -157,6 +158,7 @@ classDiagram
       <<interface>>
       +getAll() Collection~Seating~
       +getByEvent(long eventId) Collection~Seating~
+      +getSeatingsByTableId(long tableId) Collection~Seating~
       +create(Seating seating) Seating
       +delete(long id) void
       +getOverlappingSeatings(Collection~DiningTable~ tables, DateTime start, DateTime end) Collection~Seating~
@@ -210,7 +212,7 @@ classDiagram
       +DateTime startDate
       +DateTime endDate
       +int duration
-      +double price
+      +BigDecimal price
       +boolean active
       +DateTime createdDate
       +DateTime lastUpdatedDate
@@ -232,6 +234,19 @@ classDiagram
       +int duration
       +DateTime createdDate
       +DateTime updatedDate 
+    }
+
+    class SeatingTableEntity {
+      +long id
+      +SeatingEntity seating
+      +DiningTableEntity diningTable
+    }
+
+    class SeatingTableJpaRepository {
+      <<interface>>
+      +findSeatingsByTableId(long tableId) List~SeatingEntity~
+      +findBySeatingId(long seatingId) List~SeatingTableEntity~
+      +deleteByDiningTableId(long diningTableId) void
     }
 
     class MenuEntity {
@@ -277,6 +292,8 @@ classDiagram
 
   Seating --> DiningTable : Has available
   Seating --> Event : Belongs to
+  SeatingTableEntity --> SeatingEntity : ManyToOne
+  SeatingTableEntity --> DiningTableEntity : ManyToOne
 
   MenuItem --> Menu : Belongs to
   Reservation --> Seating : Requests
