@@ -4,48 +4,44 @@
 <body>
 <div th:fragment="content">
     <div class="container py-4">
-        <h1 th:text="${event.name}">Event Name</h1>
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-9 col-xl-8">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="fw-bold mb-0" th:text="${eventDto.name}">Event Name</h2>
+                    <a class="btn btn-outline-secondary px-3" th:href="@{/event}">
+                        <i class="fa fa-arrow-left me-1"></i> Back
+                    </a>
+                </div>
 
-        <div class="row">
-            <div class="col-md-8">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-dark text-white">
-                        <h5 class="card-title mb-0">Event Details</h5>
-                    </div>
-                    <div class="card-body">
-                        <dl class="row mb-0">
-                            <dt class="col-sm-4">Start Date</dt>
-                            <dd class="col-sm-8"
-                                th:text="${#temporals.format(event.startDate, 'MMMM dd, yyyy HH:mm')}"></dd>
+                <div class="card shadow-sm border-0">
+                    <div class="card-body p-4">
 
-                            <dt class="col-sm-4">End Date</dt>
-                            <dd class="col-sm-8"
-                                th:text="${#temporals.format(event.endDate, 'MMMM dd, yyyy HH:mm')}"></dd>
+                        <div class="row gy-4">
+                            <div class="col-12" th:with="event=${eventDto}">
+                                <div th:replace="~{event/fragments :: details}"></div>
+                            </div>
 
-                            <dt class="col-sm-4">Name</dt>
-                            <dd class="col-sm-8" th:text="${event.name}"></dd>
+                            <div class="col-12">
+                                <div class="p-3 bg-light rounded-3 mt-2 border">
+                                    <h6 class="text-muted text-uppercase fw-bold ls-wide mb-3"><i class="fa fa-clock me-2"></i>System Audit</h6>
+                                    <div class="row">
+                                        <div class="col-sm-6 mb-2 mb-sm-0">
+                                            <span class="text-muted small d-block">Created Date</span>
+                                            <span class="fw-medium text-dark" th:text="${#temporals.format(eventDto.createdDate, 'MMMM dd, yyyy HH:mm')}"></span>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <span class="text-muted small d-block">Last Updated</span>
+                                            <span class="fw-medium text-dark" th:text="${#temporals.format(eventDto.lastUpdatedDate, 'MMMM dd, yyyy HH:mm')}"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                            <dt class="col-sm-4">Description</dt>
-                            <dd class="col-sm-8" th:text="${event.description} ?: 'N/A'"></dd>
-
-                            <dt class="col-sm-4">Price</dt>
-                            <dd class="col-sm-8" th:text="'$' + ${#numbers.formatDecimal(event.price, 1, 2)}"></dd>
-
-                            <dt class="col-sm-4">Created Date</dt>
-                            <dd class="col-sm-8"
-                                th:text="${#temporals.format(event.createdDate, 'MMMM dd, yyyy HH:mm')}"></dd>
-
-                            <dt class="col-sm-4">Last Updated Date</dt>
-                            <dd class="col-sm-8"
-                                th:text="${#temporals.format(event.lastUpdatedDate, 'MMMM dd, yyyy HH:mm')}"></dd>
-                        </dl>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="mt-3">
-            <a th:href="@{/event}">Go Back to Events List</a>
+            </div>
         </div>
     </div>
 </div>

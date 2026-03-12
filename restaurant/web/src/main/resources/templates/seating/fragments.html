@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<!--/*@thymesVar id="seating" type="nbcc.resto.dto.Seating"*/-->
+<!--/*@thymesVar id="tables" type="nbcc.resto.dto.DiningTable"*/-->
+<!--/*@thymesVar id="events" type="nbcc.resto.dto.EventDto"*/-->
+<th:block th:fragment="input" th:object="${seating}">
+    <div class="alert alert-danger shadow-sm" role="alert" th:if="${#fields.hasGlobalErrors()}">
+        <i class="fa fa-exclamation-circle me-2"></i>
+        <span th:each="err : ${#fields.globalErrors()}" th:text="${err}"></span>
+    </div>
+
+    <input th:field="*{id}" type="hidden"/>
+
+    <div class="row gx-3 mb-3">
+        <div class="col-md-6 mb-3 mb-md-0">
+            <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="eventId">Event</label>
+            <select class="form-select" id="eventId" th:errorclass="is-invalid" th:field="*{eventId}">
+                <option value="">-- Select an Event --</option>
+                <option th:each="event : ${events}" th:text="${event.name}" th:value="${event.id}"></option>
+            </select>
+            <div class="invalid-feedback fw-medium" th:errors="*{eventId}"></div>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="name">Seating Name</label>
+            <input class="form-control" id="name" placeholder="e.g. Dinner Seating 1" th:errorclass="is-invalid"
+                   th:field="*{name}"
+            />
+            <div class="invalid-feedback fw-medium" th:errors="*{name}"></div>
+        </div>
+    </div>
+
+    <div class="row gx-3 mb-4">
+        <div class="col-md-6 mb-3 mb-md-0">
+            <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="startDateTime">
+                Start Date & Time
+            </label>
+            <input class="form-control" id="startDateTime" th:errorclass="is-invalid" th:field="*{startDateTime}"
+                   type="datetime-local"
+            />
+            <div class="invalid-feedback fw-medium" th:errors="*{startDateTime}"></div>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="duration">Duration
+                (Minutes)
+            </label>
+            <input class="form-control" id="duration" min="1" placeholder="e.g. 60" th:errorclass="is-invalid"
+                   th:field="*{duration}" type="number"
+            />
+            <div class="form-text text-muted">Defaults to event duration.</div>
+            <div class="invalid-feedback fw-medium" th:errors="*{duration}"></div>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label text-muted text-uppercase fw-bold ls-wide d-block mb-3">Assign Tables</label>
+
+        <div class="row g-2">
+            <div class="col-6 col-md-4 col-lg-3" th:each="table : ${tables}">
+                <label class="btn btn-outline w-100 text-start px-3 py-2 rounded-2 h-100 shadow-sm d-flex flex-column">
+                    <div class="d-flex align-items-start">
+                        <input class="form-check-input me-2 flex-shrink-0" th:field="*{selectedTableIds}"
+                               th:value="${table.id}" type="checkbox"
+                        />
+                        <span>
+                            <span class="fw-bold text-primary" th:text="${table.name}">T1 - Window</span>
+                            <span class="text-muted small" th:text="| (Cap. ${table.capacity})|"> (Cap. 2)</span>
+                        </span>
+                    </div>
+                </label>
+            </div>
+        </div>
+
+        <div class="alert alert-info mt-2 py-2" th:if="${#lists.isEmpty(tables)}">
+            <i class="fa fa-info-circle me-2"></i> No tables available. Please create dining tables first.
+        </div>
+
+        <div class="text-danger small mt-2 fw-medium" th:errors="*{selectedTableIds}"></div>
+    </div>
+</th:block>
+
+</body>
+</html>

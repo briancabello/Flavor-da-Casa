@@ -12,7 +12,6 @@ public class DiningTable {
     @Size(max = 100, message = "Table name cannot exceed 100 characters")
     private String name;
 
-    @Positive
     private Integer capacity;
 
     private LocalDateTime createdDate;
