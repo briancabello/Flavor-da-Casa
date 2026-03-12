@@ -33,7 +33,7 @@ public class EventMapper implements EntityMapper<EventDto, EventEntity>{
         if (entity == null) return null;
         EventDto domain = new EventDto();
         domain.setId(entity.getId())
-                .setMenuId(entity.getMenuId())
+                //.setMenuId(entity.getMenuId())
                 .setName(entity.getName())
                 .setDescription(entity.getDescription())
                 .setStartDate(entity.getStartDate() != null ? entity.getStartDate().toLocalDate() : null)

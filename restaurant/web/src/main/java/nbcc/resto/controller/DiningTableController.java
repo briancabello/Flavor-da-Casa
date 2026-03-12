@@ -62,7 +62,7 @@ public class DiningTableController {
         }
 
         if (result.isInvalid()) {
-            addErrorsToBindingResults(br, result);
+            addErrorsToBindingResults(br, result, "diningTable");
             return "table/create";
         }
 
@@ -98,7 +98,7 @@ public class DiningTableController {
         }
 
         if (result.isInvalid()) {
-            addErrorsToBindingResults(br, result);
+            addErrorsToBindingResults(br, result, "diningTable");
             return "table/edit";
         }
 

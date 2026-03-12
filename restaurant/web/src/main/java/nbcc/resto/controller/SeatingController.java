@@ -89,7 +89,7 @@ public class SeatingController {
         }
 
         if (result.isInvalid()) {
-            addErrorsToBindingResults(br, result);
+            addErrorsToBindingResults(br, result, "seating");
             loadFormData(model);
             return "seating/create";
         }

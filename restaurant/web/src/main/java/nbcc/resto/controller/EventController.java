@@ -8,12 +8,15 @@ import nbcc.resto.viewmodels.EventListViewModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -173,5 +176,13 @@ public class EventController {
         model.addAttribute("searchStartDate", startDate);
         model.addAttribute("searchEndDate", endDate);
         return "event/list";
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String exceptionHandler(Model model, Exception ex, HttpServletRequest request) {
+        logger.error("Unexpected Exception on uri {}: on method {} ", request.getRequestURI(), request.getMethod(), ex);
+        model.addAttribute("message", "Unexpected Error Occurred");
+        return "error/errorPage";
     }
 }

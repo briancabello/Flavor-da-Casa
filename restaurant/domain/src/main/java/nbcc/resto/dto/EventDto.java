@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -12,7 +13,7 @@ public class EventDto {
 
     private Long id;
 
-    private Long menuId;
+    //private Long menuId;
 
     @NotBlank(message = "Event name is required")
     private String name;
@@ -33,7 +34,7 @@ public class EventDto {
 
     @NotNull(message = "Price is required")
     @Positive(message = "Price must be positive")
-    private Double price;
+    private BigDecimal price;
 
     private boolean active;
 
@@ -44,9 +45,9 @@ public class EventDto {
 
     public EventDto() {}
 
-    public EventDto(Long id, Long menuId, String name, String description, LocalDate startDate, LocalDate endDate, Integer duration, Double price, boolean active, LocalDateTime createdDate, LocalDateTime lastUpdatedDate) {
+    public EventDto(Long id, /*Long menuId,*/ String name, String description, LocalDate startDate, LocalDate endDate, Integer duration, BigDecimal price, boolean active, LocalDateTime createdDate, LocalDateTime lastUpdatedDate) {
         this.id = id;
-        this.menuId = menuId;
+        //this.menuId = menuId;
         this.name = name;
         this.description = description;
         this.startDate = startDate;
@@ -67,14 +68,14 @@ public class EventDto {
         return this;
     }
 
-    public Long getMenuId() {
-        return menuId;
-    }
+    // public Long getMenuId() {
+    //     return menuId;
+    // }
 
-    public EventDto setMenuId(Long menuId) {
-        this.menuId = menuId;
-        return this;
-    }
+    // public EventDto setMenuId(Long menuId) {
+    //     this.menuId = menuId;
+    //     return this;
+    // }
 
     public String getName() {
         return name;
@@ -121,11 +122,11 @@ public class EventDto {
         return this;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public EventDto setPrice(Double price) {
+    public EventDto setPrice(BigDecimal price) {
         this.price = price;
         return this;
     }

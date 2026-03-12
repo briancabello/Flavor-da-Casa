@@ -61,7 +61,7 @@ public class EventServiceImpl implements EventService {
             var errors = validationService.validate(eventDto);
 
             if(eventRepository.exists(eventDto.getName())){
-                errors.add(new ValidationError("name", "Event with this name already exists"));
+                errors.add(new ValidationError("Event with this name already exists", "name", eventDto.getName()));
             }
             if(!errors.isEmpty()){
                 logger.debug("Validation errors for event create: {}", errors);
@@ -77,15 +77,29 @@ public class EventServiceImpl implements EventService {
     @Override
     public ValidatedResult<EventDto> update(EventDto eventDto) {
         try {
+
+            if (eventDto.getId() == null) {
+                return ValidationResults.invalid(null, "Cannot update: Event ID is missing", "id");
+            }
+
+            var existingOpt = eventRepository.get(eventDto.getId());
+            if (existingOpt.isEmpty()) {
+                return ValidationResults.invalid(null, "Event not found", "id");
+            }
+
+            EventDto existingEvent = existingOpt.get();
             var errors = validationService.validate(eventDto);
 
-            if(eventDto.getId() == null || eventRepository.get(eventDto.getId()).isEmpty()){
-                errors.add(new ValidationError("id", "Cannot update: Event does not exist", eventDto.getId()));
+            boolean nameChanged = !existingEvent.getName().equalsIgnoreCase(eventDto.getName());
+            if (nameChanged && eventRepository.exists(eventDto.getName())) {
+                errors.add(new ValidationError("An event with this name already exists", "name", eventDto.getName()));
             }
+
             if (!errors.isEmpty()) {
                 logger.debug("Validation errors for event update: {}", errors);
                 return ValidationResults.invalid(eventDto, errors);
             }
+
             return ValidationResults.success(eventRepository.update(eventDto));
 
         } catch (Exception e) {
