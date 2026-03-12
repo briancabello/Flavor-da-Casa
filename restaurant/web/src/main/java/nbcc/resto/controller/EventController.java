@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -40,7 +41,9 @@ public class EventController {
     }
 
     @PostMapping("/create")
-    public String create(@ModelAttribute("event") EventDto eventDto, BindingResult br) {
+    public String create(@ModelAttribute("event") EventDto eventDto,
+                         BindingResult br,
+                         RedirectAttributes redirectAttributes) {
         if (br.hasErrors()) {
             return "event/create";
         }
@@ -56,6 +59,8 @@ public class EventController {
             return "event/create";
         }
 
+        redirectAttributes.addFlashAttribute("eventName", eventDto.getName());
+        redirectAttributes.addFlashAttribute("action", "created");
 
         return "redirect:/event";
     }
@@ -74,7 +79,9 @@ public class EventController {
     }
 
     @PostMapping("/edit/{id}")
-    public String edit(@PathVariable Long id, @ModelAttribute("event") EventDto eventDto, BindingResult br) {
+    public String edit(@PathVariable Long id, @ModelAttribute("event") EventDto eventDto,
+                       BindingResult br,
+                       RedirectAttributes redirectAttributes) {
         eventDto.setId(id);
 
         if (br.hasErrors()) {
@@ -91,6 +98,9 @@ public class EventController {
             addErrorsToBindingResults(br, result, "event");
             return "event/edit";
         }
+
+        redirectAttributes.addFlashAttribute("eventName", eventDto.getName());
+        redirectAttributes.addFlashAttribute("action", "updated");
 
         return "redirect:/event";
     }
@@ -113,12 +123,20 @@ public class EventController {
     }
 
     @PostMapping("/delete/{id}")
-    public String delete(@PathVariable Long id) {
-        var result = eventService.delete(id);
+    public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        var eventResult = eventService.get(id);
+        if (eventResult.isError() || eventResult.isEmpty()) {
+            return "error/errorPage";
+        }
 
+        var name = eventResult.getValue().getName();
+        var result = eventService.delete(id);
         if (result.isError()) {
             return "error/errorPage";
         }
+
+        redirectAttributes.addFlashAttribute("eventName", name);
+        redirectAttributes.addFlashAttribute("action", "deleted");
 
         return "redirect:/event";
     }

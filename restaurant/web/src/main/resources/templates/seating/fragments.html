@@ -39,6 +39,17 @@
     </div>
 </nav>
 
+<div th:fragment="successAlert(eventName, action)" class="alert alert-success alert-dismissible fade show small"
+     th:if="${action}" role="alert"
+>
+    <i class="fa fa-check-circle me-2"></i>
+
+    Successfully <span th:text="${action}"></span>
+    event <strong th:text="${eventName}"></strong>.
+
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
 <!--/*@thymesVar id="seating" type="nbcc.resto.dto.Seating"*/-->
 <!--/*@thymesVar id="tables" type="nbcc.resto.dto.DiningTable"*/-->
 <!--/*@thymesVar id="events" type="nbcc.resto.dto.EventDto"*/-->
