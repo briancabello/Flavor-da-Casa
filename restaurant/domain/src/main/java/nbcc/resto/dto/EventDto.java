@@ -27,11 +27,13 @@ public class EventDto {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
 
+    @NotNull(message = "Duration is required")
     @Positive(message = "Duration must be positive")
-    private int duration;
+    private Integer duration;
 
+    @NotNull(message = "Price is required")
     @Positive(message = "Price must be positive")
-    private double price;
+    private Double price;
 
     private boolean active;
 
@@ -42,7 +44,7 @@ public class EventDto {
 
     public EventDto() {}
 
-    public EventDto(Long id, Long menuId, String name, String description, LocalDate startDate, LocalDate endDate, int duration, double price, boolean active, LocalDateTime createdDate, LocalDateTime lastUpdatedDate) {
+    public EventDto(Long id, Long menuId, String name, String description, LocalDate startDate, LocalDate endDate, Integer duration, Double price, boolean active, LocalDateTime createdDate, LocalDateTime lastUpdatedDate) {
         this.id = id;
         this.menuId = menuId;
         this.name = name;
@@ -110,20 +112,20 @@ public class EventDto {
         return this;
     }
 
-    public int getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
-    public EventDto setDuration(int duration) {
+    public EventDto setDuration(Integer duration) {
         this.duration = duration;
         return this;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public EventDto setPrice(double price) {
+    public EventDto setPrice(Double price) {
         this.price = price;
         return this;
     }

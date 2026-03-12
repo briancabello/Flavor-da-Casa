@@ -36,13 +36,13 @@
 
             <div class="mb-3">
                 <label class="form-label" for="duration">Duration (Minutes)</label>
-                <input class="form-control" th:errorclass="is-invalid" th:field="*{duration}" type="number">
+                <input class="form-control" th:errorclass="is-invalid" th:field="*{duration}" type="number" min="1">
                 <div class="alert alert-warning" th:errors="*{duration}" th:if="${#fields.hasErrors('duration')}"></div>
             </div>
 
             <div class="mb-3">
                 <label class="form-label" for="price">Price ($)</label>
-                <input class="form-control" step="0.01" th:errorclass="is-invalid" th:field="*{price}" type="number">
+                <input class="form-control" step="0.01" th:errorclass="is-invalid" th:field="*{price}" type="number" min="0.01">
                 <div class="alert alert-warning" th:errors="*{price}" th:if="${#fields.hasErrors('price')}"></div>
             </div>
 

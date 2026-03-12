@@ -20,7 +20,7 @@ import java.util.List;
 import static nbcc.common.validation.ModelErrorConverter.addErrorsToBindingResults;
 
 @Controller
-//@PreAuthorize("isAuthenticated()") commented until fix login/register
+@PreAuthorize("isAuthenticated()")
 @RequestMapping("/event")
 public class EventController {
 
@@ -41,6 +41,10 @@ public class EventController {
 
     @PostMapping("/create")
     public String create(@ModelAttribute("event") EventDto eventDto, BindingResult br) {
+        if (br.hasErrors()) {
+            return "event/create";
+        }
+
         var result = eventService.create(eventDto);
 
         if (result.isError()) {
@@ -53,7 +57,7 @@ public class EventController {
         }
 
 
-        return "redirect:/";
+        return "redirect:/event";
     }
 
     @GetMapping("/edit/{id}")
@@ -72,6 +76,10 @@ public class EventController {
     @PostMapping("/edit/{id}")
     public String edit(@PathVariable Long id, @ModelAttribute("event") EventDto eventDto, BindingResult br){
         eventDto.setId(id);
+
+        if (br.hasErrors()) {
+            return "event/edit";
+        }
 
         var result = eventService.update(eventDto);
 
@@ -116,7 +124,7 @@ public class EventController {
     }
 
 
-    @PreAuthorize("permitAll()")
+
     @GetMapping
     public String getAll(@RequestParam(required = false) String name,
                          @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
