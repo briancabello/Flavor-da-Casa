@@ -8,7 +8,7 @@
             <div class="col-12 col-lg-9 col-xl-8">
                 <h2>Create Dining Table</h2>
 
-                <div class="card shadow-sm">
+                <div class="card shadow-sm card-top-primary">
                     <div class="card-body">
                         <form method="post" th:action="@{/table/create}" th:object="${diningTable}" novalidate>
                             <div th:replace="~{table/fragments :: input}"></div>

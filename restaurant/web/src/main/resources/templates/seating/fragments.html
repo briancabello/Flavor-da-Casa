@@ -15,35 +15,42 @@
     <div class="row gx-3 mb-3">
         <div class="col-md-6 mb-3 mb-md-0">
             <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="eventId">Event</label>
-            <select class="form-select" id="eventId" th:field="*{eventId}">
+            <select class="form-select" id="eventId" th:errorclass="is-invalid" th:field="*{eventId}">
                 <option value="">-- Select an Event --</option>
                 <option th:each="event : ${events}" th:text="${event.name}" th:value="${event.id}"></option>
             </select>
-            <div class="text-danger small mt-1 fw-medium" th:errors="*{eventId}"></div>
+            <div class="invalid-feedback fw-medium" th:errors="*{eventId}"></div>
         </div>
 
         <div class="col-md-6">
             <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="name">Seating Name</label>
-            <input class="form-control" id="name" placeholder="e.g. Dinner Seating 1" th:field="*{name}"/>
-            <div class="text-danger small mt-1 fw-medium" th:errors="*{name}"></div>
+            <input class="form-control" id="name" placeholder="e.g. Dinner Seating 1" th:errorclass="is-invalid"
+                   th:field="*{name}"
+            />
+            <div class="invalid-feedback fw-medium" th:errors="*{name}"></div>
         </div>
     </div>
 
     <div class="row gx-3 mb-4">
         <div class="col-md-6 mb-3 mb-md-0">
-            <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="startDateTime">Start Date &
-                Time</label>
-            <input class="form-control" id="startDateTime" th:field="*{startDateTime}" type="datetime-local"/>
-            <div class="text-danger small mt-1 fw-medium" th:errors="*{startDateTime}"></div>
+            <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="startDateTime">
+                Start Date & Time
+            </label>
+            <input class="form-control" id="startDateTime" th:errorclass="is-invalid" th:field="*{startDateTime}"
+                   type="datetime-local"
+            />
+            <div class="invalid-feedback fw-medium" th:errors="*{startDateTime}"></div>
         </div>
 
         <div class="col-md-6">
             <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="duration">Duration
-                (Minutes)</label>
-            <input class="form-control" id="duration" min="1" placeholder="e.g. 60" th:field="*{duration}"
-                   type="number"/>
+                (Minutes)
+            </label>
+            <input class="form-control" id="duration" min="1" placeholder="e.g. 60" th:errorclass="is-invalid"
+                   th:field="*{duration}" type="number"
+            />
             <div class="form-text text-muted">Defaults to event duration.</div>
-            <div class="text-danger small mt-1 fw-medium" th:errors="*{duration}"></div>
+            <div class="invalid-feedback fw-medium" th:errors="*{duration}"></div>
         </div>
     </div>
 
