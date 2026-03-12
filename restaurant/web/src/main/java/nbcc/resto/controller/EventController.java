@@ -41,6 +41,10 @@ public class EventController {
 
     @PostMapping("/create")
     public String create(@ModelAttribute("event") EventDto eventDto, BindingResult br) {
+        if (br.hasErrors()) {
+            return "event/create";
+        }
+
         var result = eventService.create(eventDto);
 
         if (result.isError()) {
@@ -72,6 +76,10 @@ public class EventController {
     @PostMapping("/edit/{id}")
     public String edit(@PathVariable Long id, @ModelAttribute("event") EventDto eventDto, BindingResult br){
         eventDto.setId(id);
+
+        if (br.hasErrors()) {
+            return "event/edit";
+        }
 
         var result = eventService.update(eventDto);
 
