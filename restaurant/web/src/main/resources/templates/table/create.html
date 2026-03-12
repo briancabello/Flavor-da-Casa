@@ -12,10 +12,12 @@
                     <div class="card-body">
                         <form method="post" th:action="@{/table/create}" th:object="${diningTable}" novalidate>
                             <div th:replace="~{table/fragments :: input}"></div>
-                            <button class="btn btn-primary" type="submit">
-                                <i class="fa fa-save me-1"></i> Save Table
-                            </button>
-                            <a class="btn btn-outline-secondary ms-2 px-4" th:href="@{/table}">Cancel</a>
+                            <div class="mt-1 pt-3 border-top">
+                                <button class="btn btn-primary px-4" type="submit">
+                                    <i class="fa fa-save me-2"></i> Save Table
+                                </button>
+                                <a class="btn btn-outline-secondary ms-2 px-4" th:href="@{/table}">Cancel</a>
+                            </div>
                         </form>
                     </div>
                 </div>

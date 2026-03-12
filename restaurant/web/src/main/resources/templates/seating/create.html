@@ -4,73 +4,24 @@
 <body>
 <div th:fragment="content">
     <div class="container py-4">
-        <h2 class="fw-bold mb-4">Create Seating</h2>
-        <div class="row">
-            <div class="col-md-8">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <form th:action="@{/seating/create}" method="post" th:object="${seating}" novalidate>
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-10 col-xl-9">
+                <h2>Create Seating</h2>
 
-                            <div class="alert alert-danger" th:if="${#fields.hasGlobalErrors()}" role="alert">
-                                <div th:each="err : ${#fields.globalErrors()}" th:text="${err}"></div>
+                <div class="card shadow-sm border-0">
+                    <div class="card-body p-4">
+                        <form method="post" th:action="@{/seating/create}" th:object="${seating}" novalidate>
+                            <div th:replace="~{seating/fragments :: input}"></div>
+
+                            <div class="mt-4 pt-3 border-top">
+                                <button class="btn btn-primary px-4" type="submit">
+                                    <i class="fa fa-save me-2"></i> Save Seating
+                                </button>
+                                <a class="btn btn-outline-secondary ms-2 px-4" th:href="@{/seating}">Cancel</a>
                             </div>
-
-                            <div class="mb-3">
-                                <label for="eventId" class="form-label fw-bold">Event</label>
-                                <select th:field="*{eventId}" id="eventId" class="form-select">
-                                    <option value="">-- Select an Event --</option>
-                                    <option th:each="event : ${events}"
-                                            th:value="${event.id}"
-                                            th:text="${event.name}"></option>
-                                </select>
-                                <div class="text-danger small mt-1" th:errors="*{eventId}"></div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="name" class="form-label fw-bold">Seating Name</label>
-                                <input th:field="*{name}" id="name" class="form-control"
-                                       placeholder="e.g. Dinner Seating 1"/>
-                                <div class="text-danger small mt-1" th:errors="*{name}"></div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="startDateTime" class="form-label fw-bold">Start Date and Time</label>
-                                <input type="datetime-local" th:field="*{startDateTime}" id="startDateTime"
-                                       class="form-control"/>
-                                <div class="text-danger small mt-1" th:errors="*{startDateTime}"></div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="duration" class="form-label fw-bold">Duration (minutes)</label>
-                                <input type="number" th:field="*{duration}" id="duration" class="form-control"
-                                       min="1" placeholder="e.g. 60"/>
-                                <div class="form-text text-muted">Defaults to event duration, but you can change it.</div>
-                                <div class="text-danger small mt-1" th:errors="*{duration}"></div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label fw-bold d-block">Available Tables</label>
-                                <div th:each="table : ${tables}" class="form-check">
-                                    <input type="checkbox" class="form-check-input"
-                                           th:field="*{selectedTableIds}" th:value="${table.id}"/>
-                                    <label class="form-check-label"
-                                           th:text="${table.name + ' (Capacity: ' + table.capacity + ')'}"></label>
-                                </div>
-                                <div class="form-text text-muted" th:if="${#lists.isEmpty(tables)}">
-                                    No tables available. Please create dining tables first.
-                                </div>
-                                <div class="text-danger small mt-1" th:errors="*{selectedTableIds}"></div>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fa fa-save me-1"></i> Create Seating
-                            </button>
                         </form>
                     </div>
                 </div>
-                <a th:href="@{/seating}" class="btn btn-link mt-3">
-                    <i class="fa fa-arrow-left me-1"></i> Back to Seatings
-                </a>
             </div>
         </div>
     </div>
