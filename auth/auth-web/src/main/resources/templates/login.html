@@ -23,15 +23,16 @@
                 <div class="card shadow-sm border-0 card-top-primary">
                     <div class="card-body p-4 p-md-5">
 
-                        <div class="alert alert-danger shadow-sm d-flex align-items-center py-2" th:if="${param.error}">
+                        <div class="alert alert-danger d-flex align-items-center small py-1 px-2 mb-2"
+                             th:if="${param.error}">
                             <i class="fa fa-exclamation-circle me-2"></i>
-                            <div>Invalid username or password.</div>
+                            <span>Invalid username or password.</span>
                         </div>
 
-                        <div class="alert alert-success shadow-sm d-flex align-items-center py-2"
+                        <div class="alert alert-success d-flex align-items-center small py-1 px-2 mb-2"
                              th:if="${param.logout}">
                             <i class="fa fa-check-circle me-2"></i>
-                            <div>You have been logged out successfully.</div>
+                            <span>You have been logged out successfully.</span>
                         </div>
 
                         <form method="post" th:action="@{/login}">

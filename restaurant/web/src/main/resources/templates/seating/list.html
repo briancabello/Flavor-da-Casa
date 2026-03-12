@@ -3,6 +3,8 @@
       xmlns:th="http://www.thymeleaf.org">
 <body>
 <div th:fragment="content">
+    <div th:replace="~{seating/fragments :: seatingBreadcrumb('Seatings', null, null)}"></div>
+
     <div class="container py-4">
         <p class="alert alert-warning" th:if="${viewModel.message}" th:text="${viewModel.message}"></p>
 

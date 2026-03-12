@@ -1,6 +1,44 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <body>
+<nav aria-label="breadcrumb" class="bg-light-subtle py-3 border-bottom mb-4"
+     th:fragment="tableBreadcrumb(currentPage, tableName, tableUrl)">
+    <div class="container small">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none text-coffee" th:href="@{/}">
+                    <i class="fa fa-home me-1"></i> Home
+                </a>
+            </li>
+
+            <li class="breadcrumb-item"
+                th:classappend="${currentPage == 'Tables'} ? ' active text-muted' : ''">
+                <a th:if="${currentPage != 'Tables'}"
+                   class="text-decoration-none text-coffee"
+                   th:href="@{/table}">
+                    Tables
+                </a>
+                <span th:if="${currentPage == 'Tables'}">Tables</span>
+            </li>
+
+            <li class="breadcrumb-item" th:if="${tableName != null and tableUrl != null}">
+                <a class="text-decoration-none text-coffee"
+                   th:href="${tableUrl}"
+                   th:text="${tableName}">
+                    Table
+                </a>
+            </li>
+
+            <li aria-current="page"
+                class="breadcrumb-item active text-muted"
+                th:if="${currentPage != 'Tables'}"
+                th:text="${currentPage}">
+                Page
+            </li>
+        </ol>
+    </div>
+</nav>
+
 <!--/*@thymesVar id="diningTable" type="nbcc.resto.dto.DiningTable"*/-->
 <th:block th:fragment="input" th:object="${diningTable}">
     <div class="alert alert-danger shadow-sm" role="alert" th:if="${#fields.hasGlobalErrors()}">
@@ -13,7 +51,7 @@
     <div class="row gx-3">
         <div class="col-md-7 mb-3">
             <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="name">Table Name</label>
-            <input class="form-control" id="name" placeholder="(Optional) e.g., Patio 1, Window A"
+            <input class="form-control" id="name" placeholder="(Optional) e.g. Patio 1"
                    th:errorclass="is-invalid" th:field="*{name}"
             />
             <div class="small text-muted" th:if="${diningTable.id == null}">

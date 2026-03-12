@@ -61,10 +61,10 @@ public class EventController {
     }
 
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable Long id, Model model){
+    public String edit(@PathVariable Long id, Model model) {
         var result = eventService.get(id);
 
-        if(result.isError() || result.isEmpty()){
+        if (result.isError() || result.isEmpty()) {
             model.addAttribute("message", "Event not found");
             return "error/errorPage";
         }
@@ -74,7 +74,7 @@ public class EventController {
     }
 
     @PostMapping("/edit/{id}")
-    public String edit(@PathVariable Long id, @ModelAttribute("event") EventDto eventDto, BindingResult br){
+    public String edit(@PathVariable Long id, @ModelAttribute("event") EventDto eventDto, BindingResult br) {
         eventDto.setId(id);
 
         if (br.hasErrors()) {
@@ -96,10 +96,10 @@ public class EventController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteConfirm(@PathVariable Long id, Model model){
+    public String deleteConfirm(@PathVariable Long id, Model model) {
         var result = eventService.get(id);
 
-        if(result.isError() || result.isEmpty()){
+        if (result.isError() || result.isEmpty()) {
             model.addAttribute("message", "Event not found");
             return "error/errorPage";
         }
@@ -122,11 +122,12 @@ public class EventController {
 
         return "redirect:/event";
     }
+
     @GetMapping("/details/{id}")
-    public String details(@PathVariable Long id, Model model){
+    public String details(@PathVariable Long id, Model model) {
         var result = eventService.get(id);
 
-        if(result.isError() || result.isEmpty()){
+        if (result.isError() || result.isEmpty()) {
             model.addAttribute("message", "Event not found");
             return "error/errorPage";
         }
@@ -135,16 +136,14 @@ public class EventController {
         return "event/details";
     }
 
-
-
     @GetMapping
     public String getAll(@RequestParam(required = false) String name,
                          @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
                          @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
-            Model model){
+                         Model model) {
         var result = eventService.search(name, startDate, endDate);
 
-        if(result.isError()){
+        if (result.isError()) {
             model.addAttribute("message", "Error retrieving events");
             return "error/errorPage";
         }
@@ -157,9 +156,4 @@ public class EventController {
         model.addAttribute("searchEndDate", endDate);
         return "event/list";
     }
-
-
-
 }
-
-
