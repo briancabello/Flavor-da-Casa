@@ -1,0 +1,228 @@
+:root {
+    --primary: #B0724A;     /* Cinnamon Wood */
+    --light: #EDD1B2;       /* Soft Apricot */
+    --dark: #26373B;        /* Dark Blue-Grey */
+    --coffee: #6F4A35;      /* Coffee Bean */
+    --charcoal: #2E4348;    /* Charcoal Blue */
+    --surface: #FDFBF8;
+
+    --primary-10: rgba(176,114,74,.10);
+    --primary-05: rgba(176,114,74,.05);
+    --light-60: rgba(237,209,178,.6);
+    --border-10: rgba(176,114,74,.10);
+    --border-15: rgba(176, 114, 74, 0.15);
+    --accent-color: rgba(111,74,53,0.6);
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--surface) !important;
+    color: var(--charcoal);
+    font-size: 1rem;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+p {
+    margin-bottom: 1.25rem;
+}
+
+h1, h2, h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--dark);
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.script {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+}
+
+.navbar-dark {
+    background: var(--dark) !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: var(--light) !important;
+    font-size: 1rem;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: .5s;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover,
+.navbar-dark .navbar-nav .nav-link.active {
+    color: var(--primary) !important;
+}
+
+.brand-icon-box {
+    background: var(--primary) !important;
+    width: 40px;
+    height: 40px;
+    aspect-ratio: 1 / 1;
+}
+
+.auth-icon-box {
+    background: var(--primary) !important;
+    width: 72px;
+    height: 72px;
+    aspect-ratio: 1 / 1;
+}
+
+.nav-user-group {
+    margin-left: 25px;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.nav-user-group .nav-link {
+    margin-left: 0 !important;
+    padding-left: 8px !important;
+}
+
+.card {
+    border: 1px solid var(--border-10);
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.table thead th {
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--accent-color) !important;
+    border-bottom: 2px solid var(--primary) !important;
+    background: transparent;
+    font-weight: 500;
+}
+
+.table thead.bg-dark th {
+    background-color: var(--dark) !important;
+    color: var(--light) !important;
+}
+
+.table tbody td {
+    border-bottom: 1px solid var(--border-10);
+    vertical-align: middle;
+}
+
+.table-hover {
+    --bs-table-hover-bg: var(--primary-05);
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.hero-header {
+    background: var(--charcoal) !important;
+    min-height: 40vh;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-header p {
+    color: var(--light-60) !important;
+}
+
+.btn-primary {
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+    color: var(--surface) !important;
+    transition: 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--coffee) !important;
+    border-color: var(--coffee) !important;
+    color: #fff;
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--light) !important;
+    border: 1.5px solid var(--light) !important;
+}
+
+.btn-outline:hover {
+    background: var(--primary-10) !important;
+}
+
+.bg-dark {
+    background-color: var(--dark) !important;
+}
+
+.text-coffee {
+    color: var(--coffee) !important;
+}
+
+.text-primary {
+    color: var(--primary) !important;
+}
+
+.text-light {
+    color: var(--light) !important;
+}
+
+.text-accent {
+    color: var(--accent-color) !important;
+}
+
+.ls-wide {
+    letter-spacing: 0.05em;
+}
+
+.footer {
+    background: var(--dark) !important;
+    color: var(--light) !important;
+}
+
+.footer span {
+    color: var(--primary) !important;
+}
+
+.card-top-primary {
+    border-top: 3px solid var(--primary) !important;
+}
+
+.form-check-input:checked {
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+}
+
+.form-check-input:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 0.25rem var(--primary-10) !important;
+}
+
+/* ==========================================
+   PROPERTY GRID STYLES
+   ========================================== */
+
+.property-grid {
+    background-color: #ffffff;
+    border-color: var(--border-15) !important;
+}
+
+.property-grid .border-bottom {
+    border-bottom-color: var(--border-15) !important;
+}
+
+.property-label-bg {
+    background-color: var(--primary-10) !important;
+}
+
+.text-sm-label {
+    font-size: 0.85rem;
+}
+
+.text-xs-badge {
+    font-size: 0.75rem;
+}

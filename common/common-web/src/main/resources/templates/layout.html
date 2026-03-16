@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" th:fragment="layout(title, content)" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <th:block th:replace="~{partial :: head}" th:with="title=${title}"></th:block>
+    </head>
+
+    <body class="d-flex flex-column min-vh-100">
+        <header th:replace="~{nav :: nav}"></header>
+        <main class="flex-grow-1" th:replace="${content}"></main>
+        <footer th:replace="~{footer :: footer}"></footer>
+        <th:block th:replace="~{partial :: scripts}"></th:block>
+    </body>
+</html>

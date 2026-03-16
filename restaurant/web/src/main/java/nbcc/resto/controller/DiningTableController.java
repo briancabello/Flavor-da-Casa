@@ -1,0 +1,153 @@
+package nbcc.resto.controller;
+
+import jakarta.servlet.http.HttpServletRequest;
+import nbcc.common.service.LoginService;
+import nbcc.resto.dto.DiningTable;
+import nbcc.resto.service.DiningTableService;
+import nbcc.resto.viewmodels.DiningTableListViewModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import static nbcc.common.validation.ModelErrorConverter.addErrorsToBindingResults;
+
+@Controller
+@PreAuthorize("isAuthenticated()")
+@RequestMapping("/table")
+public class DiningTableController {
+
+    private final Logger logger = LoggerFactory.getLogger(DiningTableController.class);
+    private final LoginService loginService;
+    private final DiningTableService tableService;
+
+    public DiningTableController(LoginService loginService, DiningTableService tableService) {
+        this.loginService = loginService;
+        this.tableService = tableService;
+    }
+
+    @GetMapping
+    public String getAll(Model model) {
+        var result = tableService.getAll();
+
+        if (result.isError()) {
+            model.addAttribute("message", "Error retrieving dining tables");
+            return "error/errorPage";
+        }
+
+        DiningTableListViewModel viewModel = new DiningTableListViewModel(result.getValue(), loginService.isLoggedIn());
+        model.addAttribute("viewModel", viewModel);
+        return "table/list";
+    }
+
+    @GetMapping("/create")
+    public String create(Model model) {
+        model.addAttribute("diningTable", new DiningTable());
+        return "table/create";
+    }
+
+    @PostMapping("/create")
+    public String create(@ModelAttribute("diningTable") DiningTable diningTable,
+                         BindingResult br,
+                         RedirectAttributes redirectAttributes) {
+        var result = tableService.create(diningTable);
+
+        if (result.isError()) {
+            return "error/errorPage";
+        }
+
+        if (result.isInvalid()) {
+            addErrorsToBindingResults(br, result, "diningTable");
+            return "table/create";
+        }
+
+        redirectAttributes.addFlashAttribute("tableName", diningTable.getName());
+        redirectAttributes.addFlashAttribute("action", "created");
+
+        return "redirect:/table";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable Long id, Model model) {
+        var result = tableService.get(id);
+
+        if (result.isError() || result.isEmpty()) {
+            model.addAttribute("message", "Dining table not found");
+            return "error/errorPage";
+        }
+
+        model.addAttribute("diningTable", result.getValue());
+        return "table/edit";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String edit(@PathVariable Long id,
+                       @ModelAttribute("diningTable") DiningTable diningTable,
+                       BindingResult br,
+                       RedirectAttributes redirectAttributes) {
+        diningTable.setId(id);
+        var result = tableService.update(diningTable);
+
+        if (result.isError()) {
+            return "error/errorPage";
+        }
+
+        if (result.isInvalid()) {
+            addErrorsToBindingResults(br, result, "diningTable");
+            return "table/edit";
+        }
+
+        redirectAttributes.addFlashAttribute("tableName", diningTable.getName());
+        redirectAttributes.addFlashAttribute("action", "updated");
+
+        return "redirect:/table";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteConfirm(@PathVariable Long id, Model model) {
+        var result = tableService.get(id);
+
+        if (result.isError() || result.isEmpty()) {
+            model.addAttribute("message", "Dining table not found");
+            return "error/errorPage";
+        }
+
+        model.addAttribute("diningTable", result.getValue());
+        return "table/delete";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        var existingTable = tableService.get(id);
+
+        if (existingTable.isError() || existingTable.isEmpty()) {
+            return "error/errorPage";
+        }
+
+        var name = existingTable.getValue().getName();
+
+        var result = tableService.delete(id);
+
+        if (result.isError()) {
+            return "error/errorPage";
+        }
+
+        redirectAttributes.addFlashAttribute("tableName", name);
+        redirectAttributes.addFlashAttribute("action", "deleted");
+
+        return "redirect:/table";
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String exceptionHandler(Model model, Exception ex, HttpServletRequest request) {
+        logger.error("Unexpected Exception on uri {}: on method {} ", request.getRequestURI(), request.getMethod(), ex);
+        model.addAttribute("message", "Unexpected Error Occurred");
+        return "error/errorPage";
+    }
+}

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav aria-label="breadcrumb" class="bg-light-subtle py-3 border-bottom mb-4"
+     th:fragment="eventBreadcrumb(currentPage, eventName, eventUrl)">
+    <div class="container small">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none text-coffee" th:href="@{/}">
+                    <i class="fa fa-home me-1"></i> Home
+                </a>
+            </li>
+
+            <li class="breadcrumb-item"
+                th:classappend="${currentPage == 'Events'} ? ' active text-muted' : ''">
+                <a th:if="${currentPage != 'Events'}"
+                   class="text-decoration-none text-coffee"
+                   th:href="@{/event}">
+                    Events
+                </a>
+                <span th:if="${currentPage == 'Events'}">Events</span>
+            </li>
+
+            <li class="breadcrumb-item" th:if="${eventName != null and eventUrl != null}">
+                <a class="text-decoration-none text-coffee"
+                   th:href="${eventUrl}"
+                   th:text="${eventName}">
+                    Event
+                </a>
+            </li>
+
+            <li aria-current="page"
+                class="breadcrumb-item active text-muted"
+                th:if="${currentPage != 'Events'}"
+                th:text="${currentPage}">
+                Page
+            </li>
+        </ol>
+    </div>
+</nav>
+
+<div th:fragment="successAlert(name, action)" class="alert alert-success alert-dismissible fade show small"
+     th:if="${name}" role="alert"
+>
+    <i class="fa fa-check-circle me-2"></i>
+
+    Event <strong th:text="${name}"></strong>
+    <span th:text="${action}"></span> successfully.
+
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<!--/*@thymesVar id="event" type="nbcc.resto.dto.EventDto"*/-->
+<th:block th:fragment="input" th:object="${event}">
+    <div class="alert alert-danger shadow-sm" role="alert" th:if="${#fields.hasGlobalErrors()}">
+        <i class="fa fa-exclamation-circle me-2"></i>
+        <span th:each="err : ${#fields.globalErrors()}" th:text="${err}"></span>
+    </div>
+
+    <input th:field="*{id}" th:if="*{id != null}" type="hidden"/>
+
+    <div class="mb-3">
+        <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="name">Event Name</label>
+        <input class="form-control" id="name" placeholder="e.g. Mother's Day Brunch"
+               th:errorclass="is-invalid" th:field="*{name}" type="text"
+        >
+        <div class="invalid-feedback fw-medium" th:errors="*{name}"></div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="description">Description</label>
+        <textarea class="form-control" id="description" placeholder="(Optional) A brief description of the event ..."
+                  rows="3" th:errorclass="is-invalid" th:field="*{description}"></textarea>
+        <div class="invalid-feedback fw-medium" th:errors="*{description}"></div>
+    </div>
+
+    <div class="row gx-3">
+        <div class="col-md-6 mb-3">
+            <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="startDate">Start Date</label>
+            <input class="form-control" id="startDate" th:errorclass="is-invalid" th:field="*{startDate}" type="date">
+            <div class="invalid-feedback fw-medium" th:errors="*{startDate}"></div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="endDate">End Date</label>
+            <input class="form-control" id="endDate" th:errorclass="is-invalid" th:field="*{endDate}" type="date">
+            <div class="invalid-feedback fw-medium" th:errors="*{endDate}"></div>
+        </div>
+    </div>
+
+    <div class="row gx-3">
+        <div class="col-md-6 mb-3">
+            <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="duration">Duration
+                (Minutes)</label>
+            <input class="form-control" id="duration" placeholder="e.g. 60" th:errorclass="is-invalid"
+                   th:field="*{duration}" type="number">
+            <div class="invalid-feedback fw-medium" th:errors="*{duration}"></div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="price">Price ($)</label>
+            <input class="form-control" id="price" placeholder="e.g. 19.99" step="0.01" th:errorclass="is-invalid"
+                   th:field="*{price}"
+                   type="number">
+            <div class="invalid-feedback fw-medium" th:errors="*{price}"></div>
+        </div>
+    </div>
+
+    <div class="mb-2 form-check">
+        <input class="form-check-input" id="activeCheckbox" th:field="*{active}" type="checkbox">
+        <label class="form-check-label text-dark fw-medium" for="activeCheckbox">Active</label>
+    </div>
+</th:block>
+
+<th:block th:fragment="details" th:object="${event}">
+    <div class="rounded-3 overflow-hidden shadow-sm border property-grid">
+        <div class="bg-dark text-white px-4 py-3 d-flex align-items-center">
+            <i class="fa fa-calendar-alt text-primary me-3 fs-5"></i>
+            <h5 class="mb-0 fw-medium ls-wide text-light" th:text="*{name}">Summer Grill Fest</h5>
+        </div>
+
+        <div class="d-flex flex-column">
+
+            <div class="row g-0 border-bottom" th:if="*{description}">
+                <div class="col-4 col-sm-3 p-3 d-flex align-items-center property-label-bg">
+                    <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Description</span>
+                </div>
+                <div class="col-8 col-sm-9 p-3 d-flex align-items-center">
+                    <span class="text-dark" th:text="*{description}"></span>
+                </div>
+            </div>
+
+            <div class="row g-0 border-bottom">
+                <div class="col-4 col-sm-3 p-3 d-flex align-items-center property-label-bg">
+                    <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Start Date</span>
+                </div>
+                <div class="col-8 col-sm-9 p-3 d-flex align-items-center">
+                    <span class="text-dark fw-medium" th:text="${#temporals.format(event.startDate, 'yyyy-MM-dd')}">2026-06-20</span>
+                </div>
+            </div>
+
+            <div class="row g-0 border-bottom">
+                <div class="col-4 col-sm-3 p-3 d-flex align-items-center property-label-bg">
+                    <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">End Date</span>
+                </div>
+                <div class="col-8 col-sm-9 p-3 d-flex align-items-center">
+                    <span class="text-dark fw-medium" th:text="${#temporals.format(event.endDate, 'yyyy-MM-dd')}">2026-06-22</span>
+                </div>
+            </div>
+
+            <div class="row g-0 border-bottom">
+                <div class="col-4 col-sm-3 p-3 d-flex align-items-center property-label-bg">
+                    <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Duration</span>
+                </div>
+                <div class="col-8 col-sm-9 p-3 d-flex align-items-center">
+                    <span class="text-dark fw-medium" th:text="*{duration} + ' minutes'">120 minutes</span>
+                </div>
+            </div>
+
+            <div class="row g-0 border-bottom">
+                <div class="col-4 col-sm-3 p-3 d-flex align-items-center property-label-bg">
+                    <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Price</span>
+                </div>
+                <div class="col-8 col-sm-9 p-3 d-flex align-items-center">
+                    <span class="text-dark fw-medium"
+                          th:text="*{price == 0 ? 'Free' : '$' + #numbers.formatDecimal(price, 1, 2)}">$65.00</span>
+                </div>
+            </div>
+
+            <div class="row g-0">
+                <div class="col-4 col-sm-3 p-3 d-flex align-items-center property-label-bg">
+                    <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Active</span>
+                </div>
+                <div class="col-8 col-sm-9 p-3 d-flex align-items-center">
+                    <span class="badge rounded-pill fw-bold text-uppercase px-3 py-2 ls-wide text-xs-badge"
+                          th:classappend="*{active} ? 'bg-success bg-opacity-10 text-success' : 'bg-secondary bg-opacity-10 text-secondary'"
+                          th:text="*{active} ? 'Active' : 'Inactive'">
+                        ACTIVE
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+</body>
+</html>

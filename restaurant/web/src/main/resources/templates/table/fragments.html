@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav aria-label="breadcrumb" class="bg-light-subtle py-3 border-bottom mb-4"
+     th:fragment="tableBreadcrumb(currentPage, tableName, tableUrl)">
+    <div class="container small">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none text-coffee" th:href="@{/}">
+                    <i class="fa fa-home me-1"></i> Home
+                </a>
+            </li>
+
+            <li class="breadcrumb-item"
+                th:classappend="${currentPage == 'Tables'} ? ' active text-muted' : ''">
+                <a th:if="${currentPage != 'Tables'}"
+                   class="text-decoration-none text-coffee"
+                   th:href="@{/table}">
+                    Tables
+                </a>
+                <span th:if="${currentPage == 'Tables'}">Tables</span>
+            </li>
+
+            <li class="breadcrumb-item" th:if="${tableName != null and tableUrl != null}">
+                <a class="text-decoration-none text-coffee"
+                   th:href="${tableUrl}"
+                   th:text="${tableName}">
+                    Table
+                </a>
+            </li>
+
+            <li aria-current="page"
+                class="breadcrumb-item active text-muted"
+                th:if="${currentPage != 'Tables'}"
+                th:text="${currentPage}">
+                Page
+            </li>
+        </ol>
+    </div>
+</nav>
+
+<div th:fragment="successAlert(name, action)" class="alert alert-success alert-dismissible fade show small"
+     role="alert" th:if="${name}"
+>
+    <i class="fa fa-check-circle me-2"></i>
+    <span>
+        Dining table <strong th:text="${name}"></strong>
+        <span th:text="${action}"></span> successfully.
+    </span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<!--/*@thymesVar id="diningTable" type="nbcc.resto.dto.DiningTable"*/-->
+<th:block th:fragment="input" th:object="${diningTable}">
+    <div class="alert alert-danger shadow-sm" role="alert" th:if="${#fields.hasGlobalErrors()}">
+        <i class="fa fa-exclamation-circle me-2"></i>
+        <span th:each="err : ${#fields.globalErrors()}" th:text="${err}"></span>
+    </div>
+
+    <input th:field="*{id}" type="hidden"/>
+
+    <div class="row gx-3">
+        <div class="col-md-7 mb-3">
+            <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="name">Table Name</label>
+            <input class="form-control" id="name" placeholder="(Optional) e.g. Patio 1"
+                   th:errorclass="is-invalid" th:field="*{name}"
+            />
+            <div class="small text-muted" th:if="${diningTable.id == null}">
+                Leave blank to auto-assign a table number.
+            </div>
+
+            <div class="invalid-feedback fw-medium" th:errors="*{name}"></div>
+        </div>
+
+        <div class="col-md-5 mb-3">
+            <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="capacity">Seating Capacity</label>
+            <input class="form-control" id="capacity" min="1" placeholder="Number of guests"
+                   th:errorclass="is-invalid" th:field="*{capacity}" type="number"
+            />
+            <div class="invalid-feedback fw-medium" th:errors="*{capacity}"></div>
+        </div>
+    </div>
+</th:block>
+
+<th:block th:fragment="details">
+    <div class="row mb-0">
+        <div class="col-6">
+            <h6 class="text-muted text-uppercase fw-bold ls-wide mb-1">Name</h6>
+            <p class="fs-5 mb-0" th:text="${diningTable.name}">Table 1</p>
+        </div>
+
+        <div class="col-6">
+            <h6 class="text-muted text-uppercase fw-bold ls-wide mb-1">Capacity</h6>
+            <p class="fs-5 mb-0"
+               th:text="${diningTable.capacity + ' ' + (diningTable.capacity == 1 ? 'guest' : 'guests')}"
+            >
+            </p>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>

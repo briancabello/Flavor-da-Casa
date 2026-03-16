@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{layout :: layout(title='Event Details', content=~{::content})}"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+    <div th:replace="~{event/fragments :: eventBreadcrumb(${event.name}, null, null)}"></div>
+
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-9 col-xl-8">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2>Event Details</h2>
+                    <a class="btn btn-outline-secondary" th:href="@{/event}">
+                        <i class="fa fa-arrow-left me-1"></i> Back to List
+                    </a>
+                </div>
+
+                <p class="text-accent mb-4">
+                    Reviewing the schedule, pricing, and operational status for this event.
+                    Use the management tools below to make adjustments or remove the entry.
+                </p>
+
+                <div class="mb-4 text-start">
+                    <div th:replace="~{event/fragments :: details}"></div>
+                </div>
+
+                <div class="rounded-3 overflow-hidden border property-grid shadow-sm mb-4">
+                    <div class="property-label-bg px-4 py-2 border-bottom">
+                        <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">
+                            <i class="fa fa-history me-1"></i> System Audit Trail
+                        </span>
+                    </div>
+                    <div class="row g-0 border-bottom">
+                        <div class="col-4 p-3 d-flex align-items-center property-label-bg">
+                            <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Created Date</span>
+                        </div>
+                        <div class="col-8 p-3">
+                            <span class="text-dark fw-medium"
+                                  th:text="${event.createdDate != null ? #temporals.format(event.createdDate, 'MMMM dd, yyyy HH:mm') : 'N/A'}"></span>
+                        </div>
+                    </div>
+                    <div class="row g-0">
+                        <div class="col-4 p-3 d-flex align-items-center property-label-bg">
+                            <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Last Updated</span>
+                        </div>
+                        <div class="col-8 p-3">
+                            <span class="text-dark fw-medium"
+                                  th:text="${event.lastUpdatedDate != null ? #temporals.format(event.lastUpdatedDate, 'MMMM dd, yyyy HH:mm') : 'N/A'}"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                    <a class="btn btn-primary" th:href="@{/event/edit/{id}(id=${event.id})}">
+                        <i class="fa fa-edit me-1"></i> Edit Event
+                    </a>
+                    <a class="btn btn-danger" th:href="@{/event/delete/{id}(id=${event.id})}">
+                        <i class="fa fa-trash me-1"></i> Delete Event
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

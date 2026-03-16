@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{layout :: layout(title='Home', content=~{::content})}"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div th:fragment="content">
+        <div class="hero-header d-flex align-items-center">
+            <div class="container py-5">
+                <div class="row">
+                    <div class="col-lg-8 col-xl-7">
+                        <p class="lead script text-primary mb-2 opacity-75">Welcome to</p>
+                        <h1 class="display-4 fw-bold text-light mb-2">
+                            Flavor da Casa
+                        </h1>
+
+                        <p class="lead text-primary mb-4 opacity-75">
+                            Experience the true taste of home. We blend authentic family recipes with a warm, inviting
+                            atmosphere to create unforgettable culinary moments.
+                        </p>
+
+                        <div class="d-flex flex-wrap gap-3">
+                            <a class="btn btn-primary px-4 rounded-2" href="/table">Book a Table</a>
+                            <a class="btn btn-outline px-4 rounded-2" href="/event">View
+                                Events
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
