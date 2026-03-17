@@ -61,4 +61,34 @@ public class MenuServiceImpl implements MenuService {
             return ValidationResults.error(menu);
         }
     }
+
+    @Override
+    public ValidatedResult<Menu> update(Menu menu) {
+        try {
+            var errors = validationService.validate(menu);
+
+            if (errors.isEmpty()) {
+                return ValidationResults.success(menuRepository.update(menu));
+            }
+
+            logger.debug("Validation errors for menu update {}: {}", menu, errors);
+            return ValidationResults.invalid(menu, errors);
+
+        } catch (Exception e) {
+            logger.error("Error updating menu {}", menu, e);
+            return ValidationResults.error(menu);
+        }
+    }
+
+    @Override
+    public ValidatedResult<Void> delete(Long id) {
+        try {
+            menuRepository.delete(id);
+            logger.debug("Menu with id {} deleted", id);
+            return ValidationResults.success();
+        } catch (Exception e) {
+            logger.error("Error deleting menu with id: {}", id, e);
+            return ValidationResults.error(e);
+        }
+    }
 }
