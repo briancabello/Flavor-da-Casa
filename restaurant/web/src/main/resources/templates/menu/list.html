@@ -28,6 +28,12 @@
             <a class="me-2" th:href="@{/menu/details/{id}(id=${menu.id})}" title="View Details">
               <i class="fa fa-eye text-primary fs-5"></i>
             </a>
+            <a class="me-2" th:href="@{/menu/edit/{id}(id=${menu.id})}" th:if="${viewModel.canEdit}" title="Edit Menu">
+              <i class="fa fa-edit text-primary fs-5"></i>
+            </a>
+            <a th:href="@{/menu/delete/{id}(id=${menu.id})}" th:if="${viewModel.canDelete}" title="Delete Menu">
+              <i class="fa fa-trash text-primary fs-5"></i>
+            </a>
           </div>
         </div>
       </div>
