@@ -31,6 +31,9 @@ public class Seating {
     private Collection<DiningTable> tables;
     private Set<Long> selectedTableIds;
 
+    private boolean status;
+    private LocalDateTime updatedDate;
+
     public Seating() {
         this.tables = new ArrayList<>();
         this.selectedTableIds = new HashSet<>();
@@ -44,6 +47,8 @@ public class Seating {
         this.startDateTime = seating.getStartDateTime();
         this.duration = seating.getDuration();
         this.createdDate = seating.getCreatedDate();
+        this.status = seating.isStatus();
+        this.updatedDate = seating.getUpdatedDate();
 
         if (seating.getTables() != null) {
             this.tables = new ArrayList<>(seating.getTables());
@@ -131,5 +136,23 @@ public class Seating {
             return startDateTime.plusMinutes(duration);
         }
         return null;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public Seating setStatus(boolean status) {
+        this.status = status;
+        return this;
+    }
+
+    public LocalDateTime getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public Seating setUpdatedDate(LocalDateTime updatedDate) {
+        this.updatedDate = updatedDate;
+        return this;
     }
 }

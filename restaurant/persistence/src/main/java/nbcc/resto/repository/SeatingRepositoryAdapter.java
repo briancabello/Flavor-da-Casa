@@ -82,11 +82,11 @@ public class SeatingRepositoryAdapter implements SeatingRepository {
         return seatingMapper.toDTO(savedEntity);
     }
 
-    // @Override
-    // @Transactional
-    // public void delete(Long id) {
-    //     seatingJpa.deleteById(id);
-    // }
+     @Override
+     @Transactional
+     public void delete(Long id) {
+         seatingJpa.deleteById(id);
+     }
 
     private Collection<DiningTable> getTablesForSeating(Long seatingId) {
         return seatingTableJpa.findBySeatingId(seatingId).stream()
