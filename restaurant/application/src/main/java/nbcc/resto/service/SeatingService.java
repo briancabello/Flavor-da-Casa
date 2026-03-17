@@ -16,6 +16,10 @@ public interface SeatingService {
 
     ValidatedResult<Seating> create(Seating seating);
 
-   // ValidatedResult<Void> delete(Long id);
+    Result<Seating> get(Long id);
+
+    ValidatedResult<Seating> update(Seating seating);
+
+    ValidatedResult<Seating> delete(Long id);
 
 }
