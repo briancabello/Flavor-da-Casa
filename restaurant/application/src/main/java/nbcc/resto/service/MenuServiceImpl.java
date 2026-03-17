@@ -8,9 +8,11 @@ import nbcc.resto.repository.MenuRepository;
 import nbcc.resto.validation.MenuValidationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
+@Service
 public class MenuServiceImpl implements MenuService {
 
     private final Logger logger = LoggerFactory.getLogger(MenuServiceImpl.class);
