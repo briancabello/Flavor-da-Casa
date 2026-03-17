@@ -91,4 +91,14 @@ public class MenuServiceImpl implements MenuService {
             return ValidationResults.error(e);
         }
     }
+
+    @Override
+    public Result<Collection<Menu>> searchByName(String name) {
+        try {
+            return ValidationResults.success(menuRepository.searchByName(name));
+        } catch (Exception e) {
+            logger.error("Error searching menus by name: {}", name, e);
+            return ValidationResults.error(e);
+        }
+    }
 }

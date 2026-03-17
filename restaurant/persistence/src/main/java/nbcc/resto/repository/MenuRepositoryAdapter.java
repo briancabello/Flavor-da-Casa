@@ -49,4 +49,10 @@ public class MenuRepositoryAdapter implements MenuRepository {
     public void delete(Long id) {
         jpaRepository.deleteById(id);
     }
+
+    @Override
+    public Collection<Menu> searchByName(String name) {
+        var entities = jpaRepository.findByNameContainingIgnoreCase(name);
+        return mapper.toDTO(entities);
+    }
 }

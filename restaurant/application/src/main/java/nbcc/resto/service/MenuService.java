@@ -17,4 +17,6 @@ public interface MenuService {
     ValidatedResult<Menu> update(Menu menu);
 
     ValidatedResult<Void> delete(Long id);
+
+    Result<Collection<Menu>> searchByName(String name);
 }

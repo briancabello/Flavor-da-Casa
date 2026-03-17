@@ -16,4 +16,6 @@ public interface MenuRepository {
     Menu update(Menu menu);
 
     void delete(Long id);
+
+    Collection<Menu> searchByName(String name);
 }
