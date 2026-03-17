@@ -15,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+
 import static nbcc.common.validation.ModelErrorConverter.addErrorsToBindingResults;
 
 @Controller
@@ -83,6 +85,68 @@ public class MenuController {
 
         model.addAttribute("menu", result.getValue());
         return "menu/details";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable Long id, Model model) {
+        var result = menuService.get(id);
+
+        if (result.isError()) {
+            return "error/errorPage";
+        }
+        if (result.isEmpty()) {
+            model.addAttribute("message", "The menu you are trying to edit was not found");
+            return "error/errorPage";
+        }
+
+        model.addAttribute("menu", result.getValue());
+        return "menu/edit";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String edit(@PathVariable Long id,
+                       @ModelAttribute("menu") Menu menu,
+                       BindingResult br,
+                       Model model) {
+        menu.setId(id);
+        var result = menuService.update(menu);
+
+        if (result.isError()) {
+            return "error/errorPage";
+        }
+        if (result.isInvalid()) {
+            addErrorsToBindingResults(br, result, "menu");
+            return "menu/edit";
+        }
+
+        return "redirect:/menu";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Long id, Model model) {
+        var result = menuService.get(id);
+
+        if (result.isError()) {
+            return "error/errorPage";
+        }
+        if (result.isEmpty()) {
+            model.addAttribute("message", "The menu you are trying to delete was not found");
+            return "error/errorPage";
+        }
+
+        model.addAttribute("menu", result.getValue());
+        return "menu/delete";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Long id) {
+        var result = menuService.delete(id);
+
+        if (result.isError()) {
+            return "error/errorPage";
+        }
+
+        return "redirect:/menu";
     }
 
     @ExceptionHandler(Exception.class)
