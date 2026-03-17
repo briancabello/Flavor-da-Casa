@@ -35,15 +35,30 @@ public class MenuController {
     }
 
     @GetMapping
-    public String getAll(Model model) {
-        var result = menuService.getAll();
+    public String getAll(@RequestParam(required = false) String search, Model model) {
 
-        if (result.isError()) {
-            model.addAttribute("message", "Error retrieving menus");
-            return "error/errorPage";
+        MenuListViewModel viewModel;
+
+        if (search != null && !search.isBlank()) {
+            var result = menuService.searchByName(search);
+
+            if (result.isError()) {
+                model.addAttribute("message", "Error searching menus");
+                return "error/errorPage";
+            }
+
+            viewModel = new MenuListViewModel(result.getValue(), loginService.isLoggedIn(), search);
+        } else {
+            var result = menuService.getAll();
+
+            if (result.isError()) {
+                model.addAttribute("message", "Error retrieving menus");
+                return "error/errorPage";
+            }
+
+            viewModel = new MenuListViewModel(result.getValue(), loginService.isLoggedIn());
         }
 
-        MenuListViewModel viewModel = new MenuListViewModel(result.getValue(), loginService.isLoggedIn());
         model.addAttribute("viewModel", viewModel);
         return "menu/list";
     }

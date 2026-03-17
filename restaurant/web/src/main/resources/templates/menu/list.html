@@ -1,44 +1,76 @@
 <!DOCTYPE html>
-<html lang="en" th:replace="~{layout :: layout(title='Menus', content=~{::content})}" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" th:replace="~{layout :: layout(title='Menus', content=~{::content})}"
+      xmlns:th="http://www.thymeleaf.org">
 <body>
 <div th:fragment="content">
-  <div th:replace="~{menu/fragments :: menuBreadcrumb('Menus', null, null)}"></div>
+    <div th:replace="~{menu/fragments :: menuBreadcrumb('Menus', null, null)}"></div>
 
-  <div class="container py-4">
-    <p class="alert alert-warning shadow-sm" th:if="${viewModel.message}" th:text="${viewModel.message}"></p>
-    <div th:replace="~{menu/fragments :: successAlert(${menuName}, ${action})}"></div>
+    <div class="container py-4">
+        <p class="alert alert-warning shadow-sm" th:if="${viewModel.message}" th:text="${viewModel.message}"></p>
+        <div th:replace="~{menu/fragments :: successAlert(${menuName}, ${action})}"></div>
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h2>Menus</h2>
-      <a class="btn btn-primary" th:href="@{/menu/create}" th:if="${viewModel.canAdd}">
-        <i class="fa fa-plus me-1"></i> Create Menu
-      </a>
-    </div>
-
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" th:unless="${viewModel.isEmpty()}">
-      <div class="col" th:each="menu : ${viewModel.menus}">
-        <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden">
-          <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-3">
-            <h5 class="mb-0 fw-medium ls-wide text-light" th:text="${menu.name}">Menu Name</h5>
-          </div>
-          <div class="card-body">
-            <p class="card-text text-muted" th:text="${menu.description ?: 'No description provided.'}"></p>
-          </div>
-          <div class="card-footer bg-white border-top-0 pb-3 pt-0 d-flex justify-content-end gap-2">
-            <a class="me-2" th:href="@{/menu/details/{id}(id=${menu.id})}" title="View Details">
-              <i class="fa fa-eye text-primary fs-5"></i>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Menus</h2>
+            <a class="btn btn-primary" th:href="@{/menu/create}" th:if="${viewModel.canAdd}">
+                <i class="fa fa-plus me-1"></i> Create Menu
             </a>
-            <a class="me-2" th:href="@{/menu/edit/{id}(id=${menu.id})}" th:if="${viewModel.canEdit}" title="Edit Menu">
-              <i class="fa fa-edit text-primary fs-5"></i>
-            </a>
-            <a th:href="@{/menu/delete/{id}(id=${menu.id})}" th:if="${viewModel.canDelete}" title="Delete Menu">
-              <i class="fa fa-trash text-primary fs-5"></i>
-            </a>
-          </div>
         </div>
-      </div>
+
+        <div class="mb-4">
+            <h5 class="text-accent text-uppercase mb-3 small ls-wide">Find menus by name</h5>
+            <form class="row g-3" method="get" th:action="@{/menu}">
+                <div class="col-md-9">
+                    <label class="form-label text-muted text-uppercase" for="search"
+                           style="font-size: 0.85rem;">Name</label>
+                    <input class="form-control" id="search" name="search" placeholder="Search by name ..."
+                           th:value="${viewModel.searchTerm}" type="text">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label d-none d-md-block opacity-0">Spacer</label>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-primary w-100" type="submit"><i class="fa fa-search me-1"></i> Search
+                        </button>
+                        <a class="btn btn-outline-secondary w-100" th:href="@{/menu}"><i class="fa fa-undo me-1"></i>
+                            Clear</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <p class="text-muted mb-3" th:if="${viewModel.isSearching()}">
+            Showing results for "<span th:text="${viewModel.searchTerm}"></span>"
+        </p>
+
+        <div class="alert alert-info shadow-sm" th:if="${viewModel.isEmpty()}">
+            <i class="fa fa-info-circle me-1"></i> There are currently no menus matching your criteria.
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" th:unless="${viewModel.isEmpty()}">
+            <div class="col" th:each="menu : ${viewModel.menus}">
+                <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden">
+                    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-3">
+                        <h5 class="mb-0 fw-medium ls-wide text-light" th:text="${menu.name}">Menu Name</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text text-muted" th:text="${menu.description ?: 'No description provided.'}"></p>
+                    </div>
+                    <div class="card-footer bg-white border-top-0 pb-3 pt-0 d-flex justify-content-end gap-2">
+                        <a class="me-2" th:href="@{/menu/details/{id}(id=${menu.id})}" title="View Details">
+                            <i class="fa fa-eye text-primary fs-5"></i>
+                        </a>
+                        <a class="me-2" th:href="@{/menu/edit/{id}(id=${menu.id})}" th:if="${viewModel.canEdit}"
+                           title="Edit Menu">
+                            <i class="fa fa-edit text-primary fs-5"></i>
+                        </a>
+                        <a th:href="@{/menu/delete/{id}(id=${menu.id})}" th:if="${viewModel.canDelete}"
+                           title="Delete Menu">
+                            <i class="fa fa-trash text-primary fs-5"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 </body>
 </html>
