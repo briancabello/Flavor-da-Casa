@@ -130,5 +130,38 @@
     </div>
 </th:block>
 
+<!--/*@thymesVar id="seating" type="nbcc.resto.dto.Seating"*/-->
+<th:block th:fragment="details">
+    <div class="row mb-3">
+        <div class="col-6">
+            <h6 class="text-muted text-uppercase fw-bold ls-wide mb-1">Seating Name</h6>
+            <p class="fs-5 mb-0" th:text="${seating.name}">Seating 1</p>
+        </div>
+        <div class="col-6">
+            <h6 class="text-muted text-uppercase fw-bold ls-wide mb-1">Event</h6>
+            <p class="fs-5 mb-0" th:text="${eventName}">Event Name</p>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-6">
+            <h6 class="text-muted text-uppercase fw-bold ls-wide mb-1">Start Date &amp; Time</h6>
+            <p class="fs-5 mb-0" th:text="${#temporals.format(seating.startDateTime, 'MMMM dd, yyyy h:mm a')}"></p>
+        </div>
+        <div class="col-6">
+            <h6 class="text-muted text-uppercase fw-bold ls-wide mb-1">Duration</h6>
+            <p class="fs-5 mb-0" th:text="${seating.duration + ' minutes'}"></p>
+        </div>
+    </div>
+    <div class="row mb-0">
+        <div class="col-12">
+            <h6 class="text-muted text-uppercase fw-bold ls-wide mb-1">Tables</h6>
+            <div>
+                <span class="badge bg-secondary me-1" th:each="table : ${seating.tables}" th:text="${table.name}"></span>
+                <span class="text-muted" th:if="${#lists.isEmpty(seating.tables)}">No tables assigned</span>
+            </div>
+        </div>
+    </div>
+</th:block>
+
 </body>
 </html>
