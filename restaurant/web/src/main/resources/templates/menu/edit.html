@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en"
+      th:replace="~{layout :: layout(title='Edit Menu', content=~{::content})}"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+    <div th:replace="~{menu/fragments :: menuBreadcrumb('Edit Menu', ${menu.name}, @{/menu/details/{id}(id=${menu.id})})}"></div>
+
+    <div class="container py-4">
+        <div class="mb-4">
+            <h2 class="mb-0">Edit Menu</h2>
+            <p class="text-accent mb-0">Update menu details and manage menu items.</p>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-5">
+                <h3 class="fs-4">Menu Details</h3>
+
+                <div class="card shadow-sm card-top-primary mb-4">
+                    <div class="card-body p-4">
+                        <form method="post"
+                              novalidate
+                              th:action="@{/menu/edit/{id}(id=${menu.id})}"
+                              th:object="${menu}">
+                            <div th:replace="~{menu/fragments :: input}"></div>
+
+                            <div class="mt-4 pt-3 border-top">
+                                <button class="btn btn-primary px-4" type="submit">
+                                    <i class="fa fa-save me-2"></i> Update Menu
+                                </button>
+                                <a class="btn btn-outline-secondary ms-2 px-4"
+                                   th:href="@{/menu}">
+                                    Cancel
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

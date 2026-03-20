@@ -29,6 +29,8 @@
                     </li>
                     <li class="nav-item" th:if="${navViewModel.showReservations}">
                         <a class="nav-link" th:href="@{/reservation}">Reservations</a>
+                    <li class="nav-item" th:if="${navViewModel.showMenus}">
+                        <a class="nav-link" th:href="@{/menu}">Menus</a>
                     </li>
                 </ul>
 
