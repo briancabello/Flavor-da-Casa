@@ -139,4 +139,9 @@ public class ReservationServiceImpl implements ReservationService {
     public boolean existsBySeatingId(long seatingId) {
         return reservationRepository.existsBySeatingId(seatingId);
     }
+
+    @Override
+    public boolean existsByEventId(long eventId) {
+        return reservationRepository.existsByEventId(eventId);
+    }
 }

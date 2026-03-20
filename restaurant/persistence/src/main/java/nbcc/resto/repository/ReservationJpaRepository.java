@@ -19,5 +19,7 @@ public interface ReservationJpaRepository extends JpaRepository<ReservationEntit
 
     boolean existsBySeatingId(long seatingId);
 
+    boolean existsByEventId(long eventId);
+
     boolean existsBySeatingIdAndAssignedTableIdAndStatus(long seatingId, long assignedTableId, String status);
 }

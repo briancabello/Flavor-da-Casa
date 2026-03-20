@@ -23,12 +23,14 @@ public class SeatingServiceImpl implements SeatingService {
     private final DiningTableRepository diningTableRepository;
     private final EventRepository eventRepository;
     private final SeatingValidationService validationService;
+    private final ReservationService reservationService;
 
-    public SeatingServiceImpl(SeatingRepository seatingRepository, DiningTableRepository diningTableRepository, EventRepository eventRepository, SeatingValidationService validationService) {
+    public SeatingServiceImpl(SeatingRepository seatingRepository, DiningTableRepository diningTableRepository, EventRepository eventRepository, SeatingValidationService validationService, ReservationService reservationService) {
         this.seatingRepository = seatingRepository;
         this.diningTableRepository = diningTableRepository;
         this.eventRepository = eventRepository;
         this.validationService = validationService;
+        this.reservationService = reservationService;
     }
 
     @Override
@@ -153,9 +155,7 @@ public class SeatingServiceImpl implements SeatingService {
             Seating seating = existingOpt.get();
 
 
-            // TODO: I need to replace this boolean later when ReservationService is built
-            //boolean hasReservations = reservationService.existsBySeatingId(id);
-            boolean hasReservations = false;
+            boolean hasReservations = reservationService.existsBySeatingId(id);
 
 
             if (hasReservations) {

@@ -20,4 +20,6 @@ public interface ReservationService {
     ValidatedResult<ReservationDto> deny(long reservationId);
 
     boolean existsBySeatingId(long seatingId);
+
+    boolean existsByEventId(long eventId);
 }

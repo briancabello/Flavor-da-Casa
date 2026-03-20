@@ -47,4 +47,9 @@ public class ReservationRepositoryAdapter implements ReservationRepository {
     public boolean existsBySeatingId(long seatingId) {
         return jpaRepository.existsBySeatingId(seatingId);
     }
+
+    @Override
+    public boolean existsByEventId(long eventId) {
+        return jpaRepository.existsByEventId(eventId);
+    }
 }
