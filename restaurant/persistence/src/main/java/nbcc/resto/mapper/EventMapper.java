@@ -4,15 +4,19 @@ import nbcc.resto.dto.EventDto;
 import nbcc.resto.entity.EventEntity;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 @Component
-public class EventMapper implements EntityMapper<EventDto, EventEntity>{
+public class EventMapper implements EntityMapper<EventDto, EventEntity> {
+
+    private final MenuMapper menuMapper;
+
+    public EventMapper(MenuMapper menuMapper) {
+        this.menuMapper = menuMapper;
+    }
 
     @Override
     public EventEntity toEntity(EventDto dto) {
         if (dto == null) return null;
+
         EventEntity entity = new EventEntity();
         entity.setId(dto.getId())
                 .setName(dto.getName())
@@ -24,16 +28,18 @@ public class EventMapper implements EntityMapper<EventDto, EventEntity>{
                 .setActive(dto.isActive())
                 .setArchived(dto.isArchived())
                 .setCreatedDate(dto.getCreatedDate())
-                .setLastUpdatedDate(dto.getLastUpdatedDate());
+                .setLastUpdatedDate(dto.getLastUpdatedDate())
+                .setMenu(menuMapper.toEntity(dto.getMenu()));
+
         return entity;
     }
 
     @Override
     public EventDto toDTO(EventEntity entity) {
         if (entity == null) return null;
+
         EventDto domain = new EventDto();
         domain.setId(entity.getId())
-                //.setMenuId(entity.getMenuId())
                 .setName(entity.getName())
                 .setDescription(entity.getDescription())
                 .setStartDate(entity.getStartDate() != null ? entity.getStartDate().toLocalDate() : null)
@@ -43,7 +49,9 @@ public class EventMapper implements EntityMapper<EventDto, EventEntity>{
                 .setActive(entity.isActive())
                 .setArchived(entity.isArchived())
                 .setCreatedDate(entity.getCreatedDate())
-                .setLastUpdatedDate(entity.getLastUpdatedDate());
+                .setLastUpdatedDate(entity.getLastUpdatedDate())
+                .setMenu(menuMapper.toDTO(entity.getMenu()));
+
         return domain;
 
     }

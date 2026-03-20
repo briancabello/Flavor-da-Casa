@@ -13,7 +13,7 @@ public class EventDto {
 
     private Long id;
 
-    //private Long menuId;
+    private Menu menu;
 
     @NotBlank(message = "Event name is required")
     private String name;
@@ -43,11 +43,16 @@ public class EventDto {
     private LocalDateTime createdDate;
     private LocalDateTime lastUpdatedDate;
 
-    public EventDto() {}
+    public EventDto() {
+    }
 
-    public EventDto(Long id, /*Long menuId,*/ String name, String description, LocalDate startDate, LocalDate endDate, Integer duration, BigDecimal price, boolean active, LocalDateTime createdDate, LocalDateTime lastUpdatedDate) {
+    public EventDto(Long id, Menu menu, String name, String description,
+                    LocalDate startDate, LocalDate endDate, Integer duration,
+                    BigDecimal price, boolean active, boolean archived,
+                    LocalDateTime createdDate, LocalDateTime lastUpdatedDate
+    ) {
         this.id = id;
-        //this.menuId = menuId;
+        this.menu = menu;
         this.name = name;
         this.description = description;
         this.startDate = startDate;
@@ -55,6 +60,7 @@ public class EventDto {
         this.duration = duration;
         this.price = price;
         this.active = active;
+        this.archived = archived;
         this.createdDate = createdDate;
         this.lastUpdatedDate = lastUpdatedDate;
     }
@@ -68,14 +74,32 @@ public class EventDto {
         return this;
     }
 
-    // public Long getMenuId() {
-    //     return menuId;
-    // }
+    public Menu getMenu() {
+        return menu;
+    }
 
-    // public EventDto setMenuId(Long menuId) {
-    //     this.menuId = menuId;
-    //     return this;
-    // }
+    public EventDto setMenu(Menu menu) {
+        this.menu = menu;
+        return this;
+    }
+
+    public Long getMenuId() {
+        return menu != null ? menu.getId() : null;
+    }
+
+    public EventDto setMenuId(Long menuId) {
+        if (menuId == null) {
+            this.menu = null;
+            return this;
+        }
+
+        if (this.menu == null) {
+            this.menu = new Menu();
+        }
+
+        this.menu.setId(menuId);
+        return this;
+    }
 
     public String getName() {
         return name;
