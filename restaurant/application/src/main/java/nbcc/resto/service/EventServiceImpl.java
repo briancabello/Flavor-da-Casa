@@ -29,7 +29,6 @@ public class EventServiceImpl implements EventService {
         this.validationService = validationService;
     }
 
-
     @Override
     public Result<Collection<EventDto>> getAll() {
         try {
@@ -56,7 +55,6 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public ValidatedResult<EventDto> create(EventDto eventDto) {
-
         try {
             var errors = validationService.validate(eventDto);
 
@@ -77,7 +75,6 @@ public class EventServiceImpl implements EventService {
     @Override
     public ValidatedResult<EventDto> update(EventDto eventDto) {
         try {
-
             if (eventDto.getId() == null) {
                 return ValidationResults.invalid(null, "Cannot update: Event ID is missing", "id");
             }
@@ -119,9 +116,9 @@ public class EventServiceImpl implements EventService {
 
             EventDto eventDto = existingOpt.get();
 
-            
+
             if (eventDto.getEndDate() != null && eventDto.getEndDate().isBefore(LocalDate.now())) {
-                
+
                 eventDto.setArchived(true);
                 eventDto.setActive(false);
 
