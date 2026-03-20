@@ -1,0 +1,50 @@
+package nbcc.resto.repository;
+
+import nbcc.resto.dto.ReservationDto;
+import nbcc.resto.mapper.ReservationMapper;
+import org.springframework.stereotype.Repository;
+
+import java.util.Collection;
+import java.util.Optional;
+import java.util.UUID;
+
+@Repository
+public class ReservationRepositoryAdapter implements ReservationRepository {
+
+    private final ReservationJpaRepository jpaRepository;
+    private final ReservationMapper mapper;
+
+    public ReservationRepositoryAdapter(ReservationJpaRepository jpaRepository, ReservationMapper mapper) {
+        this.jpaRepository = jpaRepository;
+        this.mapper = mapper;
+    }
+
+    @Override
+    public Collection<ReservationDto> getByEvent(long eventId) {
+        return mapper.toDTO(jpaRepository.findByEventId(eventId));
+    }
+
+    @Override
+    public Optional<ReservationDto> getByUuid(UUID uuid) {
+        return jpaRepository.findByUuid(uuid).map(mapper::toDTO);
+    }
+
+    @Override
+    public ReservationDto create(ReservationDto reservation) {
+        var entity = mapper.toEntity(reservation);
+        return mapper.toDTO(jpaRepository.save(entity));
+    }
+
+    @Override
+    public ReservationDto updateStatus(long id, String status, Long tableId) {
+        var entity = jpaRepository.findById(id).orElseThrow();
+        entity.setStatus(status);
+        entity.setAssignedTableId(tableId);
+        return mapper.toDTO(jpaRepository.save(entity));
+    }
+
+    @Override
+    public boolean existsBySeatingId(long seatingId) {
+        return jpaRepository.existsBySeatingId(seatingId);
+    }
+}
