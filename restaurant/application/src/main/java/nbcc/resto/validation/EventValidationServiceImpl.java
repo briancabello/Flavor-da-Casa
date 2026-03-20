@@ -25,6 +25,14 @@ public class EventValidationServiceImpl implements EventValidationService {
                 errors.add(new ValidationError("End date cannot be before start date", "endDate"));
             }
         }
+
+        if (eventDto.isActive() && eventDto.getMenu() == null) {
+            errors.add(new ValidationError(
+                    "An event cannot be active without an associated menu",
+                    "menuId"
+            ));
+        }
+
         return errors;
     }
 }
