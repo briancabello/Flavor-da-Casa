@@ -149,9 +149,32 @@
                 </div>
             </div>
         </div>
+
+        <div class="row justify-content-center" th:unless="${menus == null || #lists.isEmpty(menus)}">
+            <div class="col-12 col-lg-9 col-xl-8">
+                <h4 class="fw-bold mb-3">Available Menus</h4>
+
+                <div class="card rounded-2 shadow-sm mb-4 overflow-hidden" th:each="menu : ${menus}">
+                    <div class="card-header bg-dark text-light">
+                        <h6 class="mb-0">
+                            <i class="fa fa-utensils text-primary me-1"></i>
+                            <span th:text="${menu.name}">Menu Name</span>
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-2" th:if="${menu.description}">
+                            <div class="col-sm-3 fw-bold text-muted">Description</div>
+                            <div class="col-sm-9" th:text="${menu.description}"></div>
+                        </div>
+                        <div class="row mb-2" th:if="${menu.createdDate}">
+                            <div class="col-sm-3 fw-bold text-muted">Created</div>
+                            <div class="col-sm-9" th:text="${#temporals.format(menu.createdDate, 'MMM dd, yyyy')}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-</body>
-</html>
 </body>
 </html>

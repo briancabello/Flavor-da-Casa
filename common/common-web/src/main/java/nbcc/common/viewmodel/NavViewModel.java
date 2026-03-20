@@ -65,6 +65,7 @@ public class NavViewModel {
 
     public boolean isShowReservations() {
         return showReservations;
+    }
     public boolean isShowMenus() {
         return showMenus;
     }

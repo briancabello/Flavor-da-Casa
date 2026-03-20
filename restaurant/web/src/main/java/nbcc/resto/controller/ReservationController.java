@@ -3,6 +3,7 @@ package nbcc.resto.controller;
 import nbcc.common.service.LoginService;
 import nbcc.resto.dto.ReservationDto;
 import nbcc.resto.service.EventService;
+import nbcc.resto.service.MenuService;
 import nbcc.resto.service.ReservationService;
 import nbcc.resto.service.SeatingService;
 import org.slf4j.Logger;
@@ -27,21 +28,25 @@ public class ReservationController {
     private final ReservationService reservationService;
     private final EventService eventService;
     private final SeatingService seatingService;
+    private final MenuService menuService;
 
     public ReservationController(LoginService loginService,
                                  ReservationService reservationService,
                                  EventService eventService,
-                                 SeatingService seatingService) {
+                                 SeatingService seatingService,
+                                 MenuService menuService) {
         this.loginService = loginService;
         this.reservationService = reservationService;
         this.eventService = eventService;
         this.seatingService = seatingService;
+        this.menuService = menuService;
     }
 
     @GetMapping
     public String requestForm(Model model) {
         var eventsResult = eventService.getAll();
         var seatingsResult = seatingService.getAll();
+        var menusResult = menuService.getAll();
 
         if (eventsResult.isError() || seatingsResult.isError()) {
             model.addAttribute("message", "Error loading reservation data");
@@ -51,6 +56,9 @@ public class ReservationController {
         model.addAttribute("reservation", new ReservationDto());
         model.addAttribute("events", eventsResult.getValue());
         model.addAttribute("seatings", seatingsResult.getValue());
+        if (menusResult.hasValue()) {
+            model.addAttribute("menus", menusResult.getValue());
+        }
         return "reservation/request";
     }
 
@@ -84,11 +92,15 @@ public class ReservationController {
     private void loadFormData(Model model) {
         var eventsResult = eventService.getAll();
         var seatingsResult = seatingService.getAll();
+        var menusResult = menuService.getAll();
         if (eventsResult.hasValue()) {
             model.addAttribute("events", eventsResult.getValue());
         }
         if (seatingsResult.hasValue()) {
             model.addAttribute("seatings", seatingsResult.getValue());
+        }
+        if (menusResult.hasValue()) {
+            model.addAttribute("menus", menusResult.getValue());
         }
     }
 
