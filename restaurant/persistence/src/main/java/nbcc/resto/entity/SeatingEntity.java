@@ -2,6 +2,7 @@ package nbcc.resto.entity;
 
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
@@ -30,6 +31,13 @@ public class SeatingEntity {
     @CreatedDate
     @Column(name = "created_date", updatable = false, nullable = false)
     private LocalDateTime createdDate;
+
+    @Column(name = "status", nullable = false)
+    private boolean status = true;
+
+    @LastModifiedDate
+    @Column(name = "updated_date")
+    private LocalDateTime updatedDate;
 
     public SeatingEntity() {
     }
@@ -85,6 +93,29 @@ public class SeatingEntity {
 
     public SeatingEntity setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
+        return this;
+    }
+
+    public SeatingEntity setDuration(Integer duration) {
+        this.duration = duration;
+        return this;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public SeatingEntity setStatus(boolean status) {
+        this.status = status;
+        return this;
+    }
+
+    public LocalDateTime getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public SeatingEntity setUpdatedDate(LocalDateTime updatedDate) {
+        this.updatedDate = updatedDate;
         return this;
     }
 }

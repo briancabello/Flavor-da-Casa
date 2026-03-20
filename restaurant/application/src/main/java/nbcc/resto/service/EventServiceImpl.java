@@ -23,10 +23,12 @@ public class EventServiceImpl implements EventService {
     private final Logger logger = LoggerFactory.getLogger(EventServiceImpl.class);
     private final EventRepository eventRepository;
     private final EventValidationService validationService;
+    private final ReservationService reservationService;
 
-    public EventServiceImpl(EventRepository eventRepository, EventValidationService validationService) {
+    public EventServiceImpl(EventRepository eventRepository, EventValidationService validationService, ReservationService reservationService) {
         this.eventRepository = eventRepository;
         this.validationService = validationService;
+        this.reservationService = reservationService;
     }
 
 
@@ -119,17 +121,16 @@ public class EventServiceImpl implements EventService {
 
             EventDto eventDto = existingOpt.get();
 
-            
-            if (eventDto.getEndDate() != null && eventDto.getEndDate().isBefore(LocalDate.now())) {
-                
+            boolean isPastEvent = eventDto.getEndDate() != null && eventDto.getEndDate().isBefore(LocalDate.now());
+            boolean hasReservations = reservationService.existsByEventId(id);
+
+            if (isPastEvent || hasReservations) {
                 eventDto.setArchived(true);
                 eventDto.setActive(false);
-
                 eventRepository.update(eventDto);
-                logger.debug("Event with id {} archived (past event)", id);
-
+                logger.debug("Event with id {} archived ({})", id,
+                        isPastEvent ? "past event" : "has reservations");
                 return ValidationResults.success(eventDto);
-
             } else {
                 eventRepository.delete(id);
                 logger.debug("Event with id {} deleted", id);

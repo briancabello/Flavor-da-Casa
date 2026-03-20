@@ -54,9 +54,11 @@ classDiagram
     class Reservation {
       +long id
       +UUID uuid
+      +long eventId
       +long seatingId
       +String guestFirstName
       +String guestLastName
+      +String email
       +int groupSize
       +String status
       +Long assignedTableId
@@ -267,9 +269,11 @@ classDiagram
     class ReservationEntity {
       +long id
       +UUID uuid
+      +long eventId
       +long seatingId
       +String guestFirstName
       +String guestLastName
+      +String email
       +int groupSize
       +String status
       +Long assignedTableId
