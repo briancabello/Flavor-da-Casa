@@ -3,8 +3,9 @@ package nbcc.resto.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import nbcc.common.service.LoginService;
 import nbcc.resto.dto.Menu;
+import nbcc.resto.dto.MenuItem;
+import nbcc.resto.service.MenuItemService;
 import nbcc.resto.service.MenuService;
-import nbcc.resto.viewmodels.DiningTableListViewModel;
 import nbcc.resto.viewmodels.MenuListViewModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.List;
 
 import static nbcc.common.validation.ModelErrorConverter.addErrorsToBindingResults;
 
@@ -28,10 +30,12 @@ public class MenuController {
 
     private final LoginService loginService;
     private final MenuService menuService;
+    private final MenuItemService menuItemService;
 
-    public MenuController(LoginService loginService, MenuService menuService) {
+    public MenuController(LoginService loginService, MenuService menuService, MenuItemService menuItemService) {
         this.loginService = loginService;
         this.menuService = menuService;
+        this.menuItemService = menuItemService;
     }
 
     @GetMapping
@@ -109,12 +113,23 @@ public class MenuController {
         if (result.isError()) {
             return "error/errorPage";
         }
+
         if (result.isEmpty()) {
             model.addAttribute("message", "The menu you are trying to edit was not found");
             return "error/errorPage";
         }
 
         model.addAttribute("menu", result.getValue());
+
+        // Load menu items for display on edit page
+        var itemsResult = menuItemService.getByMenuId(id);
+        model.addAttribute("menuItems", itemsResult.isError()
+                ? List.of()
+                : itemsResult.getValue());
+
+        // Blank menu item for the add form
+        model.addAttribute("menuItem", new MenuItem());
+
         return "menu/edit";
     }
 
