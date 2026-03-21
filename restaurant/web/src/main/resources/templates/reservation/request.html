@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{layout :: layout(title='Request Reservation', content=~{::content})}"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+    <div class="container py-4">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Request Reservation</li>
+            </ol>
+        </nav>
+
+        <h2 class="fw-bold mb-4">Request a Reservation</h2>
+
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-9 col-xl-8">
+                <div class="card shadow-sm card-top-primary mb-4">
+                    <div class="card-body p-4">
+                        <form method="post" th:action="@{/reservation}" th:object="${reservation}" novalidate>
+
+                            <div class="alert alert-danger shadow-sm" role="alert" th:if="${#fields.hasGlobalErrors()}">
+                                <i class="fa fa-exclamation-circle me-2"></i>
+                                <span th:each="err : ${#fields.globalErrors()}" th:text="${err}"></span>
+                            </div>
+
+                           
+                            <div class="mb-3">
+                                <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="eventId">Event</label>
+                                <select class="form-select" id="eventId" th:field="*{eventId}"
+                                        th:errorclass="is-invalid">
+                                    <option value="">-- Select an Event --</option>
+                                    <option th:each="event : ${events}"
+                                            th:value="${event.id}"
+                                            th:text="${event.name + ' (' + #temporals.format(event.startDate, 'MMM dd, yyyy') + ' - ' + #temporals.format(event.endDate, 'MMM dd, yyyy') + ')'}">
+                                    </option>
+                                </select>
+                                <div class="invalid-feedback fw-medium" th:errors="*{eventId}"></div>
+                            </div>
+
+                            
+                            <div class="mb-3">
+                                <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="seatingId">Seating Time</label>
+                                <select class="form-select" id="seatingId" th:field="*{seatingId}"
+                                        th:errorclass="is-invalid">
+                                    <option value="">-- Select a Seating --</option>
+                                    <option th:each="seating : ${seatings}"
+                                            th:value="${seating.id}"
+                                            th:text="${seating.name + ' - ' + #temporals.format(seating.startDateTime, 'MMM dd, yyyy h:mm a') + ' (' + seating.duration + ' min)'}">
+                                    </option>
+                                </select>
+                                <div class="invalid-feedback fw-medium" th:errors="*{seatingId}"></div>
+                            </div>
+
+                            
+                            <div class="mb-3">
+                                <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="guestFirstName">First Name</label>
+                                <input class="form-control" id="guestFirstName" th:field="*{guestFirstName}"
+                                       th:errorclass="is-invalid"
+                                       type="text" placeholder="Enter your first name">
+                                <div class="invalid-feedback fw-medium" th:errors="*{guestFirstName}"></div>
+                            </div>
+
+                            
+                            <div class="mb-3">
+                                <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="guestLastName">Last Name</label>
+                                <input class="form-control" id="guestLastName" th:field="*{guestLastName}"
+                                       th:errorclass="is-invalid"
+                                       type="text" placeholder="Enter your last name">
+                                <div class="invalid-feedback fw-medium" th:errors="*{guestLastName}"></div>
+                            </div>
+
+                           
+                            <div class="mb-3">
+                                <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="email">Email Address</label>
+                                <input class="form-control" id="email" th:field="*{email}"
+                                       th:errorclass="is-invalid"
+                                       type="email" placeholder="Enter your email address">
+                                <div class="invalid-feedback fw-medium" th:errors="*{email}"></div>
+                            </div>
+
+                            
+                            <div class="mb-3">
+                                <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="groupSize">Group Size</label>
+                                <input class="form-control" id="groupSize" th:field="*{groupSize}"
+                                       th:errorclass="is-invalid"
+                                       type="number" min="1" placeholder="Number of guests">
+                                <div class="invalid-feedback fw-medium" th:errors="*{groupSize}"></div>
+                            </div>
+
+                            <div class="mt-4 pt-3 border-top">
+                                <button class="btn btn-primary px-4" type="submit">
+                                    <i class="fa fa-paper-plane me-2"></i> Submit Request
+                                </button>
+                                <a class="btn btn-outline-secondary ms-2 px-4" th:href="@{/}">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+       
+        <div class="row justify-content-center" th:unless="${#lists.isEmpty(events)}">
+            <div class="col-12 col-lg-9 col-xl-8">
+                <h4 class="fw-bold mb-3">Available Events &amp; Seatings</h4>
+
+                <div class="card rounded-2 shadow-sm mb-4 overflow-hidden" th:each="event : ${events}">
+                    <div class="card-header bg-dark text-light">
+                        <h6 class="mb-0">
+                            <i class="fa fa-calendar-alt text-primary me-1"></i>
+                            <span th:text="${event.name}">Event Name</span>
+                            <small class="ms-2 text-light"
+                                   th:text="|( ${#temporals.format(event.startDate, 'MMM dd, yyyy')} - ${#temporals.format(event.endDate, 'MMM dd, yyyy')} )|"></small>
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-2" th:if="${event.description}">
+                            <div class="col-sm-3 fw-bold text-muted">Description</div>
+                            <div class="col-sm-9" th:text="${event.description}"></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-3 fw-bold text-muted">Duration</div>
+                            <div class="col-sm-9" th:text="${event.duration + ' minutes'}"></div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-3 fw-bold text-muted">Price</div>
+                            <div class="col-sm-9" th:text="${'$' + #numbers.formatDecimal(event.price, 1, 2)}"></div>
+                        </div>
+
+                        <h6 class="text-accent text-uppercase fw-bold ls-wide mb-2">Seatings</h6>
+                        <table class="table table-sm table-hover mb-0">
+                            <thead>
+                            <tr>
+                                <th>Seating Name</th>
+                                <th>Date &amp; Time</th>
+                                <th>Duration</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="seating : ${seatings}" th:if="${seating.eventId == event.id}">
+                                <td th:text="${seating.name}"></td>
+                                <td th:text="${#temporals.format(seating.startDateTime, 'MMM dd, yyyy h:mm a')}"></td>
+                                <td th:text="${seating.duration + ' min'}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center" th:unless="${menus == null || #lists.isEmpty(menus)}">
+            <div class="col-12 col-lg-9 col-xl-8">
+                <h4 class="fw-bold mb-3">Available Menus</h4>
+
+                <div class="card rounded-2 shadow-sm mb-4 overflow-hidden" th:each="menu : ${menus}">
+                    <div class="card-header bg-dark text-light">
+                        <h6 class="mb-0">
+                            <i class="fa fa-utensils text-primary me-1"></i>
+                            <span th:text="${menu.name}">Menu Name</span>
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-2" th:if="${menu.description}">
+                            <div class="col-sm-3 fw-bold text-muted">Description</div>
+                            <div class="col-sm-9" th:text="${menu.description}"></div>
+                        </div>
+                        <div class="row mb-2" th:if="${menu.createdDate}">
+                            <div class="col-sm-3 fw-bold text-muted">Created</div>
+                            <div class="col-sm-9" th:text="${#temporals.format(menu.createdDate, 'MMM dd, yyyy')}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
