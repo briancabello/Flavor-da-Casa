@@ -11,6 +11,8 @@ import java.util.UUID;
 @Repository
 public interface ReservationJpaRepository extends JpaRepository<ReservationEntity, Long> {
 
+    List<ReservationEntity> findAllByOrderByIdDesc();
+
     List<ReservationEntity> findBySeatingId(long seatingId);
 
     List<ReservationEntity> findByEventId(long eventId);
