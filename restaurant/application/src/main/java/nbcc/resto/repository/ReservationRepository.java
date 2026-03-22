@@ -7,6 +7,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface ReservationRepository {
+    Collection<ReservationDto> getAll();
+    Optional<ReservationDto> get(long id);
     Collection<ReservationDto> getByEvent(long eventId);
     Optional<ReservationDto> getByUuid(UUID uuid);
     ReservationDto create(ReservationDto reservation);

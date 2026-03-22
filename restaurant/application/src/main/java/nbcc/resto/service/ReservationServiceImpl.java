@@ -33,6 +33,30 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    public Result<Collection<ReservationDto>> getAll() {
+        try {
+            return ValidationResults.success(reservationRepository.getAll());
+        } catch (Exception e) {
+            logger.error("Error retrieving all reservations", e);
+            return ValidationResults.error(e);
+        }
+    }
+
+    @Override
+    public ValidatedResult<ReservationDto> get(long id) {
+        try {
+            var reservation = reservationRepository.get(id);
+            if (reservation.isEmpty()) {
+                return ValidationResults.invalid(null, "Reservation not found", "id");
+            }
+            return ValidationResults.success(reservation.get());
+        } catch (Exception e) {
+            logger.error("Error retrieving reservation with id {}", id, e);
+            return ValidationResults.error(e);
+        }
+    }
+
+    @Override
     public Result<Collection<ReservationDto>> getByEvent(long eventId) {
         try {
             return ValidationResults.success(reservationRepository.getByEvent(eventId));
