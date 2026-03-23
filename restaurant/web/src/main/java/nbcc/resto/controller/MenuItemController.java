@@ -64,6 +64,89 @@ public class MenuItemController {
         return "redirect:/menu/edit/" + menuId;
     }
 
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable Long menuId, @PathVariable Long id, Model model) {
+
+        var result = menuItemService.get(id);
+
+        if (result.isError()) {
+            return "error/errorPage";
+        }
+
+        if (result.isEmpty()) {
+            model.addAttribute("message", "The menu item you are trying to edit was not found");
+            return "error/errorPage";
+        }
+
+        model.addAttribute("menuItem", result.getValue());
+        model.addAttribute("menuId", menuId);
+        return "menu/item/edit";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String edit(@PathVariable Long menuId,
+                       @PathVariable Long id,
+                       @ModelAttribute("menuItem") MenuItem menuItem,
+                       BindingResult br,
+                       Model model) {
+
+        menuItem.setId(id);
+
+        var menuResult = menuService.get(menuId);
+        if (menuResult.isError() || menuResult.isEmpty()) {
+            model.addAttribute("message", "There was a problem trying to retrieve the menu you are trying to update an item for.");
+            return "error/errorPage";
+        }
+
+        menuItem.setMenu(menuResult.getValue());
+
+        var result = menuItemService.update(menuItem);
+
+        if (result.isError()) {
+            model.addAttribute("message", "There was a problem trying to update the menu item");
+            return "error/errorPage";
+        }
+
+        if (result.isInvalid()) {
+            addErrorsToBindingResults(br, result);
+            model.addAttribute("menuId", menuId);
+            return "menu/item/edit";
+        }
+
+        return "redirect:/menu/edit/" + menuId;
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Long menuId, @PathVariable Long id, Model model) {
+
+        var result = menuItemService.get(id);
+
+        if (result.isError()) {
+            return "error/errorPage";
+        }
+
+        if (result.isEmpty()) {
+            model.addAttribute("message", "The menu item you are trying to delete was not found");
+            return "error/errorPage";
+        }
+
+        model.addAttribute("menuItem", result.getValue());
+        model.addAttribute("menuId", menuId);
+        return "menu/item/delete";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Long menuId, @PathVariable Long id) {
+
+        var result = menuItemService.delete(id);
+
+        if (result.isError()) {
+            return "error/errorPage";
+        }
+
+        return "redirect:/menu/edit/" + menuId;
+    }
+
     private String loadEditPage(Long menuId, Model model) {
         var menuResult = menuService.get(menuId);
 
