@@ -9,6 +9,10 @@ import java.util.UUID;
 
 public interface ReservationService {
 
+    Result<Collection<ReservationDto>> getAll();
+
+    ValidatedResult<ReservationDto> get(long id);
+
     Result<Collection<ReservationDto>> getByEvent(long eventId);
 
     ValidatedResult<ReservationDto> getByUuid(UUID uuid);

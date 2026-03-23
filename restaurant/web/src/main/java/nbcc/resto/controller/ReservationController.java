@@ -6,9 +6,11 @@ import nbcc.resto.service.EventService;
 import nbcc.resto.service.MenuService;
 import nbcc.resto.service.ReservationService;
 import nbcc.resto.service.SeatingService;
+import nbcc.resto.viewmodels.ReservationListViewModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -57,7 +59,7 @@ public class ReservationController {
         model.addAttribute("events", eventsResult.getValue());
         model.addAttribute("seatings", seatingsResult.getValue());
         if (menusResult.hasValue()) {
-            model.addAttribute("menus", menusResult.getValue());
+            model.addAttribute("menu", menusResult.getValue());
         }
         return "reservation/request";
     }
@@ -89,6 +91,73 @@ public class ReservationController {
         return "reservation/confirmation";
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/list")
+    public String getAll(@RequestParam(required = false) Long eventId,
+                       @RequestParam(required = false) String status,
+                       Model model) {
+
+        var eventsResult = eventService.getAll();
+
+        if (eventsResult.isError()) {
+            model.addAttribute("message", "Error loading events");
+            return "error/errorPage";
+        }
+
+        var reservationsResult = (eventId != null)
+                ? reservationService.getByEvent(eventId)
+                : reservationService.getAll();
+
+        if (reservationsResult.isError()) {
+            model.addAttribute("message", "Error loading reservations");
+            return "error/errorPage";
+        }
+
+        var reservations = reservationsResult.getValue();
+
+        if (status != null && !status.isBlank()) {
+            reservations = reservations.stream()
+                    .filter(r -> status.equalsIgnoreCase(r.getStatus()))
+                    .toList();
+        }
+
+        var viewModel = new ReservationListViewModel(
+                eventsResult.getValue(), reservations, loginService.isLoggedIn());
+
+        model.addAttribute("viewModel", viewModel);
+        model.addAttribute("selectedEventId", eventId);
+        model.addAttribute("selectedStatus", status);
+        return "reservation/list";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/details/{id}")
+    public String details(@PathVariable Long id, Model model) {
+        var result = reservationService.get(id);
+
+        if (result.isError() || result.isEmpty()) {
+            model.addAttribute("message", "Reservation not found");
+            return "error/errorPage";
+        }
+
+        var reservation = result.getValue();
+        model.addAttribute("reservation", reservation);
+
+        var eventResult = eventService.get(reservation.getEventId());
+        if (eventResult.hasValue()) {
+            model.addAttribute("event", eventResult.getValue());
+        }
+
+        if (reservation.getSeatingId() != null) {
+            var seatingResult = seatingService.get(reservation.getSeatingId());
+            if (seatingResult.hasValue()) {
+                model.addAttribute("seating", seatingResult.getValue());
+            }
+        }
+
+        return "reservation/details";
+    }
+
     private void loadFormData(Model model) {
         var eventsResult = eventService.getAll();
         var seatingsResult = seatingService.getAll();
@@ -100,7 +169,7 @@ public class ReservationController {
             model.addAttribute("seatings", seatingsResult.getValue());
         }
         if (menusResult.hasValue()) {
-            model.addAttribute("menus", menusResult.getValue());
+            model.addAttribute("menu", menusResult.getValue());
         }
     }
 

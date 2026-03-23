@@ -20,6 +20,16 @@ public class ReservationRepositoryAdapter implements ReservationRepository {
     }
 
     @Override
+    public Collection<ReservationDto> getAll() {
+        return mapper.toDTO(jpaRepository.findAllByOrderByIdDesc());
+    }
+
+    @Override
+    public Optional<ReservationDto> get(long id) {
+        return jpaRepository.findById(id).map(mapper::toDTO);
+    }
+
+    @Override
     public Collection<ReservationDto> getByEvent(long eventId) {
         return mapper.toDTO(jpaRepository.findByEventId(eventId));
     }
