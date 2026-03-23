@@ -12,4 +12,8 @@ public interface MenuItemRepository {
     Optional<MenuItem> get(Long id);
 
     MenuItem create(MenuItem menuItem);
+
+    MenuItem update(MenuItem menuItem);
+
+    void delete(Long id);
 }

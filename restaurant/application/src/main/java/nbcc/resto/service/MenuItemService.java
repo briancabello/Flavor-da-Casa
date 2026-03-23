@@ -13,4 +13,8 @@ public interface MenuItemService {
     ValidatedResult<MenuItem> get(Long id);
 
     ValidatedResult<MenuItem> create(MenuItem menuItem);
+
+    ValidatedResult<MenuItem> update(MenuItem menuItem);
+
+    ValidatedResult<Void> delete(Long id);
 }

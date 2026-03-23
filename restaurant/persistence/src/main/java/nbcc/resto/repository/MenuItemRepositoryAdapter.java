@@ -36,4 +36,16 @@ public class MenuItemRepositoryAdapter implements MenuItemRepository {
         entity = jpaRepository.save(entity);
         return mapper.toDTO(entity);
     }
+
+    @Override
+    public MenuItem update(MenuItem menuItem) {
+        var entity = mapper.toEntity(menuItem);
+        entity = jpaRepository.save(entity);
+        return mapper.toDTO(entity);
+    }
+
+    @Override
+    public void delete(Long id) {
+        jpaRepository.deleteById(id);
+    }
 }

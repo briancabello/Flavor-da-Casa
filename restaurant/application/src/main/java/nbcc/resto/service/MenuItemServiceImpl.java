@@ -62,4 +62,34 @@ public class MenuItemServiceImpl implements MenuItemService {
             return ValidationResults.error(menuItem);
         }
     }
+
+    @Override
+    public ValidatedResult<MenuItem> update(MenuItem menuItem) {
+        try {
+            var errors = validationService.validate(menuItem);
+
+            if (errors.isEmpty()) {
+                return ValidationResults.success(menuItemRepository.update(menuItem));
+            }
+
+            logger.debug("Validation errors for menu item update {}: {}", menuItem, errors);
+            return ValidationResults.invalid(menuItem, errors);
+
+        } catch (Exception e) {
+            logger.error("Error updating menu item {}", menuItem, e);
+            return ValidationResults.error(menuItem);
+        }
+    }
+
+    @Override
+    public ValidatedResult<Void> delete(Long id) {
+        try {
+            menuItemRepository.delete(id);
+            logger.debug("Menu item with id {} deleted", id);
+            return ValidationResults.success();
+        } catch (Exception e) {
+            logger.error("Error deleting menu item with id: {}", id, e);
+            return ValidationResults.error(e);
+        }
+    }
 }
