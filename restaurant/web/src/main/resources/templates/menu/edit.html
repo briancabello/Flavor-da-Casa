@@ -108,12 +108,24 @@
                             <tr>
                                 <th class="w-25">Name</th>
                                 <th>Description</th>
+                                <th class="text-center text-nowrap">Actions</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr th:each="item : ${menuItems}">
                                 <td th:text="${item.name}"></td>
                                 <td th:text="${item.description}"></td>
+                                <td class="text-center">
+                                    <a class="text-decoration-none me-3"
+                                       th:href="@{/menu/{menuId}/item/edit/{id}(menuId=${menu.id}, id=${item.id})}"
+                                       title="Edit Item">
+                                        <i class="fa fa-edit text-primary fs-5"></i>
+                                    </a>
+                                    <a th:href="@{/menu/{menuId}/item/delete/{id}(menuId=${menu.id}, id=${item.id})}"
+                                       title="Delete Item">
+                                        <i class="fa fa-trash text-danger fs-5"></i>
+                                    </a>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
