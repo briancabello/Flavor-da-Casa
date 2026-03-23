@@ -59,7 +59,7 @@ public class ReservationController {
         model.addAttribute("events", eventsResult.getValue());
         model.addAttribute("seatings", seatingsResult.getValue());
         if (menusResult.hasValue()) {
-            model.addAttribute("menu", menusResult.getValue());
+            model.addAttribute("menus", menusResult.getValue());
         }
         return "reservation/request";
     }
@@ -169,7 +169,7 @@ public class ReservationController {
             model.addAttribute("seatings", seatingsResult.getValue());
         }
         if (menusResult.hasValue()) {
-            model.addAttribute("menu", menusResult.getValue());
+            model.addAttribute("menus", menusResult.getValue());
         }
     }
 
