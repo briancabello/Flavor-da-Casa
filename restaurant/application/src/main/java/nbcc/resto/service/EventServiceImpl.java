@@ -58,7 +58,6 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public ValidatedResult<EventDto> create(EventDto eventDto) {
-
         try {
             var errors = validationService.validate(eventDto);
 
@@ -79,7 +78,6 @@ public class EventServiceImpl implements EventService {
     @Override
     public ValidatedResult<EventDto> update(EventDto eventDto) {
         try {
-
             if (eventDto.getId() == null) {
                 return ValidationResults.invalid(null, "Cannot update: Event ID is missing", "id");
             }

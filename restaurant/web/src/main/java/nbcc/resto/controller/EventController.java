@@ -4,6 +4,7 @@ package nbcc.resto.controller;
 import nbcc.common.service.LoginService;
 import nbcc.resto.dto.EventDto;
 import nbcc.resto.service.EventService;
+import nbcc.resto.service.MenuService;
 import nbcc.resto.viewmodels.EventListViewModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,23 +32,28 @@ public class EventController {
     private final Logger logger = LoggerFactory.getLogger(EventController.class);
     private final LoginService loginService;
     private final EventService eventService;
+    private final MenuService menuService;
 
-    public EventController(LoginService loginService, EventService eventService) {
+    public EventController(LoginService loginService, EventService eventService, MenuService menuService) {
         this.loginService = loginService;
         this.eventService = eventService;
+        this.menuService = menuService;
     }
 
     @GetMapping("/create")
     public String create(Model model) {
         model.addAttribute("event", new EventDto());
+        model.addAttribute("menus", menuService.getAll().getValue());
         return "event/create";
     }
 
     @PostMapping("/create")
     public String create(@ModelAttribute("event") EventDto eventDto,
                          BindingResult br,
-                         RedirectAttributes redirectAttributes) {
+                         RedirectAttributes redirectAttributes,
+                         Model model) {
         if (br.hasErrors()) {
+            model.addAttribute("menus", menuService.getAll().getValue());
             return "event/create";
         }
 
@@ -59,6 +65,7 @@ public class EventController {
 
         if (result.isInvalid()) {
             addErrorsToBindingResults(br, result, "event");
+            model.addAttribute("menus", menuService.getAll().getValue());
             return "event/create";
         }
 
@@ -78,16 +85,19 @@ public class EventController {
         }
 
         model.addAttribute("event", result.getValue());
+        model.addAttribute("menus", menuService.getAll().getValue());
         return "event/edit";
     }
 
     @PostMapping("/edit/{id}")
     public String edit(@PathVariable Long id, @ModelAttribute("event") EventDto eventDto,
                        BindingResult br,
-                       RedirectAttributes redirectAttributes) {
+                       RedirectAttributes redirectAttributes,
+                       Model model) {
         eventDto.setId(id);
 
         if (br.hasErrors()) {
+            model.addAttribute("menus", menuService.getAll().getValue());
             return "event/edit";
         }
 
@@ -99,6 +109,7 @@ public class EventController {
 
         if (result.isInvalid()) {
             addErrorsToBindingResults(br, result, "event");
+            model.addAttribute("menus", menuService.getAll().getValue());
             return "event/edit";
         }
 

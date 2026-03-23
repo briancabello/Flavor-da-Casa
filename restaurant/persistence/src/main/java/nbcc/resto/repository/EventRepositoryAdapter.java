@@ -20,7 +20,6 @@ public class EventRepositoryAdapter implements EventRepository {
         this.mapper = mapper;
     }
 
-
     @Override
     public Collection<EventDto> getAll() {
         return jpaRepository.findByArchivedFalse().stream()
@@ -56,7 +55,6 @@ public class EventRepositoryAdapter implements EventRepository {
     public Collection<EventDto> search(String name, LocalDateTime start, LocalDateTime end) {
         return mapper.toDTO(jpaRepository.searchEvents(name, start, end));
     }
-
 
     @Override
     public boolean exists(String name) {
