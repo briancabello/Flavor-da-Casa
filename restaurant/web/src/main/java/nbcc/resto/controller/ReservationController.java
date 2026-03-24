@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.UUID;
 
 import static nbcc.common.validation.ModelErrorConverter.addErrorsToBindingResults;
 
@@ -156,6 +157,40 @@ public class ReservationController {
         }
 
         return "reservation/details";
+    }
+
+    @GetMapping("/track")
+    public String track(@RequestParam(required = false) String uuid, Model model) {
+        if (uuid != null && !uuid.isBlank()) {
+            try {
+                var result = reservationService.getByUuid(UUID.fromString(uuid.trim()));
+
+                if (result.hasValue()) {
+                    var reservation = result.getValue();
+                    model.addAttribute("reservation", reservation);
+
+                    var eventResult = eventService.get(reservation.getEventId());
+                    if (eventResult.hasValue()) {
+                        model.addAttribute("event", eventResult.getValue());
+                    }
+
+                    if (reservation.getSeatingId() != null) {
+                        var seatingResult = seatingService.get(reservation.getSeatingId());
+                        if (seatingResult.hasValue()) {
+                            model.addAttribute("seating", seatingResult.getValue());
+                        }
+                    }
+                } else {
+                    model.addAttribute("notFound", true);
+                }
+            } catch (IllegalArgumentException e) {
+                model.addAttribute("notFound", true);
+            }
+
+            model.addAttribute("searchedUuid", uuid.trim());
+        }
+
+        return "reservation/track";
     }
 
     private void loadFormData(Model model) {
