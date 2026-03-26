@@ -17,7 +17,7 @@
                         </p>
 
                         <div class="alert alert-info mt-3" th:if="${uuid}">
-                            <strong>Your Tracking ID:</strong>
+                            <strong>Your Reservation ID:</strong>
                             <br>
                             <code class="fs-5" th:text="${uuid}"></code>
                             <br>
@@ -26,10 +26,10 @@
 
                         <div class="mt-4">
                             <a class="btn btn-primary px-4" th:if="${uuid}" th:href="@{/reservation/track(uuid=${uuid})}">
-                                <i class="fa fa-search me-2"></i> Track My Reservation
+                                <i class="fa fa-search me-2"></i> Check My Reservation
                             </a>
                             <a class="btn btn-outline-primary px-4" th:href="@{/reservation}">
-                                <i class="fa fa-plus me-2"></i> Make Another Reservation
+                                <i class="fa fa-plus me-2"></i> Create Another Reservation
                             </a>
                             <a class="btn btn-outline-secondary ms-2 px-4" th:href="@{/}">
                                 <i class="fa fa-home me-2"></i> Go Home

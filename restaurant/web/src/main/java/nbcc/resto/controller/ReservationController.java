@@ -153,10 +153,62 @@ public class ReservationController {
             var seatingResult = seatingService.get(reservation.getSeatingId());
             if (seatingResult.hasValue()) {
                 model.addAttribute("seating", seatingResult.getValue());
+                model.addAttribute("tables", seatingResult.getValue().getTables());
             }
         }
 
         return "reservation/details";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/approve/{id}")
+    public String approve(@PathVariable Long id,
+                          @RequestParam Long tableId,
+                          RedirectAttributes redirectAttributes,
+                          Model model) {
+
+        var result = reservationService.approve(id, tableId);
+
+        if (result.isError()) {
+            model.addAttribute("message", "Error approving reservation");
+            return "error/errorPage";
+        }
+
+        if (result.isInvalid()) {
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    result.getValidationErrors().iterator().next().getMessage());
+            return "redirect:/reservation/details/" + id;
+        }
+
+        redirectAttributes.addFlashAttribute("reservationName",
+                result.getValue().getGuestFirstName() + " " + result.getValue().getGuestLastName());
+        redirectAttributes.addFlashAttribute("action", "approved");
+        return "redirect:/reservation/details/" + id;
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/deny/{id}")
+    public String deny(@PathVariable Long id,
+                       RedirectAttributes redirectAttributes,
+                       Model model) {
+
+        var result = reservationService.deny(id);
+
+        if (result.isError()) {
+            model.addAttribute("message", "Error denying reservation");
+            return "error/errorPage";
+        }
+
+        if (result.isInvalid()) {
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    result.getValidationErrors().iterator().next().getMessage());
+            return "redirect:/reservation/details/" + id;
+        }
+
+        redirectAttributes.addFlashAttribute("reservationName",
+                result.getValue().getGuestFirstName() + " " + result.getValue().getGuestLastName());
+        redirectAttributes.addFlashAttribute("action", "denied");
+        return "redirect:/reservation/details/" + id;
     }
 
     @GetMapping("/track")
