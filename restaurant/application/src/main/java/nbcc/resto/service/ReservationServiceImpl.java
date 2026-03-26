@@ -99,6 +99,23 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public ValidatedResult<ReservationDto> approve(long reservationId, long tableId) {
         try {
+            var optional = reservationRepository.get(reservationId);
+            if (optional.isEmpty()) {
+                return ValidationResults.invalid(null, "Reservation not found", "id");
+            }
+
+            var reservation = optional.get();
+
+            if ("approved".equalsIgnoreCase(reservation.getStatus())) {
+                return ValidationResults.invalid(reservation,
+                        "An approved reservation cannot have its status changed", "status");
+            }
+
+            if (reservationRepository.isTableAssignedForSeating(reservation.getSeatingId(), tableId)) {
+                return ValidationResults.invalid(reservation,
+                        "This table is already assigned to another approved reservation for this seating", "assignedTableId");
+            }
+
             return ValidationResults.success(reservationRepository.updateStatus(reservationId, "approved", tableId));
         } catch (Exception e) {
             logger.error("Error approving reservation {}", reservationId, e);
@@ -109,6 +126,18 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public ValidatedResult<ReservationDto> deny(long reservationId) {
         try {
+            var optional = reservationRepository.get(reservationId);
+            if (optional.isEmpty()) {
+                return ValidationResults.invalid(null, "Reservation not found", "id");
+            }
+
+            var reservation = optional.get();
+
+            if ("approved".equalsIgnoreCase(reservation.getStatus())) {
+                return ValidationResults.invalid(reservation,
+                        "An approved reservation cannot have its status changed", "status");
+            }
+
             return ValidationResults.success(reservationRepository.updateStatus(reservationId, "denied", null));
         } catch (Exception e) {
             logger.error("Error denying reservation {}", reservationId, e);
