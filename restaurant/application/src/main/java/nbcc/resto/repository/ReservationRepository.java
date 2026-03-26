@@ -15,4 +15,5 @@ public interface ReservationRepository {
     ReservationDto updateStatus(long id, String status, Long tableId);
     boolean existsBySeatingId(long seatingId);
     boolean existsByEventId(long eventId);
+    boolean isTableAssignedForSeating(long seatingId, long tableId);
 }
