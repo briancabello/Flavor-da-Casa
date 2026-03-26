@@ -161,33 +161,33 @@ public class ReservationController {
 
     @GetMapping("/track")
     public String track(@RequestParam(required = false) String uuid, Model model) {
-        if (uuid != null && !uuid.isBlank()) {
-            try {
-                var result = reservationService.getByUuid(UUID.fromString(uuid.trim()));
+        if (uuid == null || uuid.isBlank()) {
+            return "redirect:/";
+        }
 
-                if (result.hasValue()) {
-                    var reservation = result.getValue();
-                    model.addAttribute("reservation", reservation);
+        try {
+            var result = reservationService.getByUuid(UUID.fromString(uuid.trim()));
 
-                    var eventResult = eventService.get(reservation.getEventId());
-                    if (eventResult.hasValue()) {
-                        model.addAttribute("event", eventResult.getValue());
-                    }
+            if (result.hasValue()) {
+                var reservation = result.getValue();
+                model.addAttribute("reservation", reservation);
 
-                    if (reservation.getSeatingId() != null) {
-                        var seatingResult = seatingService.get(reservation.getSeatingId());
-                        if (seatingResult.hasValue()) {
-                            model.addAttribute("seating", seatingResult.getValue());
-                        }
-                    }
-                } else {
-                    model.addAttribute("notFound", true);
+                var eventResult = eventService.get(reservation.getEventId());
+                if (eventResult.hasValue()) {
+                    model.addAttribute("event", eventResult.getValue());
                 }
-            } catch (IllegalArgumentException e) {
+
+                if (reservation.getSeatingId() != null) {
+                    var seatingResult = seatingService.get(reservation.getSeatingId());
+                    if (seatingResult.hasValue()) {
+                        model.addAttribute("seating", seatingResult.getValue());
+                    }
+                }
+            } else {
                 model.addAttribute("notFound", true);
             }
-
-            model.addAttribute("searchedUuid", uuid.trim());
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("notFound", true);
         }
 
         return "reservation/track";
