@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav aria-label="breadcrumb" class="bg-light-subtle py-3 border-bottom mb-4"
+     th:fragment="reservationBreadcrumb(currentPage, reservationName, reservationUrl)">
+    <div class="container small">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+                <a class="text-decoration-none text-coffee" th:href="@{/}">
+                    <i class="fa fa-home me-1"></i> Home
+                </a>
+            </li>
+
+            <li class="breadcrumb-item"
+                th:classappend="${currentPage == 'Reservations'} ? ' active text-muted' : ''">
+                <a class="text-decoration-none text-coffee"
+                   th:href="@{/reservation}"
+                   th:if="${currentPage != 'Reservations'}">
+                    Reservations
+                </a>
+                <span th:if="${currentPage == 'Reservations'}">Reservations</span>
+            </li>
+
+            <li class="breadcrumb-item" th:if="${reservationName != null and reservationUrl != null}">
+                <a class="text-decoration-none text-coffee"
+                   th:href="${reservationUrl}"
+                   th:text="${reservationName}">
+                    Reservation
+                </a>
+            </li>
+
+            <li aria-current="page"
+                class="breadcrumb-item active text-muted"
+                th:if="${currentPage != 'Reservations'}"
+                th:text="${currentPage}">
+                Page
+            </li>
+        </ol>
+    </div>
+</nav>
+
+<div class="alert alert-success alert-dismissible fade show small" role="alert"
+     th:fragment="successAlert(name, action)" th:if="${name}"
+>
+    <i class="fa fa-check-circle me-2"></i>
+
+    Reservation <strong th:text="${name}"></strong>
+    <span th:text="${action}"></span> successfully.
+
+    <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+</div>
+
+<!--/*@thymesVar id="reservation" type="nbcc.resto.dto.ReservationDto"*/-->
+<th:block th:fragment="input" th:object="${reservation}">
+    <div class="alert alert-danger shadow-sm" role="alert" th:if="${#fields.hasGlobalErrors()}">
+        <i class="fa fa-exclamation-circle me-2"></i>
+        <span th:each="err : ${#fields.globalErrors()}" th:text="${err}"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="eventId">Event</label>
+        <select class="form-select" id="eventId" th:field="*{eventId}"
+                th:errorclass="is-invalid">
+            <option value="">-- Select an Event --</option>
+            <option th:each="event : ${events}"
+                    th:value="${event.id}"
+                    th:text="${event.name + ' (' + #temporals.format(event.startDate, 'MMM dd, yyyy') + ' - ' + #temporals.format(event.endDate, 'MMM dd, yyyy') + ')'}">
+            </option>
+        </select>
+        <div class="invalid-feedback fw-medium" th:errors="*{eventId}"></div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="seatingId">Seating Time</label>
+        <select class="form-select" id="seatingId" th:field="*{seatingId}"
+                th:errorclass="is-invalid">
+            <option value="">-- Select a Seating --</option>
+            <option th:each="seating : ${seatings}"
+                    th:value="${seating.id}"
+                    th:text="${seating.name + ' - ' + #temporals.format(seating.startDateTime, 'MMM dd, yyyy h:mm a') + ' (' + seating.duration + ' min)'}">
+            </option>
+        </select>
+        <div class="invalid-feedback fw-medium" th:errors="*{seatingId}"></div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="guestFirstName">First Name</label>
+        <input class="form-control" id="guestFirstName" th:field="*{guestFirstName}"
+               th:errorclass="is-invalid"
+               type="text" placeholder="Enter your first name">
+        <div class="invalid-feedback fw-medium" th:errors="*{guestFirstName}"></div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="guestLastName">Last Name</label>
+        <input class="form-control" id="guestLastName" th:field="*{guestLastName}"
+               th:errorclass="is-invalid"
+               type="text" placeholder="Enter your last name">
+        <div class="invalid-feedback fw-medium" th:errors="*{guestLastName}"></div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="email">Email Address</label>
+        <input class="form-control" id="email" th:field="*{email}"
+               th:errorclass="is-invalid"
+               type="email" placeholder="Enter your email address">
+        <div class="invalid-feedback fw-medium" th:errors="*{email}"></div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="groupSize">Group Size</label>
+        <input class="form-control" id="groupSize" th:field="*{groupSize}"
+               th:errorclass="is-invalid"
+               type="number" min="1" placeholder="Number of guests">
+        <div class="invalid-feedback fw-medium" th:errors="*{groupSize}"></div>
+    </div>
+</th:block>
+
+<!--/*@thymesVar id="reservation" type="nbcc.resto.dto.ReservationDto"*/-->
+<th:block th:fragment="details">
+    <div class="rounded-3 overflow-hidden border property-grid shadow-sm mb-4">
+        <div class="property-label-bg px-4 py-2 border-bottom">
+            <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">
+                <i class="fa fa-user me-1"></i> Guest Information
+            </span>
+        </div>
+        <div class="row g-0 border-bottom">
+            <div class="col-4 p-3 d-flex align-items-center property-label-bg">
+                <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Name</span>
+            </div>
+            <div class="col-8 p-3">
+                <span class="text-dark fw-medium"
+                      th:text="${reservation.guestFirstName + ' ' + reservation.guestLastName}"></span>
+            </div>
+        </div>
+        <div class="row g-0 border-bottom">
+            <div class="col-4 p-3 d-flex align-items-center property-label-bg">
+                <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Email</span>
+            </div>
+            <div class="col-8 p-3">
+                <span class="text-dark fw-medium" th:text="${reservation.email}"></span>
+            </div>
+        </div>
+        <div class="row g-0 border-bottom">
+            <div class="col-4 p-3 d-flex align-items-center property-label-bg">
+                <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Group Size</span>
+            </div>
+            <div class="col-8 p-3">
+                <span class="text-dark fw-medium" th:text="${reservation.groupSize}"></span>
+            </div>
+        </div>
+        <div class="row g-0">
+            <div class="col-4 p-3 d-flex align-items-center property-label-bg">
+                <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Tracking ID</span>
+            </div>
+            <div class="col-8 p-3">
+                <code class="text-dark fw-medium" th:text="${reservation.uuid}"></code>
+            </div>
+        </div>
+    </div>
+
+    <div class="rounded-3 overflow-hidden border property-grid shadow-sm mb-4">
+        <div class="property-label-bg px-4 py-2 border-bottom">
+            <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">
+                <i class="fa fa-calendar-alt me-1"></i> Event &amp; Seating
+            </span>
+        </div>
+        <div class="row g-0 border-bottom">
+            <div class="col-4 p-3 d-flex align-items-center property-label-bg">
+                <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Event</span>
+            </div>
+            <div class="col-8 p-3">
+                <span class="text-dark fw-medium" th:text="${event != null ? event.name : 'N/A'}"></span>
+            </div>
+        </div>
+        <div class="row g-0 border-bottom" th:if="${event != null}">
+            <div class="col-4 p-3 d-flex align-items-center property-label-bg">
+                <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Event Dates</span>
+            </div>
+            <div class="col-8 p-3">
+                <span class="text-dark fw-medium"
+                      th:text="|${#temporals.format(event.startDate, 'MMM dd, yyyy')} - ${#temporals.format(event.endDate, 'MMM dd, yyyy')}|"></span>
+            </div>
+        </div>
+        <div class="row g-0 border-bottom">
+            <div class="col-4 p-3 d-flex align-items-center property-label-bg">
+                <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Seating</span>
+            </div>
+            <div class="col-8 p-3">
+                <span class="text-dark fw-medium"
+                      th:if="${seating != null}"
+                      th:text="${seating.name + ' - ' + #temporals.format(seating.startDateTime, 'MMM dd, yyyy h:mm a')}"></span>
+                <span class="text-dark fw-medium" th:if="${seating == null}">N/A</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="rounded-3 overflow-hidden border property-grid shadow-sm mb-4">
+        <div class="property-label-bg px-4 py-2 border-bottom">
+            <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">
+                <i class="fa fa-info-circle me-1"></i> Status
+            </span>
+        </div>
+        <div class="row g-0">
+            <div class="col-4 p-3 d-flex align-items-center property-label-bg">
+                <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Request Status</span>
+            </div>
+            <div class="col-8 p-3">
+                <span class="badge"
+                      th:classappend="${reservation.status == 'APPROVED' ? 'bg-success' : (reservation.status == 'DENIED' ? 'bg-danger' : 'bg-warning text-dark')}"
+                      th:text="${reservation.status}"></span>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+</body>
+</html>

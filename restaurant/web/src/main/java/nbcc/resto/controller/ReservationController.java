@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.UUID;
 
 import static nbcc.common.validation.ModelErrorConverter.addErrorsToBindingResults;
 
@@ -152,10 +153,96 @@ public class ReservationController {
             var seatingResult = seatingService.get(reservation.getSeatingId());
             if (seatingResult.hasValue()) {
                 model.addAttribute("seating", seatingResult.getValue());
+                model.addAttribute("tables", seatingResult.getValue().getTables());
             }
         }
 
         return "reservation/details";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/approve/{id}")
+    public String approve(@PathVariable Long id,
+                          @RequestParam Long tableId,
+                          RedirectAttributes redirectAttributes,
+                          Model model) {
+
+        var result = reservationService.approve(id, tableId);
+
+        if (result.isError()) {
+            model.addAttribute("message", "Error approving reservation");
+            return "error/errorPage";
+        }
+
+        if (result.isInvalid()) {
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    result.getValidationErrors().iterator().next().getMessage());
+            return "redirect:/reservation/details/" + id;
+        }
+
+        redirectAttributes.addFlashAttribute("reservationName",
+                result.getValue().getGuestFirstName() + " " + result.getValue().getGuestLastName());
+        redirectAttributes.addFlashAttribute("action", "approved");
+        return "redirect:/reservation/details/" + id;
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/deny/{id}")
+    public String deny(@PathVariable Long id,
+                       RedirectAttributes redirectAttributes,
+                       Model model) {
+
+        var result = reservationService.deny(id);
+
+        if (result.isError()) {
+            model.addAttribute("message", "Error denying reservation");
+            return "error/errorPage";
+        }
+
+        if (result.isInvalid()) {
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    result.getValidationErrors().iterator().next().getMessage());
+            return "redirect:/reservation/details/" + id;
+        }
+
+        redirectAttributes.addFlashAttribute("reservationName",
+                result.getValue().getGuestFirstName() + " " + result.getValue().getGuestLastName());
+        redirectAttributes.addFlashAttribute("action", "denied");
+        return "redirect:/reservation/details/" + id;
+    }
+
+    @GetMapping("/track")
+    public String track(@RequestParam(required = false) String uuid, Model model) {
+        if (uuid == null || uuid.isBlank()) {
+            return "redirect:/";
+        }
+
+        try {
+            var result = reservationService.getByUuid(UUID.fromString(uuid.trim()));
+
+            if (result.hasValue()) {
+                var reservation = result.getValue();
+                model.addAttribute("reservation", reservation);
+
+                var eventResult = eventService.get(reservation.getEventId());
+                if (eventResult.hasValue()) {
+                    model.addAttribute("event", eventResult.getValue());
+                }
+
+                if (reservation.getSeatingId() != null) {
+                    var seatingResult = seatingService.get(reservation.getSeatingId());
+                    if (seatingResult.hasValue()) {
+                        model.addAttribute("seating", seatingResult.getValue());
+                    }
+                }
+            } else {
+                model.addAttribute("notFound", true);
+            }
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("notFound", true);
+        }
+
+        return "reservation/track";
     }
 
     private void loadFormData(Model model) {

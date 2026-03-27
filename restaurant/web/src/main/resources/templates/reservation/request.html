@@ -4,12 +4,7 @@
 <body>
 <div th:fragment="content">
     <div class="container py-4">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Request Reservation</li>
-            </ol>
-        </nav>
+        <div th:replace="~{reservation/fragments :: reservationBreadcrumb('Request', null, null)}"></div>
 
         <h2 class="fw-bold mb-4">Request a Reservation</h2>
 
@@ -19,74 +14,7 @@
                     <div class="card-body p-4">
                         <form method="post" th:action="@{/reservation}" th:object="${reservation}" novalidate>
 
-                            <div class="alert alert-danger shadow-sm" role="alert" th:if="${#fields.hasGlobalErrors()}">
-                                <i class="fa fa-exclamation-circle me-2"></i>
-                                <span th:each="err : ${#fields.globalErrors()}" th:text="${err}"></span>
-                            </div>
-
-                           
-                            <div class="mb-3">
-                                <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="eventId">Event</label>
-                                <select class="form-select" id="eventId" th:field="*{eventId}"
-                                        th:errorclass="is-invalid">
-                                    <option value="">-- Select an Event --</option>
-                                    <option th:each="event : ${events}"
-                                            th:value="${event.id}"
-                                            th:text="${event.name + ' (' + #temporals.format(event.startDate, 'MMM dd, yyyy') + ' - ' + #temporals.format(event.endDate, 'MMM dd, yyyy') + ')'}">
-                                    </option>
-                                </select>
-                                <div class="invalid-feedback fw-medium" th:errors="*{eventId}"></div>
-                            </div>
-
-                            
-                            <div class="mb-3">
-                                <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="seatingId">Seating Time</label>
-                                <select class="form-select" id="seatingId" th:field="*{seatingId}"
-                                        th:errorclass="is-invalid">
-                                    <option value="">-- Select a Seating --</option>
-                                    <option th:each="seating : ${seatings}"
-                                            th:value="${seating.id}"
-                                            th:text="${seating.name + ' - ' + #temporals.format(seating.startDateTime, 'MMM dd, yyyy h:mm a') + ' (' + seating.duration + ' min)'}">
-                                    </option>
-                                </select>
-                                <div class="invalid-feedback fw-medium" th:errors="*{seatingId}"></div>
-                            </div>
-
-                            
-                            <div class="mb-3">
-                                <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="guestFirstName">First Name</label>
-                                <input class="form-control" id="guestFirstName" th:field="*{guestFirstName}"
-                                       th:errorclass="is-invalid"
-                                       type="text" placeholder="Enter your first name">
-                                <div class="invalid-feedback fw-medium" th:errors="*{guestFirstName}"></div>
-                            </div>
-
-                            
-                            <div class="mb-3">
-                                <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="guestLastName">Last Name</label>
-                                <input class="form-control" id="guestLastName" th:field="*{guestLastName}"
-                                       th:errorclass="is-invalid"
-                                       type="text" placeholder="Enter your last name">
-                                <div class="invalid-feedback fw-medium" th:errors="*{guestLastName}"></div>
-                            </div>
-
-                           
-                            <div class="mb-3">
-                                <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="email">Email Address</label>
-                                <input class="form-control" id="email" th:field="*{email}"
-                                       th:errorclass="is-invalid"
-                                       type="email" placeholder="Enter your email address">
-                                <div class="invalid-feedback fw-medium" th:errors="*{email}"></div>
-                            </div>
-
-                            
-                            <div class="mb-3">
-                                <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="groupSize">Group Size</label>
-                                <input class="form-control" id="groupSize" th:field="*{groupSize}"
-                                       th:errorclass="is-invalid"
-                                       type="number" min="1" placeholder="Number of guests">
-                                <div class="invalid-feedback fw-medium" th:errors="*{groupSize}"></div>
-                            </div>
+                            <div th:replace="~{reservation/fragments :: input}"></div>
 
                             <div class="mt-4 pt-3 border-top">
                                 <button class="btn btn-primary px-4" type="submit">

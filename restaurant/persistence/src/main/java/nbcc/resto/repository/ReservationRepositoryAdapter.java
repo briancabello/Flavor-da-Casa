@@ -21,7 +21,7 @@ public class ReservationRepositoryAdapter implements ReservationRepository {
 
     @Override
     public Collection<ReservationDto> getAll() {
-        return mapper.toDTO(jpaRepository.findAllByOrderByIdDesc());
+        return mapper.toDTO(jpaRepository.findAllOrderBySeatingStartDateTime());
     }
 
     @Override
@@ -31,7 +31,7 @@ public class ReservationRepositoryAdapter implements ReservationRepository {
 
     @Override
     public Collection<ReservationDto> getByEvent(long eventId) {
-        return mapper.toDTO(jpaRepository.findByEventId(eventId));
+        return mapper.toDTO(jpaRepository.findByEventIdOrderBySeatingStartDateTime(eventId));
     }
 
     @Override
@@ -61,5 +61,10 @@ public class ReservationRepositoryAdapter implements ReservationRepository {
     @Override
     public boolean existsByEventId(long eventId) {
         return jpaRepository.existsByEventId(eventId);
+    }
+
+    @Override
+    public boolean isTableAssignedForSeating(long seatingId, long tableId) {
+        return jpaRepository.existsBySeatingIdAndAssignedTableIdAndStatus(seatingId, tableId, "approved");
     }
 }

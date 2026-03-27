@@ -5,6 +5,7 @@ import nbcc.common.service.LoginService;
 import nbcc.resto.dto.Seating;
 import nbcc.resto.service.DiningTableService;
 import nbcc.resto.service.EventService;
+import nbcc.resto.service.ReservationService;
 import nbcc.resto.service.SeatingService;
 import nbcc.resto.viewmodels.SeatingListViewModel;
 import org.slf4j.Logger;
@@ -30,17 +31,20 @@ public class SeatingController {
     private final SeatingService seatingService;
     private final EventService eventService;
     private final DiningTableService diningTableService;
+    private final ReservationService reservationService;
 
     public SeatingController(
             LoginService loginService,
             SeatingService seatingService,
             EventService eventService,
-            DiningTableService diningTableService
+            DiningTableService diningTableService,
+            ReservationService reservationService
     ) {
         this.loginService = loginService;
         this.seatingService = seatingService;
         this.eventService = eventService;
         this.diningTableService = diningTableService;
+        this.reservationService = reservationService;
     }
 
     @GetMapping
@@ -123,6 +127,7 @@ public class SeatingController {
         }
 
         model.addAttribute("seating", seating);
+        model.addAttribute("isEditing", true);
         loadFormData(model);
         return "seating/edit";
     }
@@ -140,6 +145,7 @@ public class SeatingController {
 
         if (result.isInvalid()) {
             addErrorsToBindingResults(br, result, "seating");
+            model.addAttribute("isEditing", true);
             loadFormData(model);
             return "seating/edit";
         }
@@ -164,8 +170,7 @@ public class SeatingController {
             model.addAttribute("eventName", eventResult.getValue().getName());
         }
 
-        // TODO: replace with actual reservation I have to check when ReservationService is built
-        model.addAttribute("isArchive", false);
+        model.addAttribute("isArchive", reservationService.existsBySeatingId(id));
 
         return "seating/delete";
     }

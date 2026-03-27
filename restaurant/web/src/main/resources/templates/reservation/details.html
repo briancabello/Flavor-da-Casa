@@ -4,13 +4,7 @@
 <body>
 <div th:fragment="content">
     <div class="container py-4">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
-                <li class="breadcrumb-item"><a th:href="@{/reservation/list}">Reservations</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Details</li>
-            </ol>
-        </nav>
+        <div th:replace="~{reservation/fragments :: reservationBreadcrumb('Details', null, null)}"></div>
 
         <div class="row justify-content-center">
             <div class="col-12 col-lg-9 col-xl-8">
@@ -25,117 +19,78 @@
                     Viewing the full details of this reservation request.
                 </p>
 
-                <div class="rounded-3 overflow-hidden border property-grid shadow-sm mb-4">
-                    <div class="property-label-bg px-4 py-2 border-bottom">
-                        <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">
-                            <i class="fa fa-user me-1"></i> Guest Information
-                        </span>
-                    </div>
-                    <div class="row g-0 border-bottom">
-                        <div class="col-4 p-3 d-flex align-items-center property-label-bg">
-                            <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Name</span>
-                        </div>
-                        <div class="col-8 p-3">
-                            <span class="text-dark fw-medium"
-                                  th:text="${reservation.guestFirstName + ' ' + reservation.guestLastName}"></span>
-                        </div>
-                    </div>
-                    <div class="row g-0 border-bottom">
-                        <div class="col-4 p-3 d-flex align-items-center property-label-bg">
-                            <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Email</span>
-                        </div>
-                        <div class="col-8 p-3">
-                            <span class="text-dark fw-medium" th:text="${reservation.email}"></span>
-                        </div>
-                    </div>
-                    <div class="row g-0 border-bottom">
-                        <div class="col-4 p-3 d-flex align-items-center property-label-bg">
-                            <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Group Size</span>
-                        </div>
-                        <div class="col-8 p-3">
-                            <span class="text-dark fw-medium" th:text="${reservation.groupSize}"></span>
-                        </div>
-                    </div>
-                    <div class="row g-0">
-                        <div class="col-4 p-3 d-flex align-items-center property-label-bg">
-                            <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Tracking ID</span>
-                        </div>
-                        <div class="col-8 p-3">
-                            <code class="text-dark fw-medium" th:text="${reservation.uuid}"></code>
-                        </div>
-                    </div>
+                <div th:replace="~{reservation/fragments :: details}"></div>
+
+                <div class="alert alert-success alert-dismissible fade show small" role="alert"
+                     th:if="${reservationName}">
+                    <i class="fa fa-check-circle me-2"></i>
+                    Reservation for <strong th:text="${reservationName}"></strong>
+                    <span th:text="${action}"></span> successfully.
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
                 </div>
 
-                <div class="rounded-3 overflow-hidden border property-grid shadow-sm mb-4">
-                    <div class="property-label-bg px-4 py-2 border-bottom">
-                        <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">
-                            <i class="fa fa-calendar-alt me-1"></i> Event &amp; Seating
-                        </span>
-                    </div>
-                    <div class="row g-0 border-bottom">
-                        <div class="col-4 p-3 d-flex align-items-center property-label-bg">
-                            <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Event</span>
-                        </div>
-                        <div class="col-8 p-3">
-                            <span class="text-dark fw-medium" th:text="${event != null ? event.name : 'N/A'}"></span>
-                        </div>
-                    </div>
-                    <div class="row g-0 border-bottom" th:if="${event != null}">
-                        <div class="col-4 p-3 d-flex align-items-center property-label-bg">
-                            <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Event Dates</span>
-                        </div>
-                        <div class="col-8 p-3">
-                            <span class="text-dark fw-medium"
-                                  th:text="|${#temporals.format(event.startDate, 'MMM dd, yyyy')} - ${#temporals.format(event.endDate, 'MMM dd, yyyy')}|"></span>
-                        </div>
-                    </div>
-                    <div class="row g-0 border-bottom">
-                        <div class="col-4 p-3 d-flex align-items-center property-label-bg">
-                            <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Seating</span>
-                        </div>
-                        <div class="col-8 p-3">
-                            <span class="text-dark fw-medium"
-                                  th:if="${seating != null}"
-                                  th:text="${seating.name + ' - ' + #temporals.format(seating.startDateTime, 'MMM dd, yyyy h:mm a')}"></span>
-                            <span class="text-dark fw-medium" th:if="${seating == null}">N/A</span>
-                        </div>
-                    </div>
-                    <div class="row g-0">
-                        <div class="col-4 p-3 d-flex align-items-center property-label-bg">
-                            <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Duration</span>
-                        </div>
-                        <div class="col-8 p-3">
-                            <span class="text-dark fw-medium"
-                                  th:if="${seating != null}"
-                                  th:text="${seating.duration + ' minutes'}"></span>
-                            <span class="text-dark fw-medium" th:if="${seating == null}">N/A</span>
-                        </div>
-                    </div>
+                <div class="alert alert-danger alert-dismissible fade show small" role="alert"
+                     th:if="${errorMessage}">
+                    <i class="fa fa-exclamation-circle me-2"></i>
+                    <span th:text="${errorMessage}"></span>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
                 </div>
 
-                <div class="rounded-3 overflow-hidden border property-grid shadow-sm mb-4">
+                <div class="rounded-3 overflow-hidden border property-grid shadow-sm mb-4"
+                     th:if="${reservation.assignedTableId != null}">
                     <div class="property-label-bg px-4 py-2 border-bottom">
                         <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">
-                            <i class="fa fa-info-circle me-1"></i> Status
+                            <i class="fa fa-chair me-1"></i> Assignment
                         </span>
                     </div>
-                    <div class="row g-0 border-bottom">
-                        <div class="col-4 p-3 d-flex align-items-center property-label-bg">
-                            <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Status</span>
-                        </div>
-                        <div class="col-8 p-3">
-                            <span th:class="${reservation.status == 'approved' ? 'badge bg-success' :
-                                             (reservation.status == 'denied' ? 'badge bg-danger' : 'badge bg-warning text-dark')}"
-                                  th:text="${#strings.capitalize(reservation.status)}">
-                            </span>
-                        </div>
-                    </div>
-                    <div class="row g-0" th:if="${reservation.assignedTableId != null}">
+                    <div class="row g-0">
                         <div class="col-4 p-3 d-flex align-items-center property-label-bg">
                             <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Assigned Table</span>
                         </div>
                         <div class="col-8 p-3">
                             <span class="text-dark fw-medium" th:text="${'Table #' + reservation.assignedTableId}"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm mb-4"
+                     th:if="${reservation.status != 'approved'}">
+                    <div class="card-header bg-dark text-light">
+                        <h6 class="mb-0">
+                            <i class="fa fa-tasks me-1"></i> Manage Reservation
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <form method="post"
+                                      th:action="@{/reservation/approve/{id}(id=${reservation.id})}">
+                                    <div class="d-flex gap-2 align-items-end">
+                                        <div class="flex-grow-1">
+                                            <label class="form-label text-muted text-uppercase fw-bold ls-wide"
+                                                   for="tableId">Assign Table</label>
+                                            <select class="form-select" id="tableId" name="tableId" required>
+                                                <option value="">-- Select a Table --</option>
+                                                <option th:each="table : ${tables}"
+                                                        th:value="${table.id}"
+                                                        th:text="${table.name + ' (Capacity: ' + table.capacity + ')'}">
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <button class="btn btn-success px-4" type="submit">
+                                            <i class="fa fa-check me-1"></i> Approve
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                                <form method="post"
+                                      th:action="@{/reservation/deny/{id}(id=${reservation.id})}">
+                                    <button class="btn btn-danger px-4" type="submit">
+                                        <i class="fa fa-times me-1"></i> Deny
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
