@@ -16,8 +16,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static nbcc.common.validation.ModelErrorConverter.addErrorsToBindingResults;
 
@@ -41,6 +43,7 @@ public class MenuController {
     @GetMapping
     public String getAll(@RequestParam(required = false) String search, Model model) {
 
+        Collection<Menu> menus;
         MenuListViewModel viewModel;
 
         if (search != null && !search.isBlank()) {
@@ -51,7 +54,8 @@ public class MenuController {
                 return "error/errorPage";
             }
 
-            viewModel = new MenuListViewModel(result.getValue(), loginService.isLoggedIn(), search);
+            menus = result.getValue();
+            viewModel = new MenuListViewModel(menus, loginService.isLoggedIn(), search);
         } else {
             var result = menuService.getAll();
 
@@ -60,10 +64,24 @@ public class MenuController {
                 return "error/errorPage";
             }
 
-            viewModel = new MenuListViewModel(result.getValue(), loginService.isLoggedIn());
+            menus = result.getValue();
+            viewModel = new MenuListViewModel(menus, loginService.isLoggedIn());
         }
 
+        // Fetch Menu Item (counts)
+        Map<Long, Integer> itemCounts = menus.stream()
+                .collect(Collectors.toMap(
+                        Menu::getId,
+                        menu -> {
+                            var itemsResult = menuItemService.getByMenuId(menu.getId());
+                            return (!itemsResult.isError() && itemsResult.getValue() != null)
+                                    ? itemsResult.getValue().size()
+                                    : 0;
+                        }
+                ));
+
         model.addAttribute("viewModel", viewModel);
+        model.addAttribute("itemCounts", itemCounts);
         return "menu/list";
     }
 
@@ -103,6 +121,13 @@ public class MenuController {
         }
 
         model.addAttribute("menu", result.getValue());
+
+        // Fetch Menu Items
+        var itemsResult = menuItemService.getByMenuId(id);
+        model.addAttribute("menuItems", itemsResult.isError()
+                ? List.of()
+                : itemsResult.getValue());
+
         return "menu/details";
     }
 
@@ -146,6 +171,14 @@ public class MenuController {
         }
         if (result.isInvalid()) {
             addErrorsToBindingResults(br, result, "menu");
+
+            // Reload Menu Items
+            var itemsResult = menuItemService.getByMenuId(id);
+            model.addAttribute("menuItems", itemsResult.isError()
+                    ? List.of()
+                    : itemsResult.getValue());
+            model.addAttribute("menuItem", new MenuItem());
+
             return "menu/edit";
         }
 
@@ -165,6 +198,13 @@ public class MenuController {
         }
 
         model.addAttribute("menu", result.getValue());
+
+        // Fetch Menu Items
+        var itemsResult = menuItemService.getByMenuId(id);
+        model.addAttribute("menuItems", itemsResult.isError()
+                ? List.of()
+                : itemsResult.getValue());
+
         return "menu/delete";
     }
 
