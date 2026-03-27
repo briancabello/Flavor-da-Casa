@@ -47,6 +47,6 @@ public class SeatingListViewModel {
             return false;
         }
 
-        return seatings.stream().anyMatch(s -> s.getEventId().equals(eventId));
+        return seatings.stream().anyMatch(s -> s.getEventId().equals(eventId) && s.isStatus());
     }
 }

@@ -31,7 +31,7 @@ public class Seating {
     private Collection<DiningTable> tables;
     private Set<Long> selectedTableIds;
 
-    private boolean status;
+    private boolean status = true;
     private LocalDateTime updatedDate;
 
     public Seating() {
