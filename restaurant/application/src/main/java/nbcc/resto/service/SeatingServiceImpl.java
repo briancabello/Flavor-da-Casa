@@ -123,9 +123,14 @@ public class SeatingServiceImpl implements SeatingService {
             Seating existingSeating = existingOpt.get();
 
 
-            // force the updated DTO to keep the original status and created date.
+
             seating.setStatus(existingSeating.isStatus());
             seating.setCreatedDate(existingSeating.getCreatedDate());
+
+
+            if (seating.getSelectedTableIds() == null || seating.getSelectedTableIds().isEmpty()) {
+                seating.setSelectedTableIds(existingSeating.getSelectedTableIds());
+            }
 
 
             var errors = validationService.validate(seating);

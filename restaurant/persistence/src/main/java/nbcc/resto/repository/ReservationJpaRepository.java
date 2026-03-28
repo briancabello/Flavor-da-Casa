@@ -2,6 +2,8 @@ package nbcc.resto.repository;
 
 import nbcc.resto.entity.ReservationEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,9 +13,13 @@ import java.util.UUID;
 @Repository
 public interface ReservationJpaRepository extends JpaRepository<ReservationEntity, Long> {
 
+    @Query("SELECT r FROM ReservationEntity r JOIN SeatingEntity s ON r.seatingId = s.id ORDER BY s.startDateTime ASC")
+    List<ReservationEntity> findAllOrderBySeatingStartDateTime();
+
     List<ReservationEntity> findBySeatingId(long seatingId);
 
-    List<ReservationEntity> findByEventId(long eventId);
+    @Query("SELECT r FROM ReservationEntity r JOIN SeatingEntity s ON r.seatingId = s.id WHERE r.eventId = :eventId ORDER BY s.startDateTime ASC")
+    List<ReservationEntity> findByEventIdOrderBySeatingStartDateTime(@Param("eventId") long eventId);
 
     Optional<ReservationEntity> findByUuid(UUID uuid);
 

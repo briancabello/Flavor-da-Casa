@@ -27,11 +27,14 @@
                     <li class="nav-item" th:if="${navViewModel.showSeating}">
                         <a class="nav-link" th:href="@{/seating}">Seating</a>
                     </li>
+                    <li class="nav-item" th:if="${navViewModel.showReservations}">
+                        <a class="nav-link" th:href="@{/reservation}">Request Reservation</a>
+                    </li>
+                    <li class="nav-item" th:if="${navViewModel.showLogoutButton}">
+                        <a class="nav-link" th:href="@{/reservation/list}">Reservations</a>
+                    </li>
                     <li class="nav-item" th:if="${navViewModel.showMenus}">
                         <a class="nav-link" th:href="@{/menu}">Menus</a>
-                    </li>
-                    <li class="nav-item" th:if="${navViewModel.showReservations}">
-                        <a class="nav-link" th:href="@{/reservation}">Reservations</a>
                     </li>
                 </ul>
 

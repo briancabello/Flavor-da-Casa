@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{layout :: layout(title='Reservation Details', content=~{::content})}"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+    <div class="container py-4">
+        <div th:replace="~{reservation/fragments :: reservationBreadcrumb('Details', null, null)}"></div>
+
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-9 col-xl-8">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2>Reservation Details</h2>
+                    <a class="btn btn-outline-secondary" th:href="@{/reservation/list}">
+                        <i class="fa fa-arrow-left me-1"></i> Back to List
+                    </a>
+                </div>
+
+                <p class="text-accent mb-4">
+                    Viewing the full details of this reservation request.
+                </p>
+
+                <div th:replace="~{reservation/fragments :: details}"></div>
+
+                <div class="alert alert-success alert-dismissible fade show small" role="alert"
+                     th:if="${reservationName}">
+                    <i class="fa fa-check-circle me-2"></i>
+                    Reservation for <strong th:text="${reservationName}"></strong>
+                    <span th:text="${action}"></span> successfully.
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+                </div>
+
+                <div class="alert alert-danger alert-dismissible fade show small" role="alert"
+                     th:if="${errorMessage}">
+                    <i class="fa fa-exclamation-circle me-2"></i>
+                    <span th:text="${errorMessage}"></span>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+                </div>
+
+                <div class="rounded-3 overflow-hidden border property-grid shadow-sm mb-4"
+                     th:if="${reservation.assignedTableId != null}">
+                    <div class="property-label-bg px-4 py-2 border-bottom">
+                        <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">
+                            <i class="fa fa-chair me-1"></i> Assignment
+                        </span>
+                    </div>
+                    <div class="row g-0">
+                        <div class="col-4 p-3 d-flex align-items-center property-label-bg">
+                            <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Assigned Table</span>
+                        </div>
+                        <div class="col-8 p-3">
+                            <span class="text-dark fw-medium" th:text="${'Table #' + reservation.assignedTableId}"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm mb-4"
+                     th:if="${reservation.status != 'approved'}">
+                    <div class="card-header bg-dark text-light">
+                        <h6 class="mb-0">
+                            <i class="fa fa-tasks me-1"></i> Manage Reservation
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <form method="post"
+                                      th:action="@{/reservation/approve/{id}(id=${reservation.id})}">
+                                    <div class="d-flex gap-2 align-items-end">
+                                        <div class="flex-grow-1">
+                                            <label class="form-label text-muted text-uppercase fw-bold ls-wide"
+                                                   for="tableId">Assign Table</label>
+                                            <select class="form-select" id="tableId" name="tableId" required>
+                                                <option value="">-- Select a Table --</option>
+                                                <option th:each="table : ${tables}"
+                                                        th:value="${table.id}"
+                                                        th:text="${table.name + ' (Capacity: ' + table.capacity + ')'}">
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <button class="btn btn-success px-4" type="submit">
+                                            <i class="fa fa-check me-1"></i> Approve
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                                <form method="post"
+                                      th:action="@{/reservation/deny/{id}(id=${reservation.id})}">
+                                    <button class="btn btn-danger px-4" type="submit">
+                                        <i class="fa fa-times me-1"></i> Deny
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                    <a class="btn btn-outline-secondary" th:href="@{/reservation/list}">
+                        <i class="fa fa-arrow-left me-1"></i> Back to List
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

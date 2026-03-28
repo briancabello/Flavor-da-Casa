@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{layout :: layout(title='Reservations', content=~{::content})}"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+    <div class="container py-4">
+        <div th:replace="~{reservation/fragments :: reservationBreadcrumb('Reservations', null, null)}"></div>
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Reservations &amp; Requests</h2>
+        </div>
+
+        <div class="mb-3">
+            <h5 class="text-accent text-uppercase mb-3 small ls-wide">
+                Filter reservations by event or status
+            </h5>
+
+            <form class="row g-3" method="get" th:action="@{/reservation/list}">
+
+                <div class="col-md-4">
+                    <label class="form-label text-muted text-uppercase" for="eventId"
+                           style="font-size: 0.85rem;">Event</label>
+                    <select class="form-select" id="eventId" name="eventId">
+                        <option value="">All Events</option>
+                        <option th:each="event : ${viewModel.events}"
+                                th:value="${event.id}"
+                                th:selected="${selectedEventId != null and selectedEventId == event.id}"
+                                th:text="${event.name}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label text-muted text-uppercase" for="status"
+                           style="font-size: 0.85rem;">Status</label>
+                    <select class="form-select" id="status" name="status">
+                        <option value="">All Statuses</option>
+                        <option value="pending"
+                                th:selected="${selectedStatus != null and selectedStatus == 'pending'}">Pending</option>
+                        <option value="approved"
+                                th:selected="${selectedStatus != null and selectedStatus == 'approved'}">Approved</option>
+                        <option value="denied"
+                                th:selected="${selectedStatus != null and selectedStatus == 'denied'}">Denied</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label d-none d-md-block opacity-0" style="font-size: 0.85rem;">Spacer</label>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-primary w-100" type="submit">
+                            <i class="fa fa-search me-1"></i> Filter
+                        </button>
+                        <a class="btn btn-outline-secondary w-100" th:href="@{/reservation/list}">
+                            <i class="fa fa-undo me-1"></i> Clear
+                        </a>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+        <div class="alert alert-info" th:if="${viewModel.isEmpty()}">No reservations found.</div>
+
+        <div class="card rounded-2 shadow-sm overflow-hidden" th:unless="${viewModel.isEmpty()}">
+            <div class="card-body p-0">
+                <table class="table table-hover mb-0">
+                    <thead class="bg-dark">
+                    <tr>
+                        <th>Guest Name</th>
+                        <th>Email</th>
+                        <th class="text-center">Group Size</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="res : ${viewModel.reservations}">
+                        <td>
+                            <a class="text-decoration-none text-primary"
+                               th:href="@{/reservation/details/{id}(id=${res.id})}"
+                               th:text="${res.guestFirstName + ' ' + res.guestLastName}"></a>
+                        </td>
+                        <td th:text="${res.email}"></td>
+                        <td class="text-center" th:text="${res.groupSize}"></td>
+                        <td class="text-center">
+                            <span th:class="${res.status == 'approved' ? 'badge bg-success' :
+                                             (res.status == 'denied' ? 'badge bg-danger' : 'badge bg-warning text-dark')}"
+                                  th:text="${#strings.capitalize(res.status)}">
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <div class="d-flex justify-content-center gap-2">
+                                <a class="text-decoration-none"
+                                   th:href="@{/reservation/details/{id}(id=${res.id})}"
+                                   title="View Details">
+                                    <i class="fa fa-eye text-primary fs-5"></i>
+                                </a>
+                                <a class="text-decoration-none"
+                                   th:if="${res.status != 'approved'}"
+                                   th:href="@{/reservation/details/{id}(id=${res.id})}"
+                                   title="Approve">
+                                    <i class="fa fa-check-circle text-success fs-5"></i>
+                                </a>
+                                <form method="post"
+                                      th:if="${res.status != 'approved'}"
+                                      th:action="@{/reservation/deny/{id}(id=${res.id})}"
+                                      style="display:inline">
+                                    <button type="submit" class="btn btn-link p-0 text-decoration-none"
+                                            title="Deny">
+                                        <i class="fa fa-times-circle text-danger fs-5"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
