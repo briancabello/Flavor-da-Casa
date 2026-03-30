@@ -53,9 +53,7 @@ public class MenuController {
                 model.addAttribute("message", "Error searching menus");
                 return "error/errorPage";
             }
-
             menus = result.getValue();
-            viewModel = new MenuListViewModel(menus, loginService.isLoggedIn(), search);
         } else {
             var result = menuService.getAll();
 
@@ -63,25 +61,17 @@ public class MenuController {
                 model.addAttribute("message", "Error retrieving menus");
                 return "error/errorPage";
             }
-
             menus = result.getValue();
-            viewModel = new MenuListViewModel(menus, loginService.isLoggedIn());
         }
 
-        // Fetch Menu Item (counts)
-        Map<Long, Integer> itemCounts = menus.stream()
-                .collect(Collectors.toMap(
-                        Menu::getId,
-                        menu -> {
-                            var itemsResult = menuItemService.getByMenuId(menu.getId());
-                            return (!itemsResult.isError() && itemsResult.getValue() != null)
-                                    ? itemsResult.getValue().size()
-                                    : 0;
-                        }
-                ));
+        var itemsResult = menuItemService.getAll();
+        var allMenuItems = itemsResult.hasValue()
+                ? itemsResult.getValue()
+                : null;
+
+        viewModel = new MenuListViewModel(menus, allMenuItems, loginService.isLoggedIn(), search);
 
         model.addAttribute("viewModel", viewModel);
-        model.addAttribute("itemCounts", itemCounts);
         return "menu/list";
     }
 

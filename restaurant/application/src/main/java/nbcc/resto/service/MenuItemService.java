@@ -8,6 +8,8 @@ import java.util.Collection;
 
 public interface MenuItemService {
 
+    Result<Collection<MenuItem>> getAll();
+
     Result<Collection<MenuItem>> getByMenuId(Long menuId);
 
     ValidatedResult<MenuItem> get(Long id);

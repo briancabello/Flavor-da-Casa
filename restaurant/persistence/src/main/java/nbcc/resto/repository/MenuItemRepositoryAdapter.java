@@ -5,6 +5,7 @@ import nbcc.resto.mapper.MenuItemMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -16,6 +17,12 @@ public class MenuItemRepositoryAdapter implements MenuItemRepository {
     public MenuItemRepositoryAdapter(MenuItemMapper mapper, MenuItemJpaRepository jpaRepository) {
         this.mapper = mapper;
         this.jpaRepository = jpaRepository;
+    }
+
+    @Override
+    public Collection<MenuItem> getAll() {
+        var entities = jpaRepository.findAll();
+        return mapper.toDTO(entities);
     }
 
     @Override

@@ -51,8 +51,8 @@
                     <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-3">
                         <h5 class="mb-0 fw-medium ls-wide text-light" th:text="${menu.name}">Menu Name</h5>
 
-                        <span class="badge bg-primary rounded-pill">
-                            <span th:text="${itemCounts[menu.id] == 1 ? '1 Item' : itemCounts[menu.id] + ' Items'}">Items</span>
+                        <span class="badge bg-primary rounded-pill" th:with="count=${viewModel.getItemCount(menu.id)}">
+                            <span th:text="${count == 1 ? '1 Item' : count + ' Items'}">0 Items</span>
                         </span>
                     </div>
                     <div class="card-body">
