@@ -1,6 +1,8 @@
 package nbcc.resto.entity;
 
 import jakarta.persistence.*;
+import nbcc.resto.dto.ReservationStatus;
+
 import java.util.UUID;
 
 @Entity
@@ -33,8 +35,9 @@ public class ReservationEntity {
     @Column(name = "group_size", nullable = false)
     private int groupSize;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private String status;
+    private ReservationStatus status;
 
     @Column(name = "assigned_table_id")
     private Long assignedTableId;
@@ -68,8 +71,8 @@ public class ReservationEntity {
     public int getGroupSize() { return groupSize; }
     public void setGroupSize(int groupSize) { this.groupSize = groupSize; }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public ReservationStatus getStatus() { return status; }
+    public void setStatus(ReservationStatus status) { this.status = status; }
 
     public Long getAssignedTableId() { return assignedTableId; }
     public void setAssignedTableId(Long assignedTableId) { this.assignedTableId = assignedTableId; }

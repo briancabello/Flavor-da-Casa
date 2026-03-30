@@ -31,7 +31,7 @@ public class ReservationDto {
     @Positive(message = "Group size must be at least 1")
     private Integer groupSize;
 
-    private String status;
+    private ReservationStatus status;
     private Long assignedTableId;
 
     public ReservationDto() {}
@@ -108,11 +108,11 @@ public class ReservationDto {
         return this;
     }
 
-    public String getStatus() {
+    public ReservationStatus getStatus() {
         return status;
     }
 
-    public ReservationDto setStatus(String status) {
+    public ReservationDto setStatus(ReservationStatus status) {
         this.status = status;
         return this;
     }

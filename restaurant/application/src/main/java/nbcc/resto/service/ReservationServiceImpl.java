@@ -4,6 +4,7 @@ import nbcc.common.result.Result;
 import nbcc.common.result.ValidatedResult;
 import nbcc.common.result.ValidationResults;
 import nbcc.resto.dto.ReservationDto;
+import nbcc.resto.dto.ReservationStatus;
 import nbcc.resto.repository.ReservationRepository;
 import nbcc.resto.validation.ReservationValidationService;
 import org.slf4j.Logger;
@@ -85,7 +86,7 @@ public class ReservationServiceImpl implements ReservationService {
             }
 
             reservation.setUuid(UUID.randomUUID());
-            reservation.setStatus("pending");
+            reservation.setStatus(ReservationStatus.PENDING);
 
             var created = reservationRepository.create(reservation);
             return ValidationResults.success(created);
@@ -106,7 +107,7 @@ public class ReservationServiceImpl implements ReservationService {
 
             var reservation = optional.get();
 
-            if ("approved".equalsIgnoreCase(reservation.getStatus())) {
+            if (ReservationStatus.APPROVED == reservation.getStatus()) {
                 return ValidationResults.invalid(reservation,
                         "An approved reservation cannot have its status changed", "status");
             }
@@ -116,7 +117,7 @@ public class ReservationServiceImpl implements ReservationService {
                         "This table is already assigned to another approved reservation for this seating", "assignedTableId");
             }
 
-            return ValidationResults.success(reservationRepository.updateStatus(reservationId, "approved", tableId));
+            return ValidationResults.success(reservationRepository.updateStatus(reservationId, ReservationStatus.APPROVED, tableId));
         } catch (Exception e) {
             logger.error("Error approving reservation {}", reservationId, e);
             return ValidationResults.error(e);
@@ -133,12 +134,12 @@ public class ReservationServiceImpl implements ReservationService {
 
             var reservation = optional.get();
 
-            if ("approved".equalsIgnoreCase(reservation.getStatus())) {
+            if (ReservationStatus.APPROVED == reservation.getStatus()) {
                 return ValidationResults.invalid(reservation,
                         "An approved reservation cannot have its status changed", "status");
             }
 
-            return ValidationResults.success(reservationRepository.updateStatus(reservationId, "denied", null));
+            return ValidationResults.success(reservationRepository.updateStatus(reservationId, ReservationStatus.DENIED, null));
         } catch (Exception e) {
             logger.error("Error denying reservation {}", reservationId, e);
             return ValidationResults.error(e);

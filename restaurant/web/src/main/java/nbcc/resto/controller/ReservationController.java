@@ -1,6 +1,7 @@
 package nbcc.resto.controller;
 
 import nbcc.common.service.LoginService;
+import nbcc.common.viewmodel.NavViewModel;
 import nbcc.resto.dto.ReservationDto;
 import nbcc.resto.service.EventService;
 import nbcc.resto.service.MenuService;
@@ -98,8 +99,8 @@ public class ReservationController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/list")
-    public String getAll(@RequestParam(required = false) Long eventId,
-                         @RequestParam(required = false) String status,
+    public String getAll(@RequestParam(value = "eventId", required = false) Long eventId,
+                         @RequestParam(value = "status", required = false) String status,
                          Model model) {
 
         var eventsResult = eventService.getAll();
@@ -129,7 +130,7 @@ public class ReservationController {
 
         if (status != null && !status.isBlank()) {
             reservations = reservations.stream()
-                    .filter(r -> status.equalsIgnoreCase(r.getStatus()))
+                    .filter(r -> status.equalsIgnoreCase(r.getStatus().name()))
                     .toList();
         }
 
@@ -145,7 +146,7 @@ public class ReservationController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/details/{id}")
-    public String details(@PathVariable Long id, Model model) {
+    public String details(@PathVariable("id") Long id, Model model) {
         var result = reservationService.get(id);
 
         if (result.isError() || result.isEmpty()) {
@@ -174,8 +175,8 @@ public class ReservationController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/approve/{id}")
-    public String approve(@PathVariable Long id,
-                          @RequestParam(required = false) Long tableId,
+    public String approve(@PathVariable("id") Long id,
+                          @RequestParam(value = "tableId", required = false) Long tableId,
                           RedirectAttributes redirectAttributes,
                           Model model) {
 
@@ -206,7 +207,7 @@ public class ReservationController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/deny/{id}")
-    public String deny(@PathVariable Long id,
+    public String deny(@PathVariable("id") Long id,
                        RedirectAttributes redirectAttributes,
                        Model model) {
 
@@ -230,7 +231,7 @@ public class ReservationController {
     }
 
     @GetMapping("/track")
-    public String track(@RequestParam(required = false) String uuid, Model model) {
+    public String track(@RequestParam(value = "uuid", required = false) String uuid, Model model) {
         if (uuid == null || uuid.isBlank()) {
             return "redirect:/";
         }
@@ -285,6 +286,7 @@ public class ReservationController {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String exceptionHandler(Model model, Exception ex, HttpServletRequest request) {
         logger.error("Unexpected Exception on uri {}: on method {} ", request.getRequestURI(), request.getMethod(), ex);
+        model.addAttribute("navViewModel", new NavViewModel(loginService.isLoggedIn(), loginService.getCurrentUsername()));
         model.addAttribute("message", "Unexpected Error Occurred");
         return "error/errorPage";
     }
