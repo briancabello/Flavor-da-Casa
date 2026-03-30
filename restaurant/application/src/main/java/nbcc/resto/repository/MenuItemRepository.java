@@ -7,6 +7,8 @@ import java.util.Optional;
 
 public interface MenuItemRepository {
 
+    Collection<MenuItem> getAll();
+
     Collection<MenuItem> getByMenuId(Long menuId);
 
     Optional<MenuItem> get(Long id);

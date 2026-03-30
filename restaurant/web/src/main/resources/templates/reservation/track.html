@@ -3,12 +3,12 @@
       xmlns:th="http://www.thymeleaf.org">
 <body>
 <div th:fragment="content">
-    <div class="container py-4">
-        <div th:replace="~{reservation/fragments :: reservationBreadcrumb('Track', null, null)}"></div>
+    <div th:replace="~{reservation/fragments :: reservationBreadcrumb('Track', null, null)}"></div>
 
+    <div class="container py-4">
         <div class="row justify-content-center">
             <div class="col-12 col-lg-8">
-                <h2 class="mb-3">Reservation Details</h2>
+                <h2 class="mb-3">Track Your Reservation</h2>
                 <p class="text-accent mb-4">
                     View the current status of your reservation request.
                 </p>

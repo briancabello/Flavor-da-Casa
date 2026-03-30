@@ -18,6 +18,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import static nbcc.common.validation.ModelErrorConverter.addErrorsToBindingResults;
@@ -52,7 +56,7 @@ public class ReservationController {
         var menusResult = menuService.getAll();
 
         if (eventsResult.isError() || seatingsResult.isError()) {
-            model.addAttribute("message", "Error loading reservation data");
+            model.addAttribute("message", "We're having a little trouble loading the booking details right now. Please give it another try.");
             return "error/errorPage";
         }
 
@@ -95,13 +99,20 @@ public class ReservationController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/list")
     public String getAll(@RequestParam(required = false) Long eventId,
-                       @RequestParam(required = false) String status,
-                       Model model) {
+                         @RequestParam(required = false) String status,
+                         Model model) {
 
         var eventsResult = eventService.getAll();
 
         if (eventsResult.isError()) {
-            model.addAttribute("message", "Error loading events");
+            model.addAttribute("message", "Unable to retrieve event data at this time.");
+            return "error/errorPage";
+        }
+
+        var seatingsResult = seatingService.getAll();
+
+        if (seatingsResult.isError()) {
+            model.addAttribute("message", "Unable to retrieve seating data at this time.");
             return "error/errorPage";
         }
 
@@ -110,7 +121,7 @@ public class ReservationController {
                 : reservationService.getAll();
 
         if (reservationsResult.isError()) {
-            model.addAttribute("message", "Error loading reservations");
+            model.addAttribute("message", "Unable to retrieve reservation records at this time.");
             return "error/errorPage";
         }
 
@@ -123,7 +134,8 @@ public class ReservationController {
         }
 
         var viewModel = new ReservationListViewModel(
-                eventsResult.getValue(), reservations, loginService.isLoggedIn());
+                eventsResult.getValue(), reservations,
+                seatingsResult.getValue(), loginService.isLoggedIn());
 
         model.addAttribute("viewModel", viewModel);
         model.addAttribute("selectedEventId", eventId);
@@ -137,7 +149,7 @@ public class ReservationController {
         var result = reservationService.get(id);
 
         if (result.isError() || result.isEmpty()) {
-            model.addAttribute("message", "Reservation not found");
+            model.addAttribute("message", "The requested reservation record could not be located.");
             return "error/errorPage";
         }
 
@@ -163,14 +175,20 @@ public class ReservationController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/approve/{id}")
     public String approve(@PathVariable Long id,
-                          @RequestParam Long tableId,
+                          @RequestParam(required = false) Long tableId,
                           RedirectAttributes redirectAttributes,
                           Model model) {
+
+        if (tableId == null) {
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "A table assignment is required prior to approval.");
+            return "redirect:/reservation/details/" + id;
+        }
 
         var result = reservationService.approve(id, tableId);
 
         if (result.isError()) {
-            model.addAttribute("message", "Error approving reservation");
+            model.addAttribute("message", "The system encountered an issue while processing this approval.");
             return "error/errorPage";
         }
 
@@ -195,7 +213,7 @@ public class ReservationController {
         var result = reservationService.deny(id);
 
         if (result.isError()) {
-            model.addAttribute("message", "Error denying reservation");
+            model.addAttribute("message", "The system encountered an issue while processing this denial.");
             return "error/errorPage";
         }
 
@@ -249,12 +267,15 @@ public class ReservationController {
         var eventsResult = eventService.getAll();
         var seatingsResult = seatingService.getAll();
         var menusResult = menuService.getAll();
+
         if (eventsResult.hasValue()) {
             model.addAttribute("events", eventsResult.getValue());
         }
+
         if (seatingsResult.hasValue()) {
             model.addAttribute("seatings", seatingsResult.getValue());
         }
+
         if (menusResult.hasValue()) {
             model.addAttribute("menus", menusResult.getValue());
         }

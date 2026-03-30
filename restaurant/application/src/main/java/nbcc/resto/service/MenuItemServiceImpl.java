@@ -27,6 +27,16 @@ public class MenuItemServiceImpl implements MenuItemService {
     }
 
     @Override
+    public Result<Collection<MenuItem>> getAll() {
+        try {
+            return ValidationResults.success(menuItemRepository.getAll());
+        } catch (Exception e) {
+            logger.error("Error retrieving all menu items", e);
+            return ValidationResults.error(e);
+        }
+    }
+
+    @Override
     public Result<Collection<MenuItem>> getByMenuId(Long menuId) {
         try {
             return ValidationResults.success(menuItemRepository.getByMenuId(menuId));
