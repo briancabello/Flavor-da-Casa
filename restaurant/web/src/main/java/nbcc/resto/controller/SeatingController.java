@@ -2,6 +2,7 @@ package nbcc.resto.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import nbcc.common.service.LoginService;
+import nbcc.common.viewmodel.NavViewModel;
 import nbcc.resto.dto.Seating;
 import nbcc.resto.service.DiningTableService;
 import nbcc.resto.service.EventService;
@@ -108,7 +109,7 @@ public class SeatingController {
         return "redirect:/seating";
     }
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable Long id, Model model) {
+    public String edit(@PathVariable("id") Long id, Model model) {
 
         var seatingResult = seatingService.get(id);
 
@@ -133,7 +134,7 @@ public class SeatingController {
     }
 
     @PostMapping("/edit/{id}")
-    public String edit(@PathVariable Long id, @ModelAttribute("seating") Seating seating, BindingResult br, Model model) {
+    public String edit(@PathVariable("id") Long id, @ModelAttribute("seating") Seating seating, BindingResult br, Model model) {
         seating.setId(id);
 
 
@@ -154,7 +155,7 @@ public class SeatingController {
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id, Model model) {
+    public String delete(@PathVariable("id") Long id, Model model) {
         var seatingResult = seatingService.get(id);
 
         if (seatingResult.isError() || seatingResult.isEmpty()) {
@@ -176,7 +177,7 @@ public class SeatingController {
     }
 
     @PostMapping("/delete/{id}")
-    public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes, Model model) {
+    public String delete(@PathVariable("id") Long id, RedirectAttributes redirectAttributes, Model model) {
         var result = seatingService.delete(id);
 
         if (result.isError()) {
@@ -220,6 +221,7 @@ public class SeatingController {
     public String exceptionHandler(Model model, Exception ex, HttpServletRequest request) {
         logger.error("Unexpected Exception on uri {}: on method {} ", request.getRequestURI(), request.getMethod(), ex);
         model.addAttribute("message", "Unexpected Error Occurred");
+        model.addAttribute("navViewModel", new NavViewModel(loginService.isLoggedIn(), loginService.getCurrentUsername()));
         return "error/errorPage";
     }
 }

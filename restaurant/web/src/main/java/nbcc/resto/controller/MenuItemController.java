@@ -1,6 +1,8 @@
 package nbcc.resto.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import nbcc.common.service.LoginService;
+import nbcc.common.viewmodel.NavViewModel;
 import nbcc.resto.dto.MenuItem;
 import nbcc.resto.service.MenuItemService;
 import nbcc.resto.service.MenuService;
@@ -24,16 +26,18 @@ public class MenuItemController {
 
     private static final Logger logger = LoggerFactory.getLogger(MenuItemController.class);
 
+    private final LoginService loginService;
     private final MenuItemService menuItemService;
     private final MenuService menuService;
 
-    public MenuItemController(MenuItemService menuItemService, MenuService menuService) {
+    public MenuItemController(LoginService loginService, MenuItemService menuItemService, MenuService menuService) {
+        this.loginService = loginService;
         this.menuItemService = menuItemService;
         this.menuService = menuService;
     }
 
     @PostMapping("/create")
-    public String create(@PathVariable Long menuId,
+    public String create(@PathVariable("menuId") Long menuId,
                          @ModelAttribute("menuItem") MenuItem menuItem,
                          BindingResult br,
                          Model model) {
@@ -65,7 +69,7 @@ public class MenuItemController {
     }
 
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable Long menuId, @PathVariable Long id, Model model) {
+    public String edit(@PathVariable("menuId") Long menuId, @PathVariable("id") Long id, Model model) {
 
         var result = menuItemService.get(id);
 
@@ -84,8 +88,8 @@ public class MenuItemController {
     }
 
     @PostMapping("/edit/{id}")
-    public String edit(@PathVariable Long menuId,
-                       @PathVariable Long id,
+    public String edit(@PathVariable("menuId") Long menuId,
+                       @PathVariable("id") Long id,
                        @ModelAttribute("menuItem") MenuItem menuItem,
                        BindingResult br,
                        Model model) {
@@ -117,7 +121,7 @@ public class MenuItemController {
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long menuId, @PathVariable Long id, Model model) {
+    public String delete(@PathVariable("menuId") Long menuId, @PathVariable("id") Long id, Model model) {
 
         var result = menuItemService.get(id);
 
@@ -136,7 +140,7 @@ public class MenuItemController {
     }
 
     @PostMapping("/delete/{id}")
-    public String delete(@PathVariable Long menuId, @PathVariable Long id) {
+    public String delete(@PathVariable("menuId") Long menuId, @PathVariable("id") Long id) {
 
         var result = menuItemService.delete(id);
 
@@ -175,6 +179,7 @@ public class MenuItemController {
     public String exceptionHandler(Model model, Exception ex, HttpServletRequest request) {
         logger.error("Unexpected Exception on uri {}: on method {} ", request.getRequestURI(), request.getMethod(), ex);
         model.addAttribute("message", "Unexpected Error Occurred");
+        model.addAttribute("navViewModel", new NavViewModel(loginService.isLoggedIn(), loginService.getCurrentUsername()));
         return "error/errorPage";
     }
 }

@@ -157,8 +157,8 @@
                 <i class="fa fa-calendar-alt text-primary me-2"></i> Reservation
             </h6>
             <span class="badge px-3"
-                  th:classappend="${reservation.status == 'approved' ? 'bg-success' : (reservation.status == 'denied' ? 'bg-danger' : 'bg-warning text-dark')}"
-                  th:text="${#strings.capitalize(reservation.status)}"></span>
+                  th:classappend="${reservation.status.name() == 'APPROVED' ? 'bg-success' : (reservation.status.name() == 'DENIED' ? 'bg-danger' : 'bg-warning text-dark')}"
+                  th:text="${#strings.capitalize(reservation.status.name().toLowerCase())}"></span>
         </div>
         <div class="card-body p-0">
             <table class="table table-borderless mb-0">
@@ -170,7 +170,7 @@
                         <span th:if="${event == null}">N/A</span>
                     </td>
                 </tr>
-                <tr th:classappend="${reservation.status == 'approved' or tables != null} ? 'border-bottom' : ''">
+                <tr th:classappend="${reservation.status.name() == 'APPROVED' or tables != null} ? 'border-bottom' : ''">
                     <td class="w-25 fw-bold text-accent text-uppercase text-sm-label ps-4 py-3 property-label-bg">Seating</td>
                     <td class="py-3 px-4 fw-medium">
                         <th:block th:if="${seating != null}">
@@ -183,7 +183,7 @@
                     </td>
                 </tr>
 
-                <tr th:if="${reservation.status == 'approved'}">
+                <tr th:if="${reservation.status.name() == 'APPROVED'}">
                     <td class="w-25 fw-bold text-accent text-uppercase text-sm-label ps-4 py-3 property-label-bg">Assigned Table</td>
                     <td class="py-3 px-4 fw-medium">
                         <th:block th:each="t : ${tables}" th:if="${t.id == reservation.assignedTableId}">
@@ -192,7 +192,7 @@
                     </td>
                 </tr>
 
-                <tr th:if="${tables != null and reservation.status != 'approved'}">
+                <tr th:if="${tables != null and reservation.status.name() != 'APPROVED'}">
                     <td class="w-25 fw-bold text-accent text-uppercase text-sm-label ps-4 py-3 property-label-bg">Assign Table</td>
                     <td class="py-3 px-4">
                         <div class="d-flex gap-2">

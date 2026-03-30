@@ -1,5 +1,6 @@
 package nbcc.resto.repository;
 
+import nbcc.resto.dto.ReservationStatus;
 import nbcc.resto.entity.ReservationEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -27,5 +28,5 @@ public interface ReservationJpaRepository extends JpaRepository<ReservationEntit
 
     boolean existsByEventId(long eventId);
 
-    boolean existsBySeatingIdAndAssignedTableIdAndStatus(long seatingId, long assignedTableId, String status);
+    boolean existsBySeatingIdAndAssignedTableIdAndStatus(long seatingId, long assignedTableId, ReservationStatus status);
 }
