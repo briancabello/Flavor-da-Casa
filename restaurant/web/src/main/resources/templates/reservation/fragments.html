@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <body>
+
 <nav aria-label="breadcrumb" class="bg-light-subtle py-3 border-bottom mb-4"
      th:fragment="reservationBreadcrumb(currentPage, reservationName, reservationUrl)">
     <div class="container small">
@@ -14,7 +15,7 @@
             <li class="breadcrumb-item"
                 th:classappend="${currentPage == 'Reservations'} ? ' active text-muted' : ''">
                 <a class="text-decoration-none text-coffee"
-                   th:href="@{/reservation}"
+                   th:href="@{/reservation/list}"
                    th:if="${currentPage != 'Reservations'}">
                     Reservations
                 </a>
@@ -40,17 +41,16 @@
 </nav>
 
 <div class="alert alert-success alert-dismissible fade show small" role="alert"
-     th:fragment="successAlert(name, action)" th:if="${name}"
->
+     th:fragment="successAlert(name, action)" th:if="${name}">
     <i class="fa fa-check-circle me-2"></i>
-
     Reservation <strong th:text="${name}"></strong>
     <span th:text="${action}"></span> successfully.
-
     <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
 </div>
 
 <!--/*@thymesVar id="reservation" type="nbcc.resto.dto.ReservationDto"*/-->
+<!--/*@thymesVar id="event" type="nbcc.resto.dto.EventDto"*/-->
+<!--/*@thymesVar id="seating" type="nbcc.resto.dto.Seating"*/-->
 <th:block th:fragment="input" th:object="${reservation}">
     <div class="alert alert-danger shadow-sm" role="alert" th:if="${#fields.hasGlobalErrors()}">
         <i class="fa fa-exclamation-circle me-2"></i>
@@ -83,135 +83,145 @@
         <div class="invalid-feedback fw-medium" th:errors="*{seatingId}"></div>
     </div>
 
-    <div class="mb-3">
-        <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="guestFirstName">First Name</label>
-        <input class="form-control" id="guestFirstName" th:field="*{guestFirstName}"
-               th:errorclass="is-invalid"
-               type="text" placeholder="Enter your first name">
-        <div class="invalid-feedback fw-medium" th:errors="*{guestFirstName}"></div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="guestFirstName">First Name</label>
+            <input class="form-control" id="guestFirstName" th:field="*{guestFirstName}"
+                   th:errorclass="is-invalid"
+                   type="text" placeholder="e.g. John">
+            <div class="invalid-feedback fw-medium" th:errors="*{guestFirstName}"></div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="guestLastName">Last Name</label>
+            <input class="form-control" id="guestLastName" th:field="*{guestLastName}"
+                   th:errorclass="is-invalid"
+                   type="text" placeholder="e.g. Doe">
+            <div class="invalid-feedback fw-medium" th:errors="*{guestLastName}"></div>
+        </div>
     </div>
 
-    <div class="mb-3">
-        <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="guestLastName">Last Name</label>
-        <input class="form-control" id="guestLastName" th:field="*{guestLastName}"
-               th:errorclass="is-invalid"
-               type="text" placeholder="Enter your last name">
-        <div class="invalid-feedback fw-medium" th:errors="*{guestLastName}"></div>
-    </div>
+    <div class="row">
+        <div class="col-md-8 mb-3">
+            <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="email">Email Address</label>
+            <input class="form-control" id="email" th:field="*{email}"
+                   th:errorclass="is-invalid"
+                   type="email" placeholder="e.g. john@example.com">
+            <div class="invalid-feedback fw-medium" th:errors="*{email}"></div>
+        </div>
 
-    <div class="mb-3">
-        <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="email">Email Address</label>
-        <input class="form-control" id="email" th:field="*{email}"
-               th:errorclass="is-invalid"
-               type="email" placeholder="Enter your email address">
-        <div class="invalid-feedback fw-medium" th:errors="*{email}"></div>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="groupSize">Group Size</label>
-        <input class="form-control" id="groupSize" th:field="*{groupSize}"
-               th:errorclass="is-invalid"
-               type="number" min="1" placeholder="Number of guests">
-        <div class="invalid-feedback fw-medium" th:errors="*{groupSize}"></div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label text-muted text-uppercase fw-bold ls-wide" for="groupSize">Group Size</label>
+            <input class="form-control" id="groupSize" th:field="*{groupSize}"
+                   th:errorclass="is-invalid"
+                   type="number" min="1" placeholder="e.g. 4">
+            <div class="invalid-feedback fw-medium" th:errors="*{groupSize}"></div>
+        </div>
     </div>
 </th:block>
 
-<!--/*@thymesVar id="reservation" type="nbcc.resto.dto.ReservationDto"*/-->
+<th:block th:fragment="info">
+    <div class="card rounded-3 shadow-sm border-0 overflow-hidden mb-4">
+        <div class="card-header bg-dark text-white py-3">
+            <h6 class="mb-0 fw-medium ls-wide text-light">
+                <i class="fa fa-user text-primary me-2"></i> Guest Information
+            </h6>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-borderless mb-0">
+                <tbody>
+                <tr class="border-bottom">
+                    <td class="w-25 fw-bold text-accent text-uppercase text-sm-label ps-4 py-3 property-label-bg">Name</td>
+                    <td class="py-3 px-4" th:text="${reservation.guestFirstName + ' ' + reservation.guestLastName}"></td>
+                </tr>
+                <tr class="border-bottom">
+                    <td class="w-25 fw-bold text-accent text-uppercase text-sm-label ps-4 py-3 property-label-bg">Email</td>
+                    <td class="py-3 px-4" th:text="${reservation.email}"></td>
+                </tr>
+                <tr class="border-bottom">
+                    <td class="w-25 fw-bold text-accent text-uppercase text-sm-label ps-4 py-3 property-label-bg">Group Size</td>
+                    <td class="py-3 px-4" th:text="${reservation.groupSize}"></td>
+                </tr>
+                <tr>
+                    <td class="w-25 fw-bold text-accent text-uppercase text-sm-label ps-4 py-3 property-label-bg">Tracking ID</td>
+                    <td class="py-3 px-4"><code th:text="${reservation.uuid}"></code></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card rounded-3 shadow-sm border-0 overflow-hidden mb-4">
+        <div class="card-header bg-dark text-white py-3 d-flex justify-content-between align-items-center">
+            <h6 class="mb-0 fw-medium ls-wide text-light">
+                <i class="fa fa-calendar-alt text-primary me-2"></i> Reservation
+            </h6>
+            <span class="badge px-3"
+                  th:classappend="${reservation.status == 'approved' ? 'bg-success' : (reservation.status == 'denied' ? 'bg-danger' : 'bg-warning text-dark')}"
+                  th:text="${#strings.capitalize(reservation.status)}"></span>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-borderless mb-0">
+                <tbody>
+                <tr class="border-bottom">
+                    <td class="w-25 fw-bold text-accent text-uppercase text-sm-label ps-4 py-3 property-label-bg">Event Name</td>
+                    <td class="py-3 px-4 fw-medium">
+                        <span th:if="${event != null}" th:text="${event.name}"></span>
+                        <span th:if="${event == null}">N/A</span>
+                    </td>
+                </tr>
+                <tr th:classappend="${reservation.status == 'approved' or tables != null} ? 'border-bottom' : ''">
+                    <td class="w-25 fw-bold text-accent text-uppercase text-sm-label ps-4 py-3 property-label-bg">Seating</td>
+                    <td class="py-3 px-4 fw-medium">
+                        <th:block th:if="${seating != null}">
+                            <span th:text="${seating.name}"></span>
+                            <span class="fst-italic text-primary ms-1"
+                                  th:text="|(${#temporals.format(seating.startDateTime, 'MMMM dd, yyyy')} at ${#temporals.format(seating.startDateTime, 'h:mm a')})|">
+                            </span>
+                        </th:block>
+                        <span th:if="${seating == null}">N/A</span>
+                    </td>
+                </tr>
+
+                <tr th:if="${reservation.status == 'approved'}">
+                    <td class="w-25 fw-bold text-accent text-uppercase text-sm-label ps-4 py-3 property-label-bg">Assigned Table</td>
+                    <td class="py-3 px-4 fw-medium">
+                        <th:block th:each="t : ${tables}" th:if="${t.id == reservation.assignedTableId}">
+                            <span th:text="${t.name}"></span>
+                        </th:block>
+                    </td>
+                </tr>
+
+                <tr th:if="${tables != null and reservation.status != 'approved'}">
+                    <td class="w-25 fw-bold text-accent text-uppercase text-sm-label ps-4 py-3 property-label-bg">Assign Table</td>
+                    <td class="py-3 px-4">
+                        <div class="d-flex gap-2">
+                            <div class="flex-grow-1">
+                                <select class="form-select" form="approveForm" id="tableId" name="tableId" required>
+                                    <option value="">-- Select a Table --</option>
+                                    <option th:each="table : ${tables}"
+                                            th:text="${table.name + ' (Capacity: ' + table.capacity + ')'}"
+                                            th:value="${table.id}">
+                                    </option>
+                                </select>
+                            </div>
+                            <form id="approveForm" method="post" th:action="@{/reservation/approve/{id}(id=${reservation.id})}">
+                                <button class="btn btn-success" type="submit"><i class="fa fa-check me-1"></i> Approve</button>
+                            </form>
+                            <form method="post" th:action="@{/reservation/deny/{id}(id=${reservation.id})}">
+                                <button class="btn btn-danger" type="submit"><i class="fa fa-times me-1"></i> Deny</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</th:block>
+
 <th:block th:fragment="details">
-    <div class="rounded-3 overflow-hidden border property-grid shadow-sm mb-4">
-        <div class="property-label-bg px-4 py-2 border-bottom">
-            <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">
-                <i class="fa fa-user me-1"></i> Guest Information
-            </span>
-        </div>
-        <div class="row g-0 border-bottom">
-            <div class="col-4 p-3 d-flex align-items-center property-label-bg">
-                <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Name</span>
-            </div>
-            <div class="col-8 p-3">
-                <span class="text-dark fw-medium"
-                      th:text="${reservation.guestFirstName + ' ' + reservation.guestLastName}"></span>
-            </div>
-        </div>
-        <div class="row g-0 border-bottom">
-            <div class="col-4 p-3 d-flex align-items-center property-label-bg">
-                <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Email</span>
-            </div>
-            <div class="col-8 p-3">
-                <span class="text-dark fw-medium" th:text="${reservation.email}"></span>
-            </div>
-        </div>
-        <div class="row g-0 border-bottom">
-            <div class="col-4 p-3 d-flex align-items-center property-label-bg">
-                <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Group Size</span>
-            </div>
-            <div class="col-8 p-3">
-                <span class="text-dark fw-medium" th:text="${reservation.groupSize}"></span>
-            </div>
-        </div>
-        <div class="row g-0">
-            <div class="col-4 p-3 d-flex align-items-center property-label-bg">
-                <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Tracking ID</span>
-            </div>
-            <div class="col-8 p-3">
-                <code class="text-dark fw-medium" th:text="${reservation.uuid}"></code>
-            </div>
-        </div>
-    </div>
-
-    <div class="rounded-3 overflow-hidden border property-grid shadow-sm mb-4">
-        <div class="property-label-bg px-4 py-2 border-bottom">
-            <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">
-                <i class="fa fa-calendar-alt me-1"></i> Event &amp; Seating
-            </span>
-        </div>
-        <div class="row g-0 border-bottom">
-            <div class="col-4 p-3 d-flex align-items-center property-label-bg">
-                <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Event</span>
-            </div>
-            <div class="col-8 p-3">
-                <span class="text-dark fw-medium" th:text="${event != null ? event.name : 'N/A'}"></span>
-            </div>
-        </div>
-        <div class="row g-0 border-bottom" th:if="${event != null}">
-            <div class="col-4 p-3 d-flex align-items-center property-label-bg">
-                <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Event Dates</span>
-            </div>
-            <div class="col-8 p-3">
-                <span class="text-dark fw-medium"
-                      th:text="|${#temporals.format(event.startDate, 'MMM dd, yyyy')} - ${#temporals.format(event.endDate, 'MMM dd, yyyy')}|"></span>
-            </div>
-        </div>
-        <div class="row g-0 border-bottom">
-            <div class="col-4 p-3 d-flex align-items-center property-label-bg">
-                <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Seating</span>
-            </div>
-            <div class="col-8 p-3">
-                <span class="text-dark fw-medium"
-                      th:if="${seating != null}"
-                      th:text="${seating.name + ' - ' + #temporals.format(seating.startDateTime, 'MMM dd, yyyy h:mm a')}"></span>
-                <span class="text-dark fw-medium" th:if="${seating == null}">N/A</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="rounded-3 overflow-hidden border property-grid shadow-sm mb-4">
-        <div class="property-label-bg px-4 py-2 border-bottom">
-            <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">
-                <i class="fa fa-info-circle me-1"></i> Status
-            </span>
-        </div>
-        <div class="row g-0">
-            <div class="col-4 p-3 d-flex align-items-center property-label-bg">
-                <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Request Status</span>
-            </div>
-            <div class="col-8 p-3">
-                <span class="badge"
-                      th:classappend="${reservation.status == 'APPROVED' ? 'bg-success' : (reservation.status == 'DENIED' ? 'bg-danger' : 'bg-warning text-dark')}"
-                      th:text="${reservation.status}"></span>
-            </div>
-        </div>
-    </div>
+    <div th:replace="~{reservation/fragments :: info}"></div>
 </th:block>
 
 </body>
