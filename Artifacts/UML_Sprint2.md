@@ -54,9 +54,11 @@ classDiagram
     class Reservation {
       +long id
       +UUID uuid
+      +long eventId
       +long seatingId
       +String guestFirstName
       +String guestLastName
+      +String email
       +int groupSize
       +String status
       +Long assignedTableId
@@ -138,6 +140,8 @@ classDiagram
 
     class ReservationService {
       <<interface>>
+      +getAll() Result~Collection~Reservation~~
+      +get(long id) Result~Reservation~
       +getByEvent(long eventId) Result~Collection~Reservation~~
       +getByUuid(UUID uuid) Result~Reservation~
       +requestReservation(Reservation reservation) Result~Reservation~
@@ -195,6 +199,8 @@ classDiagram
 
     class ReservationRepository {
       <<interface>>
+      +getAll() Collection~Reservation~
+      +get(long id) Optional~Reservation~
       +getByEvent(long eventId) Collection~Reservation~
       +getByUuid(UUID uuid) Optional~Reservation~
       +create(Reservation reservation) Reservation
@@ -267,9 +273,11 @@ classDiagram
     class ReservationEntity {
       +long id
       +UUID uuid
+      +long eventId
       +long seatingId
       +String guestFirstName
       +String guestLastName
+      +String email
       +int groupSize
       +String status
       +Long assignedTableId

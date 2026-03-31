@@ -2,8 +2,10 @@ package nbcc.resto.controller;
 
 
 import nbcc.common.service.LoginService;
+import nbcc.common.viewmodel.NavViewModel;
 import nbcc.resto.dto.EventDto;
 import nbcc.resto.service.EventService;
+import nbcc.resto.service.MenuService;
 import nbcc.resto.viewmodels.EventListViewModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,23 +33,28 @@ public class EventController {
     private final Logger logger = LoggerFactory.getLogger(EventController.class);
     private final LoginService loginService;
     private final EventService eventService;
+    private final MenuService menuService;
 
-    public EventController(LoginService loginService, EventService eventService) {
+    public EventController(LoginService loginService, EventService eventService, MenuService menuService) {
         this.loginService = loginService;
         this.eventService = eventService;
+        this.menuService = menuService;
     }
 
     @GetMapping("/create")
     public String create(Model model) {
         model.addAttribute("event", new EventDto());
+        model.addAttribute("menus", menuService.getAll().getValue());
         return "event/create";
     }
 
     @PostMapping("/create")
     public String create(@ModelAttribute("event") EventDto eventDto,
                          BindingResult br,
-                         RedirectAttributes redirectAttributes) {
+                         RedirectAttributes redirectAttributes,
+                         Model model) {
         if (br.hasErrors()) {
+            model.addAttribute("menus", menuService.getAll().getValue());
             return "event/create";
         }
 
@@ -59,6 +66,7 @@ public class EventController {
 
         if (result.isInvalid()) {
             addErrorsToBindingResults(br, result, "event");
+            model.addAttribute("menus", menuService.getAll().getValue());
             return "event/create";
         }
 
@@ -69,7 +77,7 @@ public class EventController {
     }
 
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable Long id, Model model) {
+    public String edit(@PathVariable("id") Long id, Model model) {
         var result = eventService.get(id);
 
         if (result.isError() || result.isEmpty()) {
@@ -78,16 +86,19 @@ public class EventController {
         }
 
         model.addAttribute("event", result.getValue());
+        model.addAttribute("menus", menuService.getAll().getValue());
         return "event/edit";
     }
 
     @PostMapping("/edit/{id}")
-    public String edit(@PathVariable Long id, @ModelAttribute("event") EventDto eventDto,
+    public String edit(@PathVariable("id") Long id, @ModelAttribute("event") EventDto eventDto,
                        BindingResult br,
-                       RedirectAttributes redirectAttributes) {
+                       RedirectAttributes redirectAttributes,
+                       Model model) {
         eventDto.setId(id);
 
         if (br.hasErrors()) {
+            model.addAttribute("menus", menuService.getAll().getValue());
             return "event/edit";
         }
 
@@ -99,6 +110,7 @@ public class EventController {
 
         if (result.isInvalid()) {
             addErrorsToBindingResults(br, result, "event");
+            model.addAttribute("menus", menuService.getAll().getValue());
             return "event/edit";
         }
 
@@ -109,7 +121,7 @@ public class EventController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteConfirm(@PathVariable Long id, Model model) {
+    public String deleteConfirm(@PathVariable("id") Long id, Model model) {
         var result = eventService.get(id);
 
         if (result.isError() || result.isEmpty()) {
@@ -119,14 +131,14 @@ public class EventController {
 
         model.addAttribute("event", result.getValue());
 
-        model.addAttribute("seatings", List.of()); // Placeholder for future seating data
+        model.addAttribute("seatings", List.of()); 
 
         return "event/delete";
 
     }
 
     @PostMapping("/delete/{id}")
-    public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    public String delete(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
         var eventResult = eventService.get(id);
         if (eventResult.isError() || eventResult.isEmpty()) {
             return "error/errorPage";
@@ -145,7 +157,7 @@ public class EventController {
     }
 
     @GetMapping("/details/{id}")
-    public String details(@PathVariable Long id, Model model) {
+    public String details(@PathVariable("id") Long id, Model model) {
         var result = eventService.get(id);
 
         if (result.isError() || result.isEmpty()) {
@@ -158,9 +170,9 @@ public class EventController {
     }
 
     @GetMapping
-    public String getAll(@RequestParam(required = false) String name,
-                         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
-                         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
+    public String getAll(@RequestParam(value = "name", required = false) String name,
+                         @RequestParam(value = "startDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+                         @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
                          Model model) {
         var result = eventService.search(name, startDate, endDate);
 
@@ -182,6 +194,7 @@ public class EventController {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String exceptionHandler(Model model, Exception ex, HttpServletRequest request) {
         logger.error("Unexpected Exception on uri {}: on method {} ", request.getRequestURI(), request.getMethod(), ex);
+        model.addAttribute("navViewModel", new NavViewModel(loginService.isLoggedIn(), loginService.getCurrentUsername()));
         model.addAttribute("message", "Unexpected Error Occurred");
         return "error/errorPage";
     }

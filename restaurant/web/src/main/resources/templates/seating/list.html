@@ -39,16 +39,18 @@
                             <th class="text-nowrap">Time</th>
                             <th class="text-nowrap">Duration</th>
                             <th class="w-25">Tables</th>
+                            <th class="text-center" th:if="${viewModel.canAdd}">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr th:if="${!viewModel.hasSeatings(event.id)}">
-                            <td class="text-muted text-center" colspan="5">
+                            <td class="text-muted text-center" colspan="6">
                                 There are currently no seatings booked for this event.
                             </td>
                         </tr>
 
-                        <tr th:each="seating : ${viewModel.seatings}" th:if="${seating.eventId == event.id}">
+                        <th:block th:each="seating : ${viewModel.seatings}">
+                        <tr th:if="${seating.eventId == event.id and seating.status}">
                             <td class="fw-medium text-dark" th:text="${seating.name}"></td>
                             <td th:text="${#temporals.format(seating.startDateTime, 'MMMM dd, yyyy')}"></td>
                             <td>
@@ -61,7 +63,16 @@
                                 <span class="badge bg-secondary me-1" th:each="table, stat : ${seating.tables}"
                                       th:text="${table.name}"></span>
                             </td>
+                            <td class="text-center" th:if="${viewModel.canAdd}">
+                                <a class="text-decoration-none me-3" th:href="@{/seating/edit/{id}(id=${seating.id})}" title="Edit Seating">
+                                    <i class="fa fa-edit text-primary fs-5"></i>
+                                </a>
+                                <a class="text-decoration-none" th:href="@{/seating/delete/{id}(id=${seating.id})}" title="Delete Seating">
+                                    <i class="fa fa-trash text-danger fs-5"></i>
+                                </a>
+                            </td>
                         </tr>
+                        </th:block>
                         </tbody>
                     </table>
                 </div>

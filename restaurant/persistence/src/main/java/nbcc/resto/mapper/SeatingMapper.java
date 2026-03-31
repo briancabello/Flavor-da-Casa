@@ -18,7 +18,9 @@ public class SeatingMapper implements EntityMapper<Seating, SeatingEntity> {
                 .setName(entity.getName())
                 .setStartDateTime(entity.getStartDateTime())
                 .setDuration(entity.getDuration())
-                .setCreatedDate(entity.getCreatedDate());
+                .setCreatedDate(entity.getCreatedDate())
+                .setStatus(entity.isStatus())
+                .setUpdatedDate(entity.getUpdatedDate());
     }
 
     @Override
@@ -30,6 +32,8 @@ public class SeatingMapper implements EntityMapper<Seating, SeatingEntity> {
                 .setName(dto.getName())
                 .setStartDateTime(dto.getStartDateTime())
                 .setDuration(dto.getDuration() != null ? dto.getDuration() : 0)
-                .setCreatedDate(dto.getCreatedDate());
+                .setCreatedDate(dto.getCreatedDate())
+                .setStatus(dto.isStatus())
+                .setUpdatedDate(dto.getUpdatedDate());
     }
 }

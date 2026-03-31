@@ -15,8 +15,9 @@ public class EventEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // @Column(name = "menu_id")
-    // private Long menuId;
+    @ManyToOne
+    @JoinColumn(name = "menu_id", foreignKey = @ForeignKey(name = "fk_event_menu"))
+    private MenuEntity menu;
 
     @Column(nullable = false, unique = true)
     private String name;
@@ -48,7 +49,8 @@ public class EventEntity {
     @Column(name = "last_updated_date")
     private LocalDateTime lastUpdatedDate;
 
-    public EventEntity() {}
+    public EventEntity() {
+    }
 
     public Long getId() {
         return id;
@@ -59,14 +61,14 @@ public class EventEntity {
         return this;
     }
 
-    // public Long getMenuId() {
-    //     return menuId;
-    // }
+    public MenuEntity getMenu() {
+        return menu;
+    }
 
-    // public EventEntity setMenuId(Long menuId) {
-    //     this.menuId = menuId;
-    //     return this;
-    // }
+    public EventEntity setMenu(MenuEntity menu) {
+        this.menu = menu;
+        return this;
+    }
 
     public String getName() {
         return name;

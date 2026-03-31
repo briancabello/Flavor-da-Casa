@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{layout :: layout(title='Reservations', content=~{::content})}"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+    <div th:replace="~{reservation/fragments :: reservationBreadcrumb('Reservations', null, null)}"></div>
+
+    <div class="container py-4">
+        <div th:replace="~{reservation/fragments :: successAlert(${reservationName}, ${action})}"></div>
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Reservations</h2>
+        </div>
+
+        <div class="mb-4">
+            <h5 class="text-accent text-uppercase mb-3 small ls-wide">
+                Filter reservations by event or status
+            </h5>
+
+            <form class="row g-3" method="get" th:action="@{/reservation/list}">
+                <div class="col-md-4">
+                    <label class="form-label text-muted text-uppercase text-sm-label" for="eventId">Event</label>
+                    <select class="form-select" id="eventId" name="eventId">
+                        <option value="">All Events</option>
+                        <option th:each="event : ${viewModel.events}"
+                                th:selected="${selectedEventId != null and selectedEventId == event.id}"
+                                th:text="${event.name}"
+                                th:value="${event.id}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label text-muted text-uppercase text-sm-label" for="status">Status</label>
+                    <select class="form-select" id="status" name="status">
+                        <option value="">All Statuses</option>
+                        <option value="PENDING"
+                                th:selected="${selectedStatus != null and selectedStatus == 'PENDING'}">Pending</option>
+                        <option value="APPROVED"
+                                th:selected="${selectedStatus != null and selectedStatus == 'APPROVED'}">Approved</option>
+                        <option value="DENIED"
+                                th:selected="${selectedStatus != null and selectedStatus == 'DENIED'}">Denied</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label d-none d-md-block opacity-0 text-sm-label">Actions</label>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-primary w-100" type="submit">
+                            <i class="fa fa-search me-1"></i> Filter
+                        </button>
+                        <a class="btn btn-outline-secondary w-100" th:href="@{/reservation/list}">
+                            <i class="fa fa-undo me-1"></i> Clear
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="alert alert-info shadow-sm" th:if="${viewModel.isEmpty()}">
+            <i class="fa fa-info-circle me-1"></i> No reservations found.
+        </div>
+
+        <div class="card rounded-3 shadow-sm overflow-hidden border-0" th:unless="${viewModel.isEmpty()}">
+            <div class="card-body p-0">
+                <table class="table table-hover mb-0">
+                    <thead class="bg-dark">
+                    <tr>
+                        <th class="ps-4">Guest Name</th>
+                        <th>Seating</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th class="text-center">Group Size</th>
+                        <th class="text-center">Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="res : ${viewModel.reservations}"
+                        th:with="seating=${viewModel.getSeatingById(res.seatingId)}">
+                        <td class="ps-4">
+                            <a class="text-decoration-none text-primary fw-medium"
+                               th:href="@{/reservation/details/{id}(id=${res.id})}"
+                               th:text="${res.guestFirstName + ' ' + res.guestLastName}"></a>
+                        </td>
+                        <td th:text="${seating != null ? seating.name : 'N/A'}"></td>
+                        <td th:text="${seating != null ? #temporals.format(seating.startDateTime, 'MMMM dd, yyyy') : 'N/A'}"></td>
+                        <td th:text="${seating != null ? #temporals.format(seating.startDateTime, 'h:mm a') : 'N/A'}"></td>
+                        <td class="text-center" th:text="${res.groupSize}"></td>
+                        <td class="text-center">
+                            <span th:class="${res.status.name() == 'APPROVED' ? 'badge bg-success' :
+                                             (res.status.name() == 'DENIED' ? 'badge bg-danger' : 'badge bg-warning text-dark')}"
+                                  th:text="${#strings.capitalize(res.status.name().toLowerCase())}">
+                            </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

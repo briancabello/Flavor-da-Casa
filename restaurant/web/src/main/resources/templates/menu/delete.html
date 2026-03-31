@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{layout :: layout(title='Delete Menu', content=~{::mainContent})}"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="mainContent">
+    <div th:replace="~{menu/fragments :: menuBreadcrumb('Delete Menu', ${menu.name}, @{/menu/details/{id}(id=${menu.id})})}"></div>
+
+    <div class="container py-4">
+        <div class="row justify-content-center text-center">
+            <div class="col-12 col-lg-9 col-xl-8">
+                <i class="fas fa-exclamation-triangle text-danger fa-4x mb-3"></i>
+                <h2>Delete Menu</h2>
+
+                <p class="text-accent mb-4">
+                    Are you sure you want to delete this menu?
+                    <br />
+                    This action cannot be undone. All menu items belonging to
+                    this menu will also be deleted.
+                </p>
+
+                <div class="mb-4 text-start">
+                    <div th:replace="~{menu/fragments :: details}"></div>
+                </div>
+
+                <form class="mt-4 text-center" method="post" th:action="@{/menu/delete/{id}(id=${menu.id})}">
+                    <button class="btn btn-danger px-4 fw-medium" type="submit">
+                        <i class="fa fa-trash me-2"></i> Confirm Delete
+                    </button>
+                    <a class="btn btn-outline-secondary ms-2 px-4 fw-medium" th:href="@{/menu}">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

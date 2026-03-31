@@ -14,5 +14,7 @@ public interface SeatingTableJpaRepository extends JpaRepository<SeatingTableEnt
 
     List<SeatingTableEntity> findBySeatingId(Long seatingId);
 
+    void deleteBySeatingId(Long seatingId);
+
     void deleteByDiningTableId(@Param("diningTableId") Long diningTableId);
 }

@@ -3,6 +3,7 @@ package nbcc.resto.repository;
 import nbcc.resto.dto.Seating;
 
 import java.util.Collection;
+import java.util.Optional;
 
 public interface SeatingRepository {
 
@@ -14,6 +15,10 @@ public interface SeatingRepository {
 
     Seating create(Seating seating);
 
-    //void delete(Long id);
+    Optional<Seating> get(Long id);
+
+    Seating update(Seating seating);
+
+    void delete(Long id);
 
 }
