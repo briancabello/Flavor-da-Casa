@@ -1,23 +1,48 @@
 <!DOCTYPE html>
-<html lang="en" th:replace="~{layout :: layout(title='Track Reservation', content=~{::content})}"
+<html lang="en" th:replace="~{layout :: layout(title='Track Your Reservation', content=~{::content})}"
       xmlns:th="http://www.thymeleaf.org">
 <body>
 <div th:fragment="content">
-    <div th:replace="~{reservation/fragments :: reservationBreadcrumb('Track', null, null)}"></div>
-
     <div class="container py-4">
         <div class="row justify-content-center">
             <div class="col-12 col-lg-8">
-                <h2 class="mb-3">Track Your Reservation</h2>
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <h2 class="mb-0">Track Your Reservation</h2>
+                    <a class="btn btn-outline-secondary flex-shrink-0" th:href="@{/reservation}">
+                        <i class="fa fa-plus me-2"></i> Make a Reservation
+                    </a>
+                </div>
                 <p class="text-accent mb-4">
-                    View the current status of your reservation request.
+                    Enter your Tracking ID to view the status of your reservation.
                 </p>
 
+                <!-- Search Form -->
+                <div class="card shadow-sm card-top-primary mb-4">
+                    <div class="card-body p-4">
+                        <form class="row g-3 align-items-end" method="get" th:action="@{/reservation/track}">
+                            <div class="col-md-9">
+                                <label class="form-label text-muted text-uppercase fw-bold ls-wide"
+                                       for="uuid">Tracking ID</label>
+                                <input class="form-control" id="uuid" name="uuid" type="text"
+                                       placeholder="e.g. 550e8400-e29b-41d4-a716-446655440000"
+                                       th:value="${param.uuid}">
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-primary w-100" type="submit">
+                                    <i class="fa fa-search me-1"></i> Track
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Not Found -->
                 <div class="alert alert-warning" th:if="${notFound}">
                     <i class="fa fa-exclamation-triangle me-1"></i>
                     No reservation found for the provided tracking ID.
                 </div>
 
+                <!-- Reservation Details (when found) -->
                 <div th:if="${reservation}">
                     <div th:replace="~{reservation/fragments :: details}"></div>
                 </div>

@@ -9,9 +9,16 @@ import java.util.Collection;
 
 public interface EventService {
     Result<Collection<EventDto>> getAll();
+
+    Result<Collection<EventDto>> getActive();
+
     ValidatedResult<EventDto> get(Long id);
+
     ValidatedResult<EventDto> create(EventDto eventDto);
+
     ValidatedResult<EventDto> update(EventDto eventDto);
+
     ValidatedResult<EventDto> delete(Long id);
+
     ValidatedResult<Collection<EventDto>> search(String query, LocalDate start, LocalDate end);
 }

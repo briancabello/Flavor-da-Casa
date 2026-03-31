@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -38,6 +39,23 @@ public class EventServiceImpl implements EventService {
             return ValidationResults.success(eventRepository.getAll());
         } catch (Exception e) {
             logger.error("Error retrieving all events", e);
+            return ValidationResults.error(e);
+        }
+    }
+
+    @Override
+    public Result<Collection<EventDto>> getActive() {
+        try {
+            var allEvents = eventRepository.getAll();
+            var activeEvents = new ArrayList<EventDto>();
+            for (var event : allEvents) {
+                if (event.isActive()) {
+                    activeEvents.add(event);
+                }
+            }
+            return ValidationResults.success(activeEvents);
+        } catch (Exception e) {
+            logger.error("Error retrieving active events", e);
             return ValidationResults.error(e);
         }
     }

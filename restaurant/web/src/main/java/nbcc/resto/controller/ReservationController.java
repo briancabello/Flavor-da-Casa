@@ -51,7 +51,7 @@ public class ReservationController {
 
     @GetMapping
     public String requestForm(Model model) {
-        var eventsResult = eventService.getAll();
+        var eventsResult = eventService.getActive();
         var seatingsResult = seatingService.getAll();
         var menusResult = menuService.getAll();
 
@@ -232,7 +232,7 @@ public class ReservationController {
     @GetMapping("/track")
     public String track(@RequestParam(required = false) String uuid, Model model) {
         if (uuid == null || uuid.isBlank()) {
-            return "redirect:/";
+            return "reservation/track";
         }
 
         try {
@@ -264,7 +264,7 @@ public class ReservationController {
     }
 
     private void loadFormData(Model model) {
-        var eventsResult = eventService.getAll();
+        var eventsResult = eventService.getActive();
         var seatingsResult = seatingService.getAll();
         var menusResult = menuService.getAll();
 
