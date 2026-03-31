@@ -1,6 +1,7 @@
 package nbcc.resto.repository;
 
 import nbcc.resto.dto.ReservationDto;
+import nbcc.resto.dto.ReservationStatus;
 import nbcc.resto.mapper.ReservationMapper;
 import org.springframework.stereotype.Repository;
 
@@ -46,7 +47,7 @@ public class ReservationRepositoryAdapter implements ReservationRepository {
     }
 
     @Override
-    public ReservationDto updateStatus(long id, String status, Long tableId) {
+    public ReservationDto updateStatus(long id, ReservationStatus status, Long tableId) {
         var entity = jpaRepository.findById(id).orElseThrow();
         entity.setStatus(status);
         entity.setAssignedTableId(tableId);
@@ -65,6 +66,6 @@ public class ReservationRepositoryAdapter implements ReservationRepository {
 
     @Override
     public boolean isTableAssignedForSeating(long seatingId, long tableId) {
-        return jpaRepository.existsBySeatingIdAndAssignedTableIdAndStatus(seatingId, tableId, "approved");
+        return jpaRepository.existsBySeatingIdAndAssignedTableIdAndStatus(seatingId, tableId, ReservationStatus.APPROVED);
     }
 }

@@ -2,6 +2,7 @@ package nbcc.resto.controller;
 
 
 import nbcc.common.service.LoginService;
+import nbcc.common.viewmodel.NavViewModel;
 import nbcc.resto.dto.EventDto;
 import nbcc.resto.service.EventService;
 import nbcc.resto.service.MenuService;
@@ -76,7 +77,7 @@ public class EventController {
     }
 
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable Long id, Model model) {
+    public String edit(@PathVariable("id") Long id, Model model) {
         var result = eventService.get(id);
 
         if (result.isError() || result.isEmpty()) {
@@ -90,7 +91,7 @@ public class EventController {
     }
 
     @PostMapping("/edit/{id}")
-    public String edit(@PathVariable Long id, @ModelAttribute("event") EventDto eventDto,
+    public String edit(@PathVariable("id") Long id, @ModelAttribute("event") EventDto eventDto,
                        BindingResult br,
                        RedirectAttributes redirectAttributes,
                        Model model) {
@@ -120,7 +121,7 @@ public class EventController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteConfirm(@PathVariable Long id, Model model) {
+    public String deleteConfirm(@PathVariable("id") Long id, Model model) {
         var result = eventService.get(id);
 
         if (result.isError() || result.isEmpty()) {
@@ -130,14 +131,14 @@ public class EventController {
 
         model.addAttribute("event", result.getValue());
 
-        model.addAttribute("seatings", List.of()); // Placeholder for future seating data
+        model.addAttribute("seatings", List.of()); 
 
         return "event/delete";
 
     }
 
     @PostMapping("/delete/{id}")
-    public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    public String delete(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
         var eventResult = eventService.get(id);
         if (eventResult.isError() || eventResult.isEmpty()) {
             return "error/errorPage";
@@ -156,7 +157,7 @@ public class EventController {
     }
 
     @GetMapping("/details/{id}")
-    public String details(@PathVariable Long id, Model model) {
+    public String details(@PathVariable("id") Long id, Model model) {
         var result = eventService.get(id);
 
         if (result.isError() || result.isEmpty()) {
@@ -169,9 +170,9 @@ public class EventController {
     }
 
     @GetMapping
-    public String getAll(@RequestParam(required = false) String name,
-                         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
-                         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
+    public String getAll(@RequestParam(value = "name", required = false) String name,
+                         @RequestParam(value = "startDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+                         @RequestParam(value = "endDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
                          Model model) {
         var result = eventService.search(name, startDate, endDate);
 
@@ -193,6 +194,7 @@ public class EventController {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String exceptionHandler(Model model, Exception ex, HttpServletRequest request) {
         logger.error("Unexpected Exception on uri {}: on method {} ", request.getRequestURI(), request.getMethod(), ex);
+        model.addAttribute("navViewModel", new NavViewModel(loginService.isLoggedIn(), loginService.getCurrentUsername()));
         model.addAttribute("message", "Unexpected Error Occurred");
         return "error/errorPage";
     }

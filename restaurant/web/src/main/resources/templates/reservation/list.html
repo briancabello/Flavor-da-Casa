@@ -34,15 +34,12 @@
                     <label class="form-label text-muted text-uppercase text-sm-label" for="status">Status</label>
                     <select class="form-select" id="status" name="status">
                         <option value="">All Statuses</option>
-                        <option th:selected="${selectedStatus != null and selectedStatus == 'pending'}"
-                                value="pending">Pending
-                        </option>
-                        <option th:selected="${selectedStatus != null and selectedStatus == 'approved'}"
-                                value="approved">Approved
-                        </option>
-                        <option th:selected="${selectedStatus != null and selectedStatus == 'denied'}"
-                                value="denied">Denied
-                        </option>
+                        <option value="PENDING"
+                                th:selected="${selectedStatus != null and selectedStatus == 'PENDING'}">Pending</option>
+                        <option value="APPROVED"
+                                th:selected="${selectedStatus != null and selectedStatus == 'APPROVED'}">Approved</option>
+                        <option value="DENIED"
+                                th:selected="${selectedStatus != null and selectedStatus == 'DENIED'}">Denied</option>
                     </select>
                 </div>
 
@@ -90,9 +87,9 @@
                         <td th:text="${seating != null ? #temporals.format(seating.startDateTime, 'h:mm a') : 'N/A'}"></td>
                         <td class="text-center" th:text="${res.groupSize}"></td>
                         <td class="text-center">
-                            <span th:class="${res.status == 'approved' ? 'badge bg-success' :
-                                             (res.status == 'denied' ? 'badge bg-danger' : 'badge bg-warning text-dark')}"
-                                  th:text="${#strings.capitalize(res.status)}">
+                            <span th:class="${res.status.name() == 'APPROVED' ? 'badge bg-success' :
+                                             (res.status.name() == 'DENIED' ? 'badge bg-danger' : 'badge bg-warning text-dark')}"
+                                  th:text="${#strings.capitalize(res.status.name().toLowerCase())}">
                             </span>
                         </td>
                     </tr>

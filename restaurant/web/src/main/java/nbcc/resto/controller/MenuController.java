@@ -2,6 +2,7 @@ package nbcc.resto.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import nbcc.common.service.LoginService;
+import nbcc.common.viewmodel.NavViewModel;
 import nbcc.resto.dto.Menu;
 import nbcc.resto.dto.MenuItem;
 import nbcc.resto.service.MenuItemService;
@@ -41,7 +42,7 @@ public class MenuController {
     }
 
     @GetMapping
-    public String getAll(@RequestParam(required = false) String search, Model model) {
+    public String getAll(@RequestParam(value = "search", required = false) String search, Model model) {
 
         Collection<Menu> menus;
         MenuListViewModel viewModel;
@@ -99,7 +100,7 @@ public class MenuController {
     }
 
     @GetMapping("/details/{id}")
-    public String details(@PathVariable Long id, Model model) {
+    public String details(@PathVariable("id") Long id, Model model) {
         var result = menuService.get(id);
 
         if (result.isError()) {
@@ -122,7 +123,7 @@ public class MenuController {
     }
 
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable Long id, Model model) {
+    public String edit(@PathVariable("id") Long id, Model model) {
         var result = menuService.get(id);
 
         if (result.isError()) {
@@ -149,7 +150,7 @@ public class MenuController {
     }
 
     @PostMapping("/edit/{id}")
-    public String edit(@PathVariable Long id,
+    public String edit(@PathVariable("id") Long id,
                        @ModelAttribute("menu") Menu menu,
                        BindingResult br,
                        Model model) {
@@ -176,7 +177,7 @@ public class MenuController {
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id, Model model) {
+    public String delete(@PathVariable("id") Long id, Model model) {
         var result = menuService.get(id);
 
         if (result.isError()) {
@@ -199,7 +200,7 @@ public class MenuController {
     }
 
     @PostMapping("/delete/{id}")
-    public String delete(@PathVariable Long id) {
+    public String delete(@PathVariable("id") Long id) {
         var result = menuService.delete(id);
 
         if (result.isError()) {
@@ -213,6 +214,7 @@ public class MenuController {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String exceptionHandler(Model model, Exception ex, HttpServletRequest request) {
         logger.error("Unexpected Exception on uri {}: on method {} ", request.getRequestURI(), request.getMethod(), ex);
+        model.addAttribute("navViewModel", new NavViewModel(loginService.isLoggedIn(), loginService.getCurrentUsername()));
         model.addAttribute("message", "Unexpected Error Occurred");
         return "error/errorPage";
     }
