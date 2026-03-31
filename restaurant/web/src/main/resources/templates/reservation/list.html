@@ -47,10 +47,10 @@
                     <label class="form-label d-none d-md-block opacity-0 text-sm-label">Actions</label>
                     <div class="d-flex gap-2">
                         <button class="btn btn-primary w-100" type="submit">
-                            <i class="fa fa-search me-1"></i> Filter
+                            <i class="fa-solid fa-filter me-1"></i> Filter
                         </button>
                         <a class="btn btn-outline-secondary w-100" th:href="@{/reservation/list}">
-                            <i class="fa fa-undo me-1"></i> Clear
+                            <i class="fa-solid fa-rotate-left me-1"></i> Clear
                         </a>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
         </div>
 
         <div class="alert alert-info shadow-sm" th:if="${viewModel.isEmpty()}">
-            <i class="fa fa-info-circle me-1"></i> No reservations found.
+            <i class="fa-solid fa-circle-info me-1"></i> No reservations found.
         </div>
 
         <div class="card rounded-3 shadow-sm overflow-hidden border-0" th:unless="${viewModel.isEmpty()}">
