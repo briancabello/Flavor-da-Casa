@@ -147,6 +147,16 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    public Result<Collection<ReservationDto>> getConfirmedByEvent(long eventId) {
+        try {
+            return ValidationResults.success(reservationRepository.getConfirmedByEvent(eventId));
+        } catch (Exception e) {
+            logger.error("Error retrieving confirmed reservations for event {}", eventId, e);
+            return ValidationResults.error(e);
+        }
+    }
+
+    @Override
     public boolean existsBySeatingId(long seatingId) {
         return reservationRepository.existsBySeatingId(seatingId);
     }

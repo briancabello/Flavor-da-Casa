@@ -22,6 +22,7 @@ public interface ReservationService {
     ValidatedResult<ReservationDto> approve(long reservationId, long tableId);
 
     ValidatedResult<ReservationDto> deny(long reservationId);
+    Result<Collection<ReservationDto>> getConfirmedByEvent(long eventId);
 
     boolean existsBySeatingId(long seatingId);
 
