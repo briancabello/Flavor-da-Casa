@@ -24,6 +24,9 @@ public interface ReservationJpaRepository extends JpaRepository<ReservationEntit
 
     Optional<ReservationEntity> findByUuid(UUID uuid);
 
+    @Query("SELECT r FROM ReservationEntity r JOIN SeatingEntity s ON r.seatingId = s.id WHERE r.eventId = :eventId AND r.status = 'APPROVED' ORDER BY s.startDateTime ASC")
+    List<ReservationEntity> findConfirmedByEventId(@Param("eventId") long eventId);
+
     boolean existsBySeatingId(long seatingId);
 
     boolean existsByEventId(long eventId);

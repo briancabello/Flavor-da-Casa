@@ -22,6 +22,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -142,6 +143,41 @@ public class ReservationController {
         model.addAttribute("selectedEventId", eventId);
         model.addAttribute("selectedStatus", status);
         return "reservation/list";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/confirmed")
+    public String confirmed(@RequestParam(value = "eventId", required = false) Long eventId, Model model){
+        var eventsResult = eventService.getAll();
+
+        if(eventsResult.isError()){
+            model.addAttribute("message", "Unable to retrieve event data at this time");
+            return "error/errorPage";
+        }
+        model.addAttribute("events", eventsResult.getValue());
+        model.addAttribute("selectedEventId", eventId);
+
+        if (eventId != null){
+            var eventResult = eventService.get(eventId);
+            if(eventResult.hasValue()){
+                model.addAttribute("event", eventResult.getValue());
+            }
+
+            var reservationsResult = reservationService.getConfirmedByEvent(eventId);
+
+            if(reservationsResult.isError()){
+                model.addAttribute("message", "Unable to retrieve confirmed reservation records at this time");
+                return "error/errorPage";
+            }
+
+            var seatingResult = seatingService.getByEvent(eventId);
+
+
+
+            model.addAttribute("reservations", reservationsResult.getValue());
+            model.addAttribute("seatings", seatingResult.hasValue() ? seatingResult.getValue() : List.of());
+        }
+        return "reservation/confirmed";
     }
 
     @PreAuthorize("isAuthenticated()")
