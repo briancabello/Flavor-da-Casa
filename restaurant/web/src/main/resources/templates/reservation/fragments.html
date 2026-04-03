@@ -8,7 +8,7 @@
         <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item">
                 <a class="text-decoration-none text-coffee" th:href="@{/}">
-                    <i class="fa fa-home me-1"></i> Home
+                    <i class="fa-solid fa-house me-1"></i> Home
                 </a>
             </li>
 
@@ -42,7 +42,7 @@
 
 <div class="alert alert-success alert-dismissible fade show small" role="alert"
      th:fragment="successAlert(name, action)" th:if="${name}">
-    <i class="fa fa-check-circle me-2"></i>
+    <i class="fa-solid fa-circle-check me-2"></i>
     Reservation <strong th:text="${name}"></strong>
     <span th:text="${action}"></span> successfully.
     <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
@@ -53,7 +53,7 @@
 <!--/*@thymesVar id="seating" type="nbcc.resto.dto.Seating"*/-->
 <th:block th:fragment="input" th:object="${reservation}">
     <div class="alert alert-danger shadow-sm" role="alert" th:if="${#fields.hasGlobalErrors()}">
-        <i class="fa fa-exclamation-circle me-2"></i>
+        <i class="fa-solid fa-circle-exclamation me-2"></i>
         <span th:each="err : ${#fields.globalErrors()}" th:text="${err}"></span>
     </div>
 
@@ -124,7 +124,7 @@
     <div class="card rounded-3 shadow-sm border-0 overflow-hidden mb-4">
         <div class="card-header bg-dark text-white py-3">
             <h6 class="mb-0 fw-medium ls-wide text-light">
-                <i class="fa fa-user text-primary me-2"></i> Guest Information
+                <i class="fa-solid fa-user me-2 text-primary"></i> Guest Information
             </h6>
         </div>
         <div class="card-body p-0">
@@ -143,7 +143,7 @@
                     <td class="py-3 px-4" th:text="${reservation.groupSize}"></td>
                 </tr>
                 <tr>
-                    <td class="w-25 fw-bold text-accent text-uppercase text-sm-label ps-4 py-3 property-label-bg">Tracking ID</td>
+                    <td class="w-25 fw-bold text-accent text-uppercase text-sm-label ps-4 py-3 property-label-bg">Reservation Code</td>
                     <td class="py-3 px-4"><code th:text="${reservation.uuid}"></code></td>
                 </tr>
                 </tbody>
@@ -154,7 +154,7 @@
     <div class="card rounded-3 shadow-sm border-0 overflow-hidden mb-4">
         <div class="card-header bg-dark text-white py-3 d-flex justify-content-between align-items-center">
             <h6 class="mb-0 fw-medium ls-wide text-light">
-                <i class="fa fa-calendar-alt text-primary me-2"></i> Reservation
+                <i class="fa-solid fa-calendar-check me-2 text-primary"></i> Reservation
             </h6>
             <span class="badge px-3"
                   th:classappend="${reservation.status.name() == 'APPROVED' ? 'bg-success' : (reservation.status.name() == 'DENIED' ? 'bg-danger' : 'bg-warning text-dark')}"
@@ -206,10 +206,10 @@
                                 </select>
                             </div>
                             <form id="approveForm" method="post" th:action="@{/reservation/approve/{id}(id=${reservation.id})}">
-                                <button class="btn btn-success" type="submit"><i class="fa fa-check me-1"></i> Approve</button>
+                                <button class="btn btn-success" type="submit"><i class="fa-solid fa-check me-1"></i> Approve</button>
                             </form>
                             <form method="post" th:action="@{/reservation/deny/{id}(id=${reservation.id})}">
-                                <button class="btn btn-danger" type="submit"><i class="fa fa-times me-1"></i> Deny</button>
+                                <button class="btn btn-danger" type="submit"><i class="fa-solid fa-xmark me-1"></i> Deny</button>
                             </form>
                         </div>
                     </td>
