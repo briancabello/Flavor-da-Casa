@@ -1,4 +1,4 @@
-package nbcc.auth.config;
+package nbcc.resto.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
@@ -20,7 +20,7 @@ public class SwaggerConfig {
                                         .scheme("bearer")
                                         .bearerFormat("JWT")))
                 .info(new io.swagger.v3.oas.models.info.Info()
-                        .title("Authentication API")
+                        .title("Flavor da Casa REST API")
                         .version("1.0.0"));
     }
 }
