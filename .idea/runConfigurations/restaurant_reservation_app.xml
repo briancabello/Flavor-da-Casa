@@ -2,6 +2,7 @@
   <configuration default="false" name="restaurant-reservation-app" type="CompoundRunConfigurationType">
     <toRun name="app-web" type="SpringBootApplicationConfigurationType" />
     <toRun name="auth-rest-api" type="SpringBootApplicationConfigurationType" />
+    <toRun name="restaurant-rest-api" type="SpringBootApplicationConfigurationType" />
     <method v="2" />
   </configuration>
 </component>
