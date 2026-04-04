@@ -14,6 +14,7 @@ public interface ReservationRepository {
     Optional<ReservationDto> getByUuid(UUID uuid);
     ReservationDto create(ReservationDto reservation);
     ReservationDto updateStatus(long id, ReservationStatus status, Long tableId);
+    Collection<ReservationDto> getConfirmedByEvent(long eventId);
     boolean existsBySeatingId(long seatingId);
     boolean existsByEventId(long eventId);
     boolean isTableAssignedForSeating(long seatingId, long tableId);
