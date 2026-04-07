@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" th:replace="~{layout :: layout(title='Confirmed Reservations', content=~{::content})}"
+<html lang="en" th:replace="~{layout :: layout(title='Approved Reservations', content=~{::content})}"
       xmlns:th="http://www.thymeleaf.org">
 <body>
 <div th:fragment="content">
     <div th:replace="~{reservation/fragments :: reservationBreadcrumb('Confirmed', null, null)}"></div>
 
     <div class="container py-4">
-        <h2 class="mb-1">Confirmed Reservations</h2>
+        <h2 class="mb-1">Approved Reservations</h2>
         <p class="text-accent mb-4">
             View all approved reservations for a specific event.
         </p>
@@ -29,7 +29,7 @@
                     </div>
                     <div class="col-md-4">
                         <button class="btn btn-primary w-100" type="submit">
-                            <i class="fa fa-search me-1"></i> View Reservations
+                            <i class="fa-solid fa-receipt me-2"></i> View Reservations
                         </button>
                     </div>
                 </form>
@@ -70,7 +70,7 @@
                         <tr th:each="res : ${reservations}">
                             <td class="ps-4">
                                 <th:block th:each="seating : ${seatings}" th:if="${seating.id == res.seatingId}">
-                                    <span th:text="${#temporals.format(seating.startDateTime, 'MMM dd, yyyy h:mm a')}"></span>
+                                    <span th:text="${#temporals.format(seating.startDateTime, 'MMMM dd, yyyy h:mm a')}"></span>
                                 </th:block>
                             </td>
                             <td class="fw-medium text-dark"
