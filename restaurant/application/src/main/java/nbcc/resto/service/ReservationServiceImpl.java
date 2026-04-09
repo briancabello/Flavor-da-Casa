@@ -20,11 +20,13 @@ public class ReservationServiceImpl implements ReservationService {
     private final Logger logger = LoggerFactory.getLogger(ReservationServiceImpl.class);
     private final ReservationRepository reservationRepository;
     private final ReservationValidationService validationService;
+    private final ReservationEmailService reservationEmailService;
 
     public ReservationServiceImpl(ReservationRepository reservationRepository,
-                                  ReservationValidationService validationService) {
+                                  ReservationValidationService validationService, ReservationEmailService reservationEmailService) {
         this.reservationRepository = reservationRepository;
         this.validationService = validationService;
+        this.reservationEmailService = reservationEmailService;
     }
 
     @Override
@@ -89,6 +91,7 @@ public class ReservationServiceImpl implements ReservationService {
             reservation.setStatus(ReservationStatus.PENDING);
 
             var created = reservationRepository.create(reservation);
+            reservationEmailService.sendReservationReceived(created);
             return ValidationResults.success(created);
 
         } catch (Exception e) {
@@ -117,7 +120,10 @@ public class ReservationServiceImpl implements ReservationService {
                         "This table is already assigned to another approved reservation for this seating", "assignedTableId");
             }
 
-            return ValidationResults.success(reservationRepository.updateStatus(reservationId, ReservationStatus.APPROVED, tableId));
+            var updated = reservationRepository.updateStatus(reservationId, ReservationStatus.APPROVED, tableId);
+            reservationEmailService.sendReservationStatusUpdate(updated);
+            return ValidationResults.success(updated);
+
         } catch (Exception e) {
             logger.error("Error approving reservation {}", reservationId, e);
             return ValidationResults.error(e);
@@ -139,7 +145,10 @@ public class ReservationServiceImpl implements ReservationService {
                         "An approved reservation cannot have its status changed", "status");
             }
 
-            return ValidationResults.success(reservationRepository.updateStatus(reservationId, ReservationStatus.DENIED, null));
+            var updated = reservationRepository.updateStatus(reservationId, ReservationStatus.DENIED, null);
+            reservationEmailService.sendReservationStatusUpdate(updated);
+            return ValidationResults.success(updated);
+
         } catch (Exception e) {
             logger.error("Error denying reservation {}", reservationId, e);
             return ValidationResults.error(e);
