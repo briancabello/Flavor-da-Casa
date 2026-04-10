@@ -12,7 +12,6 @@ http:
     - name: menuId
       value: ""
       type: path
-  auth: inherit
 
 settings:
   encodeUrl: true

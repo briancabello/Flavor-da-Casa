@@ -23,7 +23,6 @@ http:
         "status": "PENDING",
         "assignedTableId": 0
       }
-  auth: inherit
 
 settings:
   encodeUrl: true

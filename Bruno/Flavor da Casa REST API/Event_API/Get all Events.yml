@@ -8,7 +8,6 @@ info:
 http:
   method: GET
   url: "{{apiUrl}}/api/event"
-  auth: inherit
 
 settings:
   encodeUrl: true

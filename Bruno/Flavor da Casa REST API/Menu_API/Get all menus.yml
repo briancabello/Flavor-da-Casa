@@ -8,7 +8,6 @@ info:
 http:
   method: GET
   url: "{{apiUrl}}/api/menu"
-  auth: inherit
 
 settings:
   encodeUrl: true
