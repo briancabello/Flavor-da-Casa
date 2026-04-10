@@ -3,6 +3,7 @@ package nbcc.resto.service;
 import nbcc.email.domain.EmailRequest;
 import nbcc.email.service.EmailService;
 import nbcc.resto.dto.ReservationDto;
+import nbcc.resto.dto.ReservationStatus;
 import nbcc.resto.repository.EventRepository;
 import nbcc.resto.repository.SeatingRepository;
 import org.slf4j.Logger;
@@ -29,7 +30,10 @@ public class ReservationEmailServiceImpl implements ReservationEmailService {
 
     @Override
     public void sendReservationReceived(ReservationDto reservation) {
-        var body = buildEmailBody(reservation, "Your reservation request has been received and is pending review.");
+        var body = buildEmailBody(reservation,
+                "Your reservation request has been received and is currently under review.",
+                "Please save your reservation code. You will need it to check your reservation details and status.\n"
+                          + "You will be notified once your reservation has been approved or declined.");
         var email = new EmailRequest()
                 .setTo(reservation.getEmail())
                 .setSubject("Reservation Request Received - Flavor da Casa")
@@ -44,8 +48,19 @@ public class ReservationEmailServiceImpl implements ReservationEmailService {
     @Override
     public void sendReservationStatusUpdate(ReservationDto reservation) {
         var statusText = reservation.getStatus().name().toLowerCase();
-        var body = buildEmailBody(reservation,
-                "Your reservation has been " + statusText + ".");
+        String message;
+        String closing;
+
+        if (reservation.getStatus() == ReservationStatus.APPROVED) {
+            message = "Great news! Your reservation has been approved.";
+            closing = "Please keep your reservation code. You may need it to check your reservation details.\n"
+                    + "We look forward to serving you!";
+        } else {
+            message = "Unfortunately, your reservation has been denied.";
+            closing = "You may submit a new reservation request if you'd like to try again.";
+        }
+
+        var body = buildEmailBody(reservation, message, closing);
 
         var email = new EmailRequest()
                 .setTo(reservation.getEmail())
@@ -58,13 +73,14 @@ public class ReservationEmailServiceImpl implements ReservationEmailService {
         }
     }
 
-    private String buildEmailBody(ReservationDto reservation, String message) {
+    private String buildEmailBody(ReservationDto reservation, String message, String closing) {
         var sb = new StringBuilder();
         sb.append("Dear ").append(reservation.getGuestFirstName())
                 .append(" ").append(reservation.getGuestLastName()).append(",\n\n");
         sb.append(message).append("\n\n");
         sb.append("Reservation Details:\n");
         sb.append("----------------------------\n");
+        sb.append("Confirmation number: ").append(reservation.getUuid()).append("\n");
 
         // Event Name
         var eventOpt = eventRepository.get(reservation.getEventId());
@@ -83,6 +99,7 @@ public class ReservationEmailServiceImpl implements ReservationEmailService {
         sb.append("Group Size: ").append(reservation.getGroupSize()).append("\n");
         sb.append("Status: ").append(reservation.getStatus().name()).append("\n");
         sb.append("----------------------------\n\n");
+        sb.append(closing).append("\n\n");
         sb.append("Thank you,\nFlavor da Casa");
 
         return sb.toString();
