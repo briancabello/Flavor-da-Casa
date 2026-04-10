@@ -1,0 +1,59 @@
+info:
+  name: validateToken
+  type: http
+  seq: 1
+  tags:
+    - auth-api-controller
+
+http:
+  method: POST
+  url: "{{authUrl}}/api/auth/validate"
+  body:
+    type: json
+    data: eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJlbXBsb3llZSIsImlzcyI6Ik5CQ0MiLCJpZCI6MSwiZXhwIjoxNzc1NzkyMjY0LCJpYXQiOjE3NzU3ODg2NjQsImVtYWlsIjoiZW1wbG95ZWVARmxhdm9yRGFDYXNhLmNvbSIsInVzZXJuYW1lIjoiZW1wbG95ZWUifQ.bEu1u6tx04aCbVrvYCsJjxfhNE1uF2o7opqBhsHF7-r6gOMEd2L1tMIuc7YkvaXbyKShDKFSVXdeUQcmsbN0r7E3TFgc--ZzTNDgA-6uc53fMt3Mt3-aMM6mGpiARNd4f5a4dYivpF2fnH4fl6OzH084uu4Zk0t6GdJBpeftAOo6IAUFTv1KeLE9rP2XCMxPyT3l4ydOWJnxaEPV5zOZ-ZI_QhHBJiiXUpbX5oBUvO6b8dHKwHW4hS3ADbJHoawwLpOQCAjfpHjARs9cwr_vRAy0aNw9aEXAG9muP6tle4zfc81_JOwVlV2LgjCmVz_Bu1K_SE4h6MtlWE8Dwu1nHw
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 200 Response
+    description: OK
+    request:
+      url: "{{baseUrl}}/api/auth/validate"
+      method: POST
+      body:
+        type: json
+        data: "{}"
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: "*/*"
+      body:
+        type: text
+        data: |-
+          {
+            "authenticated": false,
+            "validationErrors": [
+              {
+                "field": "",
+                "message": "",
+                "value": ""
+              }
+            ],
+            "successful": false,
+            "invalid": false,
+            "value": {
+              "id": 0,
+              "email": "",
+              "userName": "",
+              "empty": false
+            },
+            "empty": false,
+            "error": false
+          }
