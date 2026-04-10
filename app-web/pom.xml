@@ -50,6 +50,11 @@
             <artifactId>auth-application-client</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>nbcc.email</groupId>
+            <artifactId>email-service</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>
