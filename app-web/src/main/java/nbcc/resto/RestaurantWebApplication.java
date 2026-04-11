@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@ComponentScan({"nbcc.resto", "nbcc.common", "nbcc.auth"})
+@ComponentScan({"nbcc.resto", "nbcc.common", "nbcc.auth", "nbcc.email"})
 @EnableJpaRepositories({"nbcc.resto.repository", "nbcc.auth.repository"})
 @EntityScan({"nbcc.resto.entity", "nbcc.auth.entity"})
 public class RestaurantWebApplication {

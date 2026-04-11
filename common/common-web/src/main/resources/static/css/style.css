@@ -145,6 +145,19 @@ tbody tr:last-child td {
     color: #fff;
 }
 
+.btn-outline-primary {
+    background-color: transparent;
+    color: var(--primary) !important;
+    border: 1.5px solid var(--primary) !important;
+    transition: 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary) !important;
+    color: var(--surface) !important;
+    border-color: var(--primary) !important;
+}
+
 .btn-outline {
     background: transparent;
     color: var(--light) !important;

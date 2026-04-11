@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{layout :: layout(title='Approved Reservations', content=~{::content})}"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+    <div th:replace="~{reservation/fragments :: reservationBreadcrumb('Confirmed', null, null)}"></div>
+
+    <div class="container py-4">
+        <h2 class="mb-1">Approved Reservations</h2>
+        <p class="text-accent mb-4">
+            View all approved reservations for a specific event.
+        </p>
+
+        <!-- Event Selector -->
+        <div class="card shadow-sm card-top-primary mb-4">
+            <div class="card-body p-4">
+                <form class="row g-3 align-items-end" method="get" th:action="@{/reservation/confirmed}">
+                    <div class="col-md-8">
+                        <label class="form-label text-muted text-uppercase fw-bold ls-wide"
+                               for="eventId">Select Event</label>
+                        <select class="form-select" id="eventId" name="eventId">
+                            <option value="">-- Choose an Event --</option>
+                            <option th:each="e : ${events}"
+                                    th:selected="${selectedEventId != null and selectedEventId == e.id}"
+                                    th:text="${e.name + ' (' + #temporals.format(e.startDate, 'MMM dd, yyyy') + ' - ' + #temporals.format(e.endDate, 'MMM dd, yyyy') + ')'}"
+                                    th:value="${e.id}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-primary w-100" type="submit">
+                            <i class="fa-solid fa-receipt me-2"></i> View Reservations
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- No event selected -->
+        <div class="alert alert-info shadow-sm" th:if="${selectedEventId == null}">
+            <i class="fa fa-info-circle me-1"></i> Please select an event to view its confirmed reservations.
+        </div>
+
+        <!-- Event selected but no reservations -->
+        <div th:if="${selectedEventId != null}">
+            <div class="alert alert-info shadow-sm" th:if="${#lists.isEmpty(reservations)}">
+                <i class="fa fa-info-circle me-1"></i> There are no approved reservations for this event.
+            </div>
+
+            <!-- Reservations Table -->
+            <div class="card rounded-3 shadow-sm overflow-hidden border-0" th:unless="${#lists.isEmpty(reservations)}">
+                <div class="card-header bg-dark text-white py-3">
+                    <h6 class="mb-0 fw-medium ls-wide text-light">
+                        <i class="fa fa-check-circle text-success me-2"></i>
+                        Approved Reservations for
+                        <span th:if="${event != null}" th:text="${event.name}"></span>
+                    </h6>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                        <tr>
+                            <th class="ps-4">Seating Time</th>
+                            <th>Guest Name</th>
+                            <th class="text-center">Group Size</th>
+                            <th class="text-center">Details</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="res : ${reservations}">
+                            <td class="ps-4">
+                                <th:block th:each="seating : ${seatings}" th:if="${seating.id == res.seatingId}">
+                                    <span th:text="${#temporals.format(seating.startDateTime, 'MMMM dd, yyyy h:mm a')}"></span>
+                                </th:block>
+                            </td>
+                            <td class="fw-medium text-dark"
+                                th:text="${res.guestFirstName + ' ' + res.guestLastName}"></td>
+                            <td class="text-center" th:text="${res.groupSize}"></td>
+                            <td class="text-center">
+                                <a class="text-decoration-none text-primary"
+                                   th:href="@{/reservation/details/{id}(id=${res.id})}">
+                                    <i class="fa fa-eye fs-5"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

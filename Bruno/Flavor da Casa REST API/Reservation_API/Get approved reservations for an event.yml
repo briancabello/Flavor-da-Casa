@@ -1,0 +1,63 @@
+info:
+  name: Get approved reservations for an event
+  type: http
+  seq: 1
+  tags:
+    - Reservation_API
+
+http:
+  method: GET
+  url: "{{apiUrl}}/api/reservation/event/:eventId/confirmed"
+  params:
+    - name: eventId
+      value: "1"
+      type: path
+  auth:
+    type: bearer
+    token: eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJlbXBsb3llZSIsImlzcyI6Ik5CQ0MiLCJpZCI6MSwiZXhwIjoxNzc1ODcyNjc4LCJpYXQiOjE3NzU4NjkwNzgsImVtYWlsIjoiZW1wbG95ZWVARmxhdm9yRGFDYXNhLmNvbSIsInVzZXJuYW1lIjoiZW1wbG95ZWUifQ.je0MCNFIGzDdk2xAc-LJYY-nNaPy6mopbK4yCbY-QUMjUPFqt7tfiSwaSVGUZe0BV6Ku55c2KBxqWsET1dqJTyZHlYJwOlZ5qAriYpP3gRq4Msnw2xEi2W-AGOgVsQkP1PrrZAQYXAXc6oGWX3PNQo78sOiCNK75rP8T9HDO0h-oAHT5pgjljiUrkWKXxr1pMXFQ9DZkfAnpstndKyTPtyh-96ToQ1ZZllC1fDOjbbMty0RQYIU83H8d5Xt0BGYRB6RWyJQLdgGy-Sf5zrPApaljrrdIIBVyXijCJLEZSZYs5qMjSnrSOCzLI5HqMv4LqC7Xrf9BZXenX2mR8r_YjQ
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 200 Response
+    description: OK
+    request:
+      url: "{{baseUrl}}/api/reservation/event/:eventId/confirmed"
+      method: GET
+      params:
+        - name: eventId
+          value: ""
+          type: path
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: "*/*"
+      body:
+        type: text
+        data: |-
+          {
+            "value": [
+              {
+                "id": 0,
+                "uuid": "",
+                "eventId": 0,
+                "seatingId": 0,
+                "guestFirstName": "",
+                "guestLastName": "",
+                "email": "",
+                "groupSize": 0,
+                "status": "PENDING",
+                "assignedTableId": 0
+              }
+            ],
+            "empty": false,
+            "invalid": false,
+            "error": false,
+            "successful": false
+          }

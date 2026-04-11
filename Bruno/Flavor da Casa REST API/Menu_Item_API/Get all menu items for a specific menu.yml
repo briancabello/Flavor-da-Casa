@@ -1,0 +1,60 @@
+info:
+  name: Get all menu items for a specific menu
+  type: http
+  seq: 1
+  tags:
+    - Menu_Item_API
+
+http:
+  method: GET
+  url: "{{apiUrl}}/api/menuItem/menu/:menuId"
+  params:
+    - name: menuId
+      value: "1"
+      type: path
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 200 Response
+    description: OK
+    request:
+      url: "{{baseUrl}}/api/menuItem/menu/:menuId"
+      method: GET
+      params:
+        - name: menuId
+          value: ""
+          type: path
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: "*/*"
+      body:
+        type: text
+        data: |-
+          {
+            "value": [
+              {
+                "id": 0,
+                "menu": {
+                  "id": 0,
+                  "name": "",
+                  "description": "",
+                  "createdDate": ""
+                },
+                "name": "",
+                "description": "",
+                "createdDate": ""
+              }
+            ],
+            "empty": false,
+            "invalid": false,
+            "error": false,
+            "successful": false
+          }

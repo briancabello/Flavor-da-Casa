@@ -90,6 +90,11 @@
                         </td>
 
                         <td class="text-center" th:if="${viewModel.showManage}">
+                            <a class="text-decoration-none me-3" th:href="@{/reservation/confirmed(eventId=${event.id})}"
+                               title="View Approved Reservations">
+                                <i class="fa fa-clipboard-check text-success fs-5"></i>
+                            </a>
+
                             <a class="text-decoration-none me-3" th:href="@{/event/edit/{id}(id=${event.id})}"
                                title="Edit Event">
                                 <i class="fa fa-edit text-primary fs-5"></i>

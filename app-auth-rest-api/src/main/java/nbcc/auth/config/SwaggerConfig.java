@@ -20,7 +20,7 @@ public class SwaggerConfig {
                                         .scheme("bearer")
                                         .bearerFormat("JWT")))
                 .info(new io.swagger.v3.oas.models.info.Info()
-                        .title("NBCC Authentication API")
+                        .title("Authentication API")
                         .version("1.0.0"));
     }
 }

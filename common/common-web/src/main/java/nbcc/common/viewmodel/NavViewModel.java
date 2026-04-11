@@ -28,7 +28,7 @@ public class NavViewModel {
         this.showTables = isLoggedIn;
         this.showSeatings = isLoggedIn;
         this.showMenus = isLoggedIn;
-        this.showReservations = true;
+        this.showReservations = isLoggedIn;
     }
 
     public boolean isShowUserName() {

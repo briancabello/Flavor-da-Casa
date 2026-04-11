@@ -1,0 +1,46 @@
+info:
+  name: Get all menus
+  type: http
+  seq: 1
+  tags:
+    - Menu_API
+
+http:
+  method: GET
+  url: "{{apiUrl}}/api/menu"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: 200 Response
+    description: OK
+    request:
+      url: "{{baseUrl}}/api/menu"
+      method: GET
+    response:
+      status: 200
+      statusText: OK
+      headers:
+        - name: Content-Type
+          value: "*/*"
+      body:
+        type: text
+        data: |-
+          {
+            "value": [
+              {
+                "id": 0,
+                "name": "",
+                "description": "",
+                "createdDate": ""
+              }
+            ],
+            "empty": false,
+            "invalid": false,
+            "error": false,
+            "successful": false
+          }

@@ -11,18 +11,17 @@
                 <div class="card shadow-sm card-top-primary">
                     <div class="card-body p-4">
                         <div class="text-center mb-4">
-                            <i class="fa fa-check-circle text-success display-icon"></i>
-                            <h2 class="fw-bold mt-3">Reservation Request Submitted!</h2>
+                            <i class="fa-solid fa-circle-check text-success display-icon"></i>
+                            <h2 class="fw-bold mt-3">Reservation Request Received!</h2>
                             <p class="text-muted">
-                                Your request has been received and is currently
-                                <strong>pending</strong> review.
+                                Thank you! Your reservation request has been submitted and is currently being reviewed.
                             </p>
                         </div>
 
                         <div class="rounded-3 overflow-hidden border property-grid mb-4" th:if="${uuid}">
                             <div class="row g-0">
                                 <div class="col-4 p-3 d-flex align-items-center property-label-bg">
-                                    <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Tracking ID</span>
+                                    <span class="text-accent fw-bold text-uppercase ls-wide text-sm-label">Your Reservation Code</span>
                                 </div>
                                 <div class="col-8 p-3 d-flex align-items-center">
                                     <code class="fs-5" th:text="${uuid}"></code>
@@ -31,19 +30,19 @@
                         </div>
 
                         <p class="text-muted small text-center mb-4">
-                            Save your Tracking ID to check your reservation status later.
+                            Please save this code to check your reservation details and status later.
                         </p>
 
                         <div class="d-flex justify-content-center gap-2 flex-wrap">
                             <a class="btn btn-primary px-4" th:href="@{/reservation/track(uuid=${uuid})}"
                                th:if="${uuid}">
-                                <i class="fa fa-search me-2"></i> Check My Reservation
+                                <i class="fa-solid fa-receipt me-2"></i> Check Reservation
                             </a>
                             <a class="btn btn-outline-primary px-4" th:href="@{/reservation}">
-                                <i class="fa fa-plus me-2"></i> New Reservation
+                                <i class="fa-solid fa-calendar-plus me-2"></i> Make Another Reservation
                             </a>
                             <a class="btn btn-outline-secondary px-4" th:href="@{/}">
-                                <i class="fa fa-home me-2"></i> Go Home
+                                <i class="fa fa-home me-2"></i> Back to Home
                             </a>
                         </div>
                     </div>

@@ -1,0 +1,7 @@
+info:
+  name: Reservation_API
+  type: folder
+  seq: 5
+
+request:
+  auth: inherit

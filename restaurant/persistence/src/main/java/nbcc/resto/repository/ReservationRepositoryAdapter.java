@@ -6,6 +6,7 @@ import nbcc.resto.mapper.ReservationMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -52,6 +53,11 @@ public class ReservationRepositoryAdapter implements ReservationRepository {
         entity.setStatus(status);
         entity.setAssignedTableId(tableId);
         return mapper.toDTO(jpaRepository.save(entity));
+    }
+
+    @Override
+    public Collection<ReservationDto> getConfirmedByEvent(long eventId) {
+        return mapper.toDTO(jpaRepository.findConfirmedByEventId(eventId));
     }
 
     @Override
