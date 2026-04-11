@@ -10,7 +10,7 @@ http:
   url: "{{apiUrl}}/api/menu/:id"
   params:
     - name: id
-      value: ""
+      value: "1"
       type: path
 
 settings:

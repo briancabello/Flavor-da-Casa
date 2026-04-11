@@ -10,9 +10,11 @@ http:
   url: "{{apiUrl}}/api/reservation/event/:eventId/confirmed"
   params:
     - name: eventId
-      value: ""
+      value: "1"
       type: path
-  auth: inherit
+  auth:
+    type: bearer
+    token: eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJlbXBsb3llZSIsImlzcyI6Ik5CQ0MiLCJpZCI6MSwiZXhwIjoxNzc1ODcyNjc4LCJpYXQiOjE3NzU4NjkwNzgsImVtYWlsIjoiZW1wbG95ZWVARmxhdm9yRGFDYXNhLmNvbSIsInVzZXJuYW1lIjoiZW1wbG95ZWUifQ.je0MCNFIGzDdk2xAc-LJYY-nNaPy6mopbK4yCbY-QUMjUPFqt7tfiSwaSVGUZe0BV6Ku55c2KBxqWsET1dqJTyZHlYJwOlZ5qAriYpP3gRq4Msnw2xEi2W-AGOgVsQkP1PrrZAQYXAXc6oGWX3PNQo78sOiCNK75rP8T9HDO0h-oAHT5pgjljiUrkWKXxr1pMXFQ9DZkfAnpstndKyTPtyh-96ToQ1ZZllC1fDOjbbMty0RQYIU83H8d5Xt0BGYRB6RWyJQLdgGy-Sf5zrPApaljrrdIIBVyXijCJLEZSZYs5qMjSnrSOCzLI5HqMv4LqC7Xrf9BZXenX2mR8r_YjQ
 
 settings:
   encodeUrl: true
