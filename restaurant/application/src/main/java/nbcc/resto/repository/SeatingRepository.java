@@ -21,4 +21,5 @@ public interface SeatingRepository {
 
     void delete(Long id);
 
+    boolean exists(String name, Long eventId);
 }

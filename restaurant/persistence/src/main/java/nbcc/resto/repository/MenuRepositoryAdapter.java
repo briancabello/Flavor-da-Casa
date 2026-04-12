@@ -5,7 +5,6 @@ import nbcc.resto.mapper.MenuMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -54,5 +53,10 @@ public class MenuRepositoryAdapter implements MenuRepository {
     public Collection<Menu> searchByName(String name) {
         var entities = jpaRepository.findByNameContainingIgnoreCase(name);
         return mapper.toDTO(entities);
+    }
+
+    @Override
+    public boolean exists(String name) {
+        return jpaRepository.existsByNameIgnoreCase(name);
     }
 }

@@ -55,4 +55,9 @@ public class MenuItemRepositoryAdapter implements MenuItemRepository {
     public void delete(Long id) {
         jpaRepository.deleteById(id);
     }
+
+    @Override
+    public boolean exists(String name, Long menuId) {
+        return jpaRepository.existsByNameIgnoreCaseAndMenuId(name, menuId);
+    }
 }

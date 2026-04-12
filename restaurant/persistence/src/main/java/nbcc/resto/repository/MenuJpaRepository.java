@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface MenuJpaRepository extends JpaRepository<MenuEntity, Long> {
     List<MenuEntity> findByNameContainingIgnoreCase(String name);
+
+    boolean existsByNameIgnoreCase(String name);
 }

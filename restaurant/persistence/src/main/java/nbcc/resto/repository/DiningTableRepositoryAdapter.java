@@ -70,4 +70,9 @@ public class DiningTableRepositoryAdapter implements DiningTableRepository {
         seatingTableJpaRepository.deleteByDiningTableId(id);
         jpaRepository.deleteById(id);
     }
+
+    @Override
+    public boolean exists(String name) {
+        return jpaRepository.existsByNameIgnoreCase(name);
+    }
 }

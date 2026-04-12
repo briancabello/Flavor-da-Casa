@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface MenuItemJpaRepository extends JpaRepository<MenuItemEntity, Long> {
     List<MenuItemEntity> findByMenuId(Long menuId);
+
+    boolean existsByNameIgnoreCaseAndMenuId(String name, Long menuId);
 }

@@ -18,4 +18,6 @@ public interface MenuItemRepository {
     MenuItem update(MenuItem menuItem);
 
     void delete(Long id);
+
+    boolean exists(String name, Long menuId);
 }

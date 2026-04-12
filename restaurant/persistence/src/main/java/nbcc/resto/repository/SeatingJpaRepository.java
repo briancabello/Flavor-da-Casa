@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface SeatingJpaRepository extends JpaRepository<SeatingEntity, Long> {
     List<SeatingEntity> findByEventId(Long eventId);
+
+    boolean existsByNameIgnoreCaseAndEventId(String name, Long eventId);
 }

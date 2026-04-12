@@ -18,4 +18,6 @@ public interface MenuRepository {
     void delete(Long id);
 
     Collection<Menu> searchByName(String name);
+
+    boolean exists(String name);
 }
