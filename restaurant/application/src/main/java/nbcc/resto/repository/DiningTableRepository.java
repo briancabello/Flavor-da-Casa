@@ -17,4 +17,5 @@ public interface DiningTableRepository {
 
     void delete(Long id);
 
+    boolean exists(String name);
 }

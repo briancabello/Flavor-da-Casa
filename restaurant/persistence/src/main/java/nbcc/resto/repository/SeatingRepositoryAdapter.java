@@ -127,9 +127,15 @@ public class SeatingRepositoryAdapter implements SeatingRepository {
          seatingJpa.deleteById(id);
      }
 
+    @Override
+    public boolean exists(String name, Long eventId) {
+        return false;
+    }
+
     private Collection<DiningTable> getTablesForSeating(Long seatingId) {
         return seatingTableJpa.findBySeatingId(seatingId).stream()
-                .map(st -> diningTableMapper.toDTO(st.getDiningTable()))
+                .map(SeatingTableEntity::getDiningTable)
+                .map(diningTableMapper::toDTO)
                 .toList();
     }
 }
