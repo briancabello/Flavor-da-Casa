@@ -2,11 +2,11 @@
 <html lang="en" th:replace="~{layout :: layout(title='Home', content=~{::content})}"
       xmlns:th="http://www.thymeleaf.org">
 <body>
-    <div th:fragment="content">
-        <div class="hero-header d-flex align-items-center">
+    <div class="home-page" th:fragment="content">
+        <section class="hero-header home-hero d-flex align-items-center">
             <div class="container py-5">
-                <div class="row">
-                    <div class="col-lg-8 col-xl-7">
+                <div class="row align-items-center">
+                    <div class="col-lg-7 col-xl-6">
                         <p class="lead script text-primary mb-2 opacity-75">Welcome to</p>
                         <h1 class="display-4 fw-bold text-light mb-2">
                             Flavor da Casa
@@ -28,93 +28,83 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <section class="py-5">
+        <section class="home-section home-intro-section">
             <div class="container">
-                <div class="text-center mx-auto mb-5" style="max-width: 640px;">
-                    <p class="script text-primary mb-1 opacity-75">What we offer</p>
-                    <h2 class="display-6 fw-bold mb-2">Everything for a perfect visit</h2>
-                    <p class="text-accent mb-0">
-                        From your first reservation to the last course, here is how Flavor da Casa
-                        takes care of the details.
-                    </p>
+                <div class="row align-items-end g-4 home-section-heading">
+                    <div class="col-lg-7">
+                        <p class="script text-primary mb-2">At Flavor da Casa</p>
+                        <h2 class="display-6 fw-bold mb-0">Food made with memory, served with heart.</h2>
+                    </div>
+                    <div class="col-lg-5">
+                        <p class="text-accent mb-0">
+                            Familiar flavors, thoughtful cooking, and a room that invites you to settle in. Every meal
+                            begins with the comfort of home and ends with something worth remembering.
+                        </p>
+                    </div>
                 </div>
 
-                <div class="row g-4">
+                <div class="row g-0 home-experience-grid">
                     <div class="col-md-4">
-                        <div class="highlight-card h-100 p-4 p-lg-5 text-center d-flex flex-column align-items-center">
-                            <div class="highlight-icon d-inline-flex align-items-center justify-content-center mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                    <path d="M8 2v4"></path>
-                                    <path d="M16 2v4"></path>
-                                    <rect width="18" height="18" x="3" y="4" rx="2"></rect>
-                                    <path d="M3 10h18"></path>
-                                    <path d="m9 16 2 2 4-4"></path>
-                                </svg>
-                            </div>
-                            <h3 class="h4 fw-bold mb-2">Reserve a Table</h3>
-                            <p class="text-accent mb-4">
-                                Book your table in a few taps and arrive to a spot that is ready and waiting.
+                        <article class="home-experience-item">
+                            <span>01</span>
+                            <h3>Recipes with roots</h3>
+                            <p>
+                                Family recipes guide the kitchen, bringing depth, warmth, and a sense of place to every
+                                plate.
                             </p>
-                            <a class="highlight-link mt-auto" href="/reservation">
-                                Make a Reservation
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                    <path d="M5 12h14"></path>
-                                    <path d="m12 5 7 7-7 7"></path>
-                                </svg>
-                            </a>
-                        </div>
+                        </article>
                     </div>
 
                     <div class="col-md-4">
-                        <div class="highlight-card h-100 p-4 p-lg-5 text-center d-flex flex-column align-items-center">
-                            <div class="highlight-icon d-inline-flex align-items-center justify-content-center mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-                                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-                                </svg>
-                            </div>
-                            <h3 class="h4 fw-bold mb-2">Browse the Menu</h3>
-                            <p class="text-accent mb-4">
-                                Explore our family recipes, seasonal plates, and house favorites before you visit.
+                        <article class="home-experience-item">
+                            <span>02</span>
+                            <h3>Season at its best</h3>
+                            <p>
+                                Fresh ingredients shape a menu that feels generous, balanced, and right for the moment.
                             </p>
-                            <a class="highlight-link mt-auto" href="/menu">
-                                View the Menu
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                    <path d="M5 12h14"></path>
-                                    <path d="m12 5 7 7-7 7"></path>
-                                </svg>
-                            </a>
-                        </div>
+                        </article>
                     </div>
 
                     <div class="col-md-4">
-                        <div class="highlight-card h-100 p-4 p-lg-5 text-center d-flex flex-column align-items-center">
-                            <div class="highlight-icon d-inline-flex align-items-center justify-content-center mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                    <path d="M8 22h8"></path>
-                                    <path d="M7 10h10"></path>
-                                    <path d="M12 15v7"></path>
-                                    <path d="M12 15a5 5 0 0 0 5-5c0-2-.5-4-1-6H8c-.5 2-1 4-1 6a5 5 0 0 0 5 5Z"></path>
-                                </svg>
-                            </div>
-                            <h3 class="h4 fw-bold mb-2">Upcoming Events</h3>
-                            <p class="text-accent mb-4">
-                                From live nights to private celebrations, see what is happening at Flavor da Casa.
+                        <article class="home-experience-item">
+                            <span>03</span>
+                            <h3>Room to linger</h3>
+                            <p>
+                                Warm service and an easy pace make the table feel yours for the evening.
                             </p>
-                            <a class="highlight-link mt-auto" href="/event">
-                                View Events
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                    <path d="M5 12h14"></path>
-                                    <path d="m12 5 7 7-7 7"></path>
-                                </svg>
-                            </a>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="home-story-section">
+            <div class="container">
+                <div class="row g-5 align-items-center home-story-layout">
+                    <div class="col-lg-5">
+                        <p class="script text-primary mb-2">From our kitchen</p>
+                        <h2 class="display-6 fw-bold mb-0">Care you can taste in every course.</h2>
+                    </div>
+
+                    <div class="col-lg-6 offset-lg-1">
+                        <div class="home-story-copy">
+                            <p>
+                                Our cooking is grounded in patience: sauces given time, ingredients treated simply,
+                                and plates finished with purpose.
+                            </p>
+                            <p class="mb-0">
+                                It is food made for sharing, conversation, and the kind of evenings that never need to
+                                be rushed.
+                            </p>
+                            <p class="home-story-note">Cooked with care. Served without hurry.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+
     </div>
 </body>
 </html>
