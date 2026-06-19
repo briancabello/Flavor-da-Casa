@@ -169,7 +169,7 @@ tbody tr:last-child td {
 }
 
 .home-section {
-    padding: 4rem 0;
+    padding: 6rem 0;
 }
 
 .home-page .home-section .script {
@@ -183,8 +183,38 @@ tbody tr:last-child td {
 /* ---- About — At Flavor da Casa: heading, image slider, stats ---- */
 .home-about-section {
     background: var(--surface);
-    padding-top: 6rem;
-    padding-bottom: 6rem;
+}
+
+/* ---- Chefs — portrait-led kitchen team introduction ---- */
+.home-chefs-section {
+    background: var(--surface);
+}
+
+.home-chefs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+}
+
+.home-chef-portrait {
+    overflow: hidden;
+    border-radius: 0.5rem;
+}
+
+.home-chef-portrait img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: clamp(22rem, 32vw, 36rem);
+    object-fit: cover;
+}
+
+@media (max-width: 767.98px) {
+    .home-chefs-grid {
+        grid-template-columns: 1fr;
+        max-width: 28rem;
+        margin-inline: auto;
+    }
 }
 
 /* Heading clearly larger than the subheading */
@@ -290,10 +320,6 @@ tbody tr:last-child td {
         padding: 1rem;
         border-radius: 0.5rem;
         background: rgba(38, 55, 59, 0.96);
-    }
-
-    .home-section {
-        padding: 3.5rem 0;
     }
 
 }
@@ -525,100 +551,53 @@ tbody tr:last-child td {
     box-shadow: none;
 }
 
-/* ---- 2. From the kitchen — menu showcase (course image cards) ---- */
+/* ---- 3. From the kitchen — signature dishes ---- */
 .home-menu-section {
     background: var(--surface-2);
 }
 
-.home-menu-note {
-    color: var(--accent-color);
-    font-size: 0.85rem;
-    font-style: italic;
-}
-
-/* Course card grid — a visual, browsable food showcase */
-.home-courses {
+.home-menu-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.25rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
 }
 
-.home-course-card {
-    position: relative;
-    display: block;
-    aspect-ratio: 4 / 3;
+/* Image-only dish cards — same 3:2 size as the occasion cards below */
+.home-dish-card {
+    aspect-ratio: 3 / 2;
     overflow: hidden;
     border-radius: 0.5rem;
     border: 1px solid var(--border-10);
-    box-shadow: 0 1px 2px rgba(38, 55, 59, 0.05);
-    text-decoration: none;
-    transition: transform .4s ease, box-shadow .4s ease;
+    box-shadow: 0 1px 2px rgba(38, 55, 59, 0.04);
 }
 
-.home-course-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 22px 48px rgba(38, 55, 59, 0.16);
-}
-
-.home-course-card:focus-visible {
-    outline: 3px solid var(--primary);
-    outline-offset: 2px;
-}
-
-.home-course-img {
-    position: absolute;
-    inset: 0;
+.home-dish-card img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
     transition: transform .6s ease;
 }
 
-.home-course-card:hover .home-course-img,
-.home-course-card:focus-visible .home-course-img {
+.home-dish-card:hover img {
     transform: scale(1.05);
 }
 
-.home-course-overlay {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 1.1rem 1.2rem;
-    background:
-        linear-gradient(to top,
-            rgba(38, 55, 59, 0.88) 0%,
-            rgba(38, 55, 59, 0.45) 40%,
-            rgba(38, 55, 59, 0) 72%);
-}
-
-.home-course-name {
-    display: block;
-    font-family: 'Playfair Display', serif;
-    font-size: 1.25rem;
-    color: var(--light);
-    margin-bottom: 0.2rem;
-}
-
-.home-course-desc {
-    display: block;
-    color: rgba(237, 209, 178, 0.92);
-    font-size: 0.9rem;
-    line-height: 1.4;
+@media (max-width: 991.98px) {
+    .home-menu-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 @media (max-width: 575.98px) {
-    .home-courses {
+    .home-menu-grid {
         grid-template-columns: 1fr;
     }
 }
 
 /* ---- 4. Occasions — real photo cards ---- */
 .home-occasions-section {
-    background: var(--surface);
-    padding-top: 6rem;
-    padding-bottom: 6rem;
+    background: var(--surface-2);
 }
 
 .home-occasion-card {
@@ -766,9 +745,7 @@ tbody tr:last-child td {
 
 /* ---- 5. Testimonials — centered carousel, slide by slide ---- */
 .home-testimonials-section {
-    background: var(--surface-2);
-    padding-top: 6rem;
-    padding-bottom: 6rem;
+    background: var(--surface);
 }
 
 .home-testimonials-section .home-section-heading {
@@ -879,9 +856,7 @@ tbody tr:last-child td {
 
 /* ---- 6. FAQ ---- */
 .home-faq-section {
-    background: var(--surface);
-    padding-top: 6rem;
-    padding-bottom: 6rem;
+    background: var(--surface-2);
 }
 
 .home-faq-layout {
@@ -965,8 +940,7 @@ tbody tr:last-child td {
 
 /* Hover/transition effects respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
-    .home-course-card,
-    .home-course-img,
+    .home-dish-card img,
     .home-occasion-card,
     .home-occasion-card .home-media-wide img,
     .home-occasion-link,
@@ -976,12 +950,11 @@ tbody tr:last-child td {
     .home-event-link i {
         transition: none;
     }
-    .home-course-card:hover,
     .home-occasion-card:hover,
     .home-event-card:hover {
         transform: none;
     }
-    .home-course-card:hover .home-course-img,
+    .home-dish-card:hover img,
     .home-occasion-card:hover .home-media-wide img {
         transform: none;
     }

@@ -71,8 +71,28 @@ Experience the true taste of home. We blend authentic family recipes with a warm
                                  alt="A cook plating a dish at the kitchen counter">
                         </figure>
                         <figure class="home-about-slide mb-0">
-                            <img th:src="@{/img/about-6.jpg}" width="800" height="999" loading="lazy"
-                                 alt="A host welcoming guests in the dining room">
+                            <img th:src="@{/img/about-6.png}" width="1122" height="1402" loading="lazy"
+                                 alt="A chef garnishing a plated dish in the kitchen">
+                        </figure>
+                        <figure class="home-about-slide mb-0">
+                            <img th:src="@{/img/home-sharing.jpg}" width="1400" height="1050" loading="lazy"
+                                 alt="Guests sharing dishes across a candlelit table">
+                        </figure>
+                        <figure class="home-about-slide mb-0">
+                            <img th:src="@{/img/home-table.jpg}" width="1400" height="1050" loading="lazy"
+                                 alt="A table set with cream plates, linen and a candle">
+                        </figure>
+                        <figure class="home-about-slide mb-0">
+                            <img th:src="@{/img/home-entrance.jpg}" width="1800" height="1350" loading="lazy"
+                                 alt="The warm entrance of Flavor da Casa at night">
+                        </figure>
+                        <figure class="home-about-slide mb-0">
+                            <img th:src="@{/img/home-course-start.jpg}" width="1000" height="750" loading="lazy"
+                                 alt="A table set with small dishes and bread">
+                        </figure>
+                        <figure class="home-about-slide mb-0">
+                            <img th:src="@{/img/home-course-sweet.jpg}" width="1000" height="750" loading="lazy"
+                                 alt="A dessert and coffee to finish the evening">
                         </figure>
                     </div>
                 </div>
@@ -141,72 +161,71 @@ Experience the true taste of home. We blend authentic family recipes with a warm
         </section>
 
         <!-- ============================================================
-             3. FROM THE KITCHEN — menu showcase (course image cards)
+             2. FROM THE KITCHEN — signature dishes
              ============================================================ -->
         <section class="home-section home-menu-section" aria-labelledby="menuHeading">
             <div class="container">
-                <div class="row g-5">
-                    <div class="col-lg-4">
-                        <p class="script text-primary mb-2">From the kitchen</p>
-                        <h2 class="display-6 fw-bold mb-3" id="menuHeading">Browse by course.</h2>
-                        <p class="text-accent mb-4">
-                            A warm look at the food we like to bring to the table &mdash; small beginnings, generous
-                            mains, shared plates, and a quiet finish.
-                        </p>
-                        <a class="btn btn-primary px-4 rounded-2" th:href="@{/menu}">
-                            See the Full Menu <i class="fa-solid fa-arrow-right ms-2" aria-hidden="true"></i>
-                        </a>
-                        <p class="home-menu-note mb-0 mt-3">The menu changes gently with the season.</p>
+                <div class="row justify-content-center text-center home-section-heading">
+                    <div class="col-lg-7">
+                        <p class="script text-primary mb-2">From our kitchen</p>
+                        <h2 class="display-6 fw-bold mb-0" id="menuHeading">Signature dishes.</h2>
                     </div>
+                </div>
 
-                    <div class="col-lg-8">
-                        <ul class="home-courses list-unstyled mb-0">
-                            <li>
-                                <a class="home-course-card" th:href="@{/menu}">
-                                    <img class="home-course-img" th:src="@{/img/home-course-start.jpg}"
-                                         width="1000" height="750" loading="lazy"
-                                         alt="A warm table laid with small plates and bread to begin the meal">
-                                    <span class="home-course-overlay">
-                                        <span class="home-course-name">To start</span>
-                                        <span class="home-course-desc">Small plates to begin the table.</span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="home-course-card" th:href="@{/menu}">
-                                    <img class="home-course-img" th:src="@{/img/home-dish.jpg}"
-                                         width="1400" height="1050" loading="lazy"
-                                         alt="A plated main course on a cream ceramic dish by candlelight">
-                                    <span class="home-course-overlay">
-                                        <span class="home-course-name">Mains from the kitchen</span>
-                                        <span class="home-course-desc">Warm dishes with familiar comfort and a seasonal touch.</span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="home-course-card" th:href="@{/menu}">
-                                    <img class="home-course-img" th:src="@{/img/home-course-table.jpg}"
-                                         width="1000" height="750" loading="lazy"
-                                         alt="Hands passing a shared bowl across a candlelit table">
-                                    <span class="home-course-overlay">
-                                        <span class="home-course-name">For the table</span>
-                                        <span class="home-course-desc">Generous plates made for sharing.</span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="home-course-card" th:href="@{/menu}">
-                                    <img class="home-course-img" th:src="@{/img/home-course-sweet.jpg}"
-                                         width="1000" height="750" loading="lazy"
-                                         alt="A dessert and a cup of coffee to finish the meal">
-                                    <span class="home-course-overlay">
-                                        <span class="home-course-name">Something sweet</span>
-                                        <span class="home-course-desc">A simple finish before you go.</span>
-                                    </span>
-                                </a>
-                            </li>
-                        </ul>
+                <div class="home-menu-grid">
+                    <figure class="home-dish-card mb-0">
+                        <img th:src="@{/img/menu-1.jpg}" width="800" height="600" loading="lazy"
+                             alt="A plated starter at Flavor da Casa">
+                    </figure>
+                    <figure class="home-dish-card mb-0">
+                        <img th:src="@{/img/menu-2.jpg}" width="800" height="600" loading="lazy"
+                             alt="A plated main course">
+                    </figure>
+                    <figure class="home-dish-card mb-0">
+                        <img th:src="@{/img/menu-3.jpg}" width="800" height="600" loading="lazy"
+                             alt="A savoury tart with rice and sides">
+                    </figure>
+                    <figure class="home-dish-card mb-0">
+                        <img th:src="@{/img/menu-4.jpg}" width="800" height="600" loading="lazy"
+                             alt="A dessert served with coffee">
+                    </figure>
+                    <figure class="home-dish-card mb-0">
+                        <img th:src="@{/img/home-dish.jpg}" width="1400" height="1050" loading="lazy"
+                             alt="A seasonal main on a cream ceramic plate">
+                    </figure>
+                    <figure class="home-dish-card mb-0">
+                        <img th:src="@{/img/home-course-table.jpg}" width="1000" height="750" loading="lazy"
+                             alt="Hands sharing a bowl of food at the table">
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             3. CHEFS — the people behind the kitchen
+             ============================================================ -->
+        <section class="home-section home-chefs-section" aria-labelledby="chefsHeading">
+            <div class="container">
+                <div class="row justify-content-center text-center home-section-heading">
+                    <div class="col-lg-9">
+                        <p class="script text-primary mb-2">Meet the chef</p>
+                        <h2 class="display-6 fw-bold mb-0" id="chefsHeading">The heart of our kitchen.</h2>
                     </div>
+                </div>
+
+                <div class="home-chefs-grid">
+                    <figure class="home-chef-portrait mb-0">
+                        <img th:src="@{/img/chef-portrait-1.png}" width="1122" height="1402" loading="lazy"
+                             alt="A chef in a white jacket standing in the dining room">
+                    </figure>
+                    <figure class="home-chef-portrait mb-0">
+                        <img th:src="@{/img/chef-portrait-2.png}" width="1122" height="1402" loading="lazy"
+                             alt="A chef in a dark apron standing beside plated dishes">
+                    </figure>
+                    <figure class="home-chef-portrait mb-0">
+                        <img th:src="@{/img/chef-portrait-3.png}" width="1122" height="1402" loading="lazy"
+                             alt="A chef in a white jacket standing beside a dining table">
+                    </figure>
                 </div>
             </div>
         </section>
