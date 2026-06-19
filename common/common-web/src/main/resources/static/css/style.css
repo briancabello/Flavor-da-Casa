@@ -179,65 +179,6 @@ tbody tr:last-child td {
     margin-bottom: 2.75rem;
 }
 
-.home-experience-grid {
-    border-top: 1px solid rgba(176, 114, 74, 0.2);
-    border-bottom: 1px solid rgba(176, 114, 74, 0.2);
-}
-
-.home-experience-grid > div + div {
-    border-left: 1px solid rgba(176, 114, 74, 0.2);
-}
-
-.home-experience-item {
-    min-height: 12rem;
-    padding: 1.5rem;
-}
-
-.home-experience-item > span {
-    display: block;
-    margin-bottom: 1.4rem;
-    color: var(--primary);
-    font-family: 'Playfair Display', serif;
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-}
-
-.home-experience-item h3 {
-    margin-bottom: 0.6rem;
-    font-size: 1.3rem;
-}
-
-.home-experience-item p {
-    max-width: 19rem;
-    color: var(--accent-color);
-    margin-bottom: 0;
-}
-
-.home-story-section {
-    padding: 4rem 0;
-    background: var(--dark);
-}
-
-.home-story-section h2 {
-    color: var(--light);
-}
-
-.home-story-copy > p:not(.script) {
-    color: rgba(237, 209, 178, 0.78);
-}
-
-.home-story-note {
-    margin-top: 1.75rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid rgba(237, 209, 178, 0.18);
-    color: var(--primary) !important;
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1rem;
-    font-style: italic;
-}
-
 @media (max-width: 991.98px) {
     .home-layout .navbar-collapse {
         margin-top: 1rem;
@@ -250,25 +191,6 @@ tbody tr:last-child td {
         padding: 3.5rem 0;
     }
 
-    .home-story-section {
-        padding: 3.5rem 0;
-    }
-
-}
-
-@media (max-width: 767.98px) {
-    .home-experience-grid {
-        border-bottom: none;
-    }
-
-    .home-experience-grid > div + div {
-        border-left: none;
-    }
-
-    .home-experience-item {
-        min-height: auto;
-        border-bottom: 1px solid rgba(176, 114, 74, 0.2);
-    }
 }
 
 .btn-primary {
@@ -498,37 +420,16 @@ tbody tr:last-child td {
     box-shadow: none;
 }
 
-/* ---- 1. Intro points ---- */
-.home-points li,
-.home-meta li {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.65rem;
-    padding: 0.5rem 0;
-    color: var(--charcoal);
-}
-
-.home-points li + li,
-.home-meta li + li {
-    border-top: 1px solid rgba(176, 114, 74, 0.15);
-}
-
-.home-points i,
-.home-meta i {
-    margin-top: 0.28rem;
-    color: var(--primary);
-    font-size: 0.85rem;
-}
-
-.home-meta li {
-    color: var(--accent-color);
-    font-size: 0.92rem;
-}
-
 /* ---- 2. Menu — browsable by course ---- */
 .home-menu-section {
     background: var(--surface);
     border-top: 1px solid rgba(176, 114, 74, 0.12);
+}
+
+.home-menu-note {
+    color: var(--accent-color);
+    font-size: 0.85rem;
+    font-style: italic;
 }
 
 .home-menu-list {
@@ -617,20 +518,6 @@ tbody tr:last-child td {
         linear-gradient(180deg, var(--surface) 0%, rgba(176, 114, 74, 0.05) 100%);
 }
 
-.home-howto {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.5rem 0.75rem;
-    color: var(--coffee);
-    font-size: 0.95rem;
-}
-
-.home-howto i {
-    color: var(--primary);
-    font-size: 0.8rem;
-}
-
 /* ---- 4. Occasions — real photo cards ---- */
 .home-occasions-section {
     background: var(--surface);
@@ -699,10 +586,6 @@ tbody tr:last-child td {
 
 .home-occasion-link:hover i {
     transform: translateX(4px);
-}
-
-.home-occasions-actions {
-    margin-top: 2.25rem;
 }
 
 /* Date-led event cards (used when real events are available) */
@@ -784,56 +667,17 @@ tbody tr:last-child td {
     transform: translateX(4px);
 }
 
-/* ---- 5. Final CTA — full-bleed entrance image + scrim ---- */
-.home-final-cta {
-    position: relative;
-    padding: 6rem 0;
-    color: var(--light);
-    background-image:
-        linear-gradient(rgba(38, 55, 59, 0.78), rgba(38, 55, 59, 0.82)),
-        url("/img/home-entrance.jpg");
-    background-size: cover;
-    background-position: center;
-}
-
-.home-final-cta-inner {
-    position: relative;
-    z-index: 1;
-}
-
-.home-final-cta h2 {
-    color: var(--light);
-}
-
-.home-final-cta-lead {
-    max-width: 36rem;
-    color: rgba(237, 209, 178, 0.92);
-    font-size: 1.1rem;
-}
-
-.home-final-cta .btn-outline {
-    border-color: var(--light) !important;
-    color: var(--light) !important;
-}
-
-.home-final-cta .btn-outline:hover {
-    background: rgba(253, 251, 248, 0.14) !important;
+/* ---- Footer seam ---- */
+/* Keep a clean edge where the last section meets the dark footer on the
+   homepage: drop the light footer top-border that shows as a seam. */
+.home-layout .footer {
+    border-top: 0 !important;
 }
 
 /* ---- Responsive ---- */
-@media (max-width: 991.98px) {
-    .home-final-cta {
-        padding: 4rem 0;
-    }
-}
-
 @media (max-width: 767.98px) {
     .home-media-tall {
         aspect-ratio: 4 / 3;
-    }
-    .home-occasions-actions .btn,
-    .home-final-cta .btn {
-        flex: 1 1 100%;
     }
 }
 
