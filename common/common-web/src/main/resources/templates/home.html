@@ -32,160 +32,344 @@ Experience the true taste of home. We blend authentic family recipes with a warm
         </section>
 
         <!-- ============================================================
-             1. RESTAURANT INTRO  — split: text + sharing image
+             1. ABOUT — At Flavor da Casa: heading, image slider, stats
              ============================================================ -->
-        <section class="home-section home-intro-section" aria-labelledby="introHeading">
+        <section class="home-section home-about-section" aria-labelledby="aboutHeading">
             <div class="container">
-                <div class="row g-5 align-items-center">
-                    <div class="col-lg-6">
+                <div class="row justify-content-center text-center">
+                    <div class="col-12">
                         <p class="script text-primary mb-2">At Flavor da Casa</p>
-                        <h2 class="display-6 fw-bold mb-3" id="introHeading">Family-style food, made for sharing.</h2>
-                        <p class="text-accent mb-0">
-                            <em>Da casa</em> means &ldquo;of the house.&rdquo; Dishes land in the middle of the table, the
-                            room stays warm, and nobody is rushing you out the door.
+                        <h2 class="fw-bold mb-3 home-about-heading" id="aboutHeading">Family-style food, made for sharing.</h2>
+                        <p class="text-accent home-about-sub mb-0">
+                            &ldquo;Da casa&rdquo; translates to &ldquo;of the house.&rdquo; To us, that means bringing generous,
+                            shared plates to the center of the table and enjoying a meal where there is never a rush to leave.
                         </p>
-                    </div>
-                    <div class="col-lg-6">
-                        <figure class="home-media home-media-tall mb-0">
-                            <img th:src="@{/img/home-sharing.jpg}" width="1400" height="1050" loading="lazy"
-                                 alt="Diners sharing family-style dishes across a candlelit wooden table at Flavor da Casa">
-                        </figure>
                     </div>
                 </div>
             </div>
+
+            <div class="home-about-slider" id="aboutSlider">
+                <div class="home-about-track">
+                        <figure class="home-about-slide mb-0">
+                            <img th:src="@{/img/about-1.jpg}" width="800" height="999" loading="lazy"
+                                 alt="A chef standing in the dining room at Flavor da Casa">
+                        </figure>
+                        <figure class="home-about-slide mb-0">
+                            <img th:src="@{/img/about-2.jpg}" width="800" height="999" loading="lazy"
+                                 alt="Hands serving a platter of food to the table">
+                        </figure>
+                        <figure class="home-about-slide mb-0">
+                            <img th:src="@{/img/about-3.jpg}" width="800" height="999" loading="lazy"
+                                 alt="The warm, candlelit dining room">
+                        </figure>
+                        <figure class="home-about-slide mb-0">
+                            <img th:src="@{/img/about-4.jpg}" width="800" height="999" loading="lazy"
+                                 alt="A table spread with shared dishes and candles">
+                        </figure>
+                        <figure class="home-about-slide mb-0">
+                            <img th:src="@{/img/about-5.jpg}" width="800" height="999" loading="lazy"
+                                 alt="A cook plating a dish at the kitchen counter">
+                        </figure>
+                        <figure class="home-about-slide mb-0">
+                            <img th:src="@{/img/about-6.jpg}" width="800" height="999" loading="lazy"
+                                 alt="A host welcoming guests in the dining room">
+                        </figure>
+                    </div>
+                </div>
+
+            <div class="container">
+                <ul class="home-stats list-unstyled mb-0">
+                    <li class="home-stat">
+                        <span class="home-stat-figure">12</span>
+                        <span class="home-stat-label">Years of excellence</span>
+                    </li>
+                    <li class="home-stat">
+                        <span class="home-stat-figure">30+</span>
+                        <span class="home-stat-label">Signature dishes</span>
+                    </li>
+                    <li class="home-stat">
+                        <span class="home-stat-figure">50k+</span>
+                        <span class="home-stat-label">Guests served</span>
+                    </li>
+                    <li class="home-stat">
+                        <span class="home-stat-figure">8</span>
+                        <span class="home-stat-label">Awards earned</span>
+                    </li>
+                </ul>
+            </div>
+
+            <script th:inline="none">
+                (function () {
+                    var slider = document.getElementById('aboutSlider');
+                    if (!slider) return;
+                    var track = slider.querySelector('.home-about-track');
+                    if (!track) return;
+                    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                        slider.classList.add('is-scrollable');
+                        return;
+                    }
+                    var visible = 3;
+                    var step = 100 / visible;
+                    var originals = Array.prototype.slice.call(track.children);
+                    var count = originals.length;
+                    for (var c = 0; c < visible; c++) {
+                        track.appendChild(originals[c].cloneNode(true));
+                    }
+                    var i = 0, timer = null;
+                    function advance() {
+                        i++;
+                        track.style.transition = 'transform .7s ease';
+                        track.style.transform = 'translateX(-' + (i * step) + '%)';
+                    }
+                    track.addEventListener('transitionend', function () {
+                        if (i >= count) {
+                            track.style.transition = 'none';
+                            i = 0;
+                            track.style.transform = 'translateX(0)';
+                            void track.offsetWidth;
+                        }
+                    });
+                    function start() { if (!timer) timer = setInterval(advance, 3000); }
+                    function stop() { clearInterval(timer); timer = null; }
+                    slider.addEventListener('mouseenter', stop);
+                    slider.addEventListener('mouseleave', start);
+                    slider.addEventListener('focusin', stop);
+                    slider.addEventListener('focusout', start);
+                    start();
+                })();
+            </script>
         </section>
 
         <!-- ============================================================
-             2. FEATURED MENU — image-led split, browsable by course
+             3. FROM THE KITCHEN — menu showcase (course image cards)
              ============================================================ -->
         <section class="home-section home-menu-section" aria-labelledby="menuHeading">
             <div class="container">
-                <div class="row g-5 align-items-center">
-                    <div class="col-lg-6">
-                        <figure class="home-media home-media-tall mb-0">
-                            <img th:src="@{/img/home-dish.jpg}" width="1400" height="1050" loading="lazy"
-                                 alt="A seasonal main course plated on a cream ceramic dish, served by candlelight">
-                        </figure>
-                    </div>
-                    <div class="col-lg-6">
+                <div class="row g-5">
+                    <div class="col-lg-4">
                         <p class="script text-primary mb-2">From the kitchen</p>
                         <h2 class="display-6 fw-bold mb-3" id="menuHeading">Browse by course.</h2>
                         <p class="text-accent mb-4">
-                            Have a look at what is coming out of the kitchen, course by course.
+                            A warm look at the food we like to bring to the table &mdash; small beginnings, generous
+                            mains, shared plates, and a quiet finish.
                         </p>
-
-                        <!-- Real featured items, when the template is given them -->
-                        <ul class="home-menu-list list-unstyled mb-4"
-                            th:if="${not #lists.isEmpty(featuredMenuItems)}">
-                            <li class="home-menu-row" th:each="item : ${featuredMenuItems}">
-                                <a class="home-menu-rowlink" th:href="@{/menu}">
-                                    <span class="home-menu-index" aria-hidden="true"></span>
-                                    <span class="home-menu-text">
-                                        <span class="home-menu-name" th:text="${item.name}">Dish name</span>
-                                        <span class="home-menu-desc" th:text="${item.description}">A seasonal dish.</span>
-                                    </span>
-                                    <i class="fa-solid fa-arrow-right home-menu-arrow" aria-hidden="true"></i>
-                                </a>
-                            </li>
-                        </ul>
-
-                        <!-- Browsable course list (no invented dishes) -->
-                        <ul class="home-menu-list list-unstyled mb-4"
-                            th:if="${#lists.isEmpty(featuredMenuItems)}">
-                            <li class="home-menu-row">
-                                <a class="home-menu-rowlink" th:href="@{/menu}">
-                                    <span class="home-menu-index" aria-hidden="true"></span>
-                                    <span class="home-menu-text">
-                                        <span class="home-menu-name">To start</span>
-                                        <span class="home-menu-desc">A few small plates to begin the table.</span>
-                                    </span>
-                                    <i class="fa-solid fa-arrow-right home-menu-arrow" aria-hidden="true"></i>
-                                </a>
-                            </li>
-                            <li class="home-menu-row">
-                                <a class="home-menu-rowlink" th:href="@{/menu}">
-                                    <span class="home-menu-index" aria-hidden="true"></span>
-                                    <span class="home-menu-text">
-                                        <span class="home-menu-name">Mains from the kitchen</span>
-                                        <span class="home-menu-desc">Warm dishes with familiar comfort and a seasonal touch.</span>
-                                    </span>
-                                    <i class="fa-solid fa-arrow-right home-menu-arrow" aria-hidden="true"></i>
-                                </a>
-                            </li>
-                            <li class="home-menu-row">
-                                <a class="home-menu-rowlink" th:href="@{/menu}">
-                                    <span class="home-menu-index" aria-hidden="true"></span>
-                                    <span class="home-menu-text">
-                                        <span class="home-menu-name">For the table</span>
-                                        <span class="home-menu-desc">Generous plates made for sharing around the room.</span>
-                                    </span>
-                                    <i class="fa-solid fa-arrow-right home-menu-arrow" aria-hidden="true"></i>
-                                </a>
-                            </li>
-                            <li class="home-menu-row">
-                                <a class="home-menu-rowlink" th:href="@{/menu}">
-                                    <span class="home-menu-index" aria-hidden="true"></span>
-                                    <span class="home-menu-text">
-                                        <span class="home-menu-name">Something sweet</span>
-                                        <span class="home-menu-desc">A simple finish before the evening ends.</span>
-                                    </span>
-                                    <i class="fa-solid fa-arrow-right home-menu-arrow" aria-hidden="true"></i>
-                                </a>
-                            </li>
-                        </ul>
-
                         <a class="btn btn-primary px-4 rounded-2" th:href="@{/menu}">
                             See the Full Menu <i class="fa-solid fa-arrow-right ms-2" aria-hidden="true"></i>
                         </a>
                         <p class="home-menu-note mb-0 mt-3">The menu changes gently with the season.</p>
                     </div>
+
+                    <div class="col-lg-8">
+                        <ul class="home-courses list-unstyled mb-0">
+                            <li>
+                                <a class="home-course-card" th:href="@{/menu}">
+                                    <img class="home-course-img" th:src="@{/img/home-course-start.jpg}"
+                                         width="1000" height="750" loading="lazy"
+                                         alt="A warm table laid with small plates and bread to begin the meal">
+                                    <span class="home-course-overlay">
+                                        <span class="home-course-name">To start</span>
+                                        <span class="home-course-desc">Small plates to begin the table.</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="home-course-card" th:href="@{/menu}">
+                                    <img class="home-course-img" th:src="@{/img/home-dish.jpg}"
+                                         width="1400" height="1050" loading="lazy"
+                                         alt="A plated main course on a cream ceramic dish by candlelight">
+                                    <span class="home-course-overlay">
+                                        <span class="home-course-name">Mains from the kitchen</span>
+                                        <span class="home-course-desc">Warm dishes with familiar comfort and a seasonal touch.</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="home-course-card" th:href="@{/menu}">
+                                    <img class="home-course-img" th:src="@{/img/home-course-table.jpg}"
+                                         width="1000" height="750" loading="lazy"
+                                         alt="Hands passing a shared bowl across a candlelit table">
+                                    <span class="home-course-overlay">
+                                        <span class="home-course-name">For the table</span>
+                                        <span class="home-course-desc">Generous plates made for sharing.</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="home-course-card" th:href="@{/menu}">
+                                    <img class="home-course-img" th:src="@{/img/home-course-sweet.jpg}"
+                                         width="1000" height="750" loading="lazy"
+                                         alt="A dessert and a cup of coffee to finish the meal">
+                                    <span class="home-course-overlay">
+                                        <span class="home-course-name">Something sweet</span>
+                                        <span class="home-course-desc">A simple finish before you go.</span>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- ============================================================
-             3. RESERVATION — split: prepared-table image + clear action
+             4. FAQ — two-column grid
              ============================================================ -->
-        <section class="home-section home-reservation-section" aria-labelledby="reservationHeading">
+        <section class="home-section home-faq-section" aria-labelledby="faqHeading">
             <div class="container">
-                <div class="row g-5 align-items-center flex-lg-row-reverse">
-                    <div class="col-lg-6">
-                        <figure class="home-media home-media-tall mb-0">
-                            <img th:src="@{/img/home-table.jpg}" width="1400" height="1050" loading="lazy"
-                                 alt="A table set with cream plates, linen, bread and a candle, ready for guests">
-                        </figure>
+                <div class="home-faq-layout">
+                    <div class="home-faq-heading">
+                        <p class="script text-primary mb-2">Good to know</p>
+                        <h2 class="display-6 fw-bold mb-0" id="faqHeading">Before you come in.</h2>
                     </div>
-                    <div class="col-lg-6">
-                        <p class="script text-primary mb-2">Reservations</p>
-                        <h2 class="display-6 fw-bold mb-3" id="reservationHeading">Save a table for the evening.</h2>
-                        <p class="text-accent mb-4">
-                            Pick a night that suits you and we&rsquo;ll have your table ready.
-                        </p>
-                        <div class="d-flex flex-wrap gap-3">
-                            <a class="btn btn-primary px-4 rounded-2" th:href="@{/reservation}">
-                                <i class="fa-solid fa-calendar-plus me-2"></i> Reserve a Table
-                            </a>
-                            <a class="btn btn-outline-primary px-4 rounded-2" th:href="@{/reservation/track}">
-                                <i class="fa-solid fa-receipt me-2"></i> Check a Reservation
-                            </a>
+
+                    <div class="home-faq">
+                        <details class="home-faq-item">
+                            <summary>Do I need an account to reserve?</summary>
+                            <p class="home-faq-answer">No. You can request a table without signing up. Just share your details when you book.</p>
+                        </details>
+                        <details class="home-faq-item">
+                            <summary>How will I know my table is confirmed?</summary>
+                            <p class="home-faq-answer">Our team looks over each request and sends your confirmation by email.</p>
+                        </details>
+                        <details class="home-faq-item">
+                            <summary>Are you open for brunch and lunch?</summary>
+                            <p class="home-faq-answer">Yes. We&rsquo;re open throughout the day, from weekend brunch to a relaxed dinner.</p>
+                        </details>
+                        <details class="home-faq-item">
+                            <summary>Can you host groups, corporate or private dinners?</summary>
+                            <p class="home-faq-answer">Of course. Tell us your party size when you book and we&rsquo;ll set the room for you.</p>
+                        </details>
+                        <details class="home-faq-item">
+                            <summary>Can I check my reservation later?</summary>
+                            <p class="home-faq-answer">Yes. You can <a th:href="@{/reservation/track}">check a reservation</a> to see its status anytime.</p>
+                        </details>
+                        <details class="home-faq-item">
+                            <summary>Does the menu change?</summary>
+                            <p class="home-faq-answer">It changes gently with the season, so there&rsquo;s usually something new to come back for.</p>
+                        </details>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             5. TESTIMONIALS — centered carousel, slide by slide
+             ============================================================ -->
+        <section class="home-section home-testimonials-section" aria-labelledby="testimonialsHeading">
+            <div class="container">
+                <div class="row justify-content-center text-center home-section-heading">
+                    <div class="col-lg-8">
+                        <p class="script text-primary mb-2">In good company</p>
+                        <h2 class="display-6 fw-bold mb-0" id="testimonialsHeading">Tables we love to set.</h2>
+                    </div>
+                </div>
+
+                <div id="testimonialCarousel" class="carousel slide home-testimonial-carousel"
+                     data-bs-ride="carousel" data-bs-interval="6500">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <figure class="home-quote">
+                                <span class="home-quote-mark" aria-hidden="true">&ldquo;</span>
+                                <blockquote class="home-quote-text">
+                                    We took over a big table for Sunday lunch and stayed for hours. Plates everywhere,
+                                    nobody in a hurry.
+                                </blockquote>
+                                <figcaption class="home-quote-person">
+                                    <img class="home-quote-avatar" th:src="@{/img/portrait-1.jpg}" width="56" height="56" loading="lazy" alt="">
+                                    <span>
+                                        <span class="home-quote-name">Marina S.</span>
+                                        <span class="home-quote-meta">Guest</span>
+                                    </span>
+                                </figcaption>
+                            </figure>
+                        </div>
+                        <div class="carousel-item">
+                            <figure class="home-quote">
+                                <span class="home-quote-mark" aria-hidden="true">&ldquo;</span>
+                                <blockquote class="home-quote-text">
+                                    Booked it for the whole team. Easy to organise, and the food did all the talking.
+                                </blockquote>
+                                <figcaption class="home-quote-person">
+                                    <img class="home-quote-avatar" th:src="@{/img/portrait-2.jpg}" width="56" height="56" loading="lazy" alt="">
+                                    <span>
+                                        <span class="home-quote-name">Tiago R.</span>
+                                        <span class="home-quote-meta">Guest</span>
+                                    </span>
+                                </figcaption>
+                            </figure>
+                        </div>
+                        <div class="carousel-item">
+                            <figure class="home-quote">
+                                <span class="home-quote-mark" aria-hidden="true">&ldquo;</span>
+                                <blockquote class="home-quote-text">
+                                    Came in for brunch and it had the same warmth as a long dinner. It&rsquo;s our weekend
+                                    spot now.
+                                </blockquote>
+                                <figcaption class="home-quote-person">
+                                    <img class="home-quote-avatar" th:src="@{/img/portrait-3.jpg}" width="56" height="56" loading="lazy" alt="">
+                                    <span>
+                                        <span class="home-quote-name">Helena C.</span>
+                                        <span class="home-quote-meta">Guest</span>
+                                    </span>
+                                </figcaption>
+                            </figure>
+                        </div>
+                        <div class="carousel-item">
+                            <figure class="home-quote">
+                                <span class="home-quote-mark" aria-hidden="true">&ldquo;</span>
+                                <blockquote class="home-quote-text">
+                                    Hosted my mum&rsquo;s birthday here. They set the room beautifully and made the whole
+                                    night feel personal.
+                                </blockquote>
+                                <figcaption class="home-quote-person">
+                                    <img class="home-quote-avatar" th:src="@{/img/portrait-4.jpg}" width="56" height="56" loading="lazy" alt="">
+                                    <span>
+                                        <span class="home-quote-name">Beatriz L.</span>
+                                        <span class="home-quote-meta">Guest</span>
+                                    </span>
+                                </figcaption>
+                            </figure>
+                        </div>
+                        <div class="carousel-item">
+                            <figure class="home-quote">
+                                <span class="home-quote-mark" aria-hidden="true">&ldquo;</span>
+                                <blockquote class="home-quote-text">
+                                    A quiet table, an easy pace, and food worth slowing down for. Exactly the night we
+                                    wanted.
+                                </blockquote>
+                                <figcaption class="home-quote-person">
+                                    <img class="home-quote-avatar" th:src="@{/img/portrait-5.jpg}" width="56" height="56" loading="lazy" alt="">
+                                    <span>
+                                        <span class="home-quote-name">Sofia M.</span>
+                                        <span class="home-quote-meta">Guest</span>
+                                    </span>
+                                </figcaption>
+                            </figure>
                         </div>
                     </div>
+
+                    <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+
                 </div>
             </div>
         </section>
 
         <!-- ============================================================
-             4. OCCASIONS — real photo cards, directly bookable
+             6. GOOD FOR — occasions (all day, not just evening)
              ============================================================ -->
         <section class="home-section home-occasions-section" aria-labelledby="occasionsHeading">
             <div class="container">
                 <div class="row align-items-end g-4 home-section-heading">
                     <div class="col-lg-8">
                         <p class="script text-primary mb-2">Good for</p>
-                        <h2 class="display-6 fw-bold mb-3" id="occasionsHeading">Find the right table for the occasion.</h2>
-                        <p class="text-accent mb-0">
-                            Whatever the occasion, there is a table set for it.
-                        </p>
+                        <h2 class="display-6 fw-bold mb-0" id="occasionsHeading">Find the right table for the occasion.</h2>
                     </div>
                 </div>
 
@@ -202,7 +386,7 @@ Experience the true taste of home. We blend authentic family recipes with a warm
                             <div class="home-event-body">
                                 <h3 class="home-event-name" th:text="${event.name}">Event name</h3>
                                 <p class="home-event-desc" th:if="${event.description}"
-                                   th:text="${event.description}">A short description of the evening.</p>
+                                   th:text="${event.description}">A short description of the gathering.</p>
                                 <a class="home-event-link" th:href="@{'/event/' + ${event.id}}">
                                     View details <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
                                 </a>
@@ -217,11 +401,11 @@ Experience the true taste of home. We blend authentic family recipes with a warm
                         <article class="home-occasion-card h-100">
                             <figure class="home-media home-media-wide mb-0">
                                 <img th:src="@{/img/home-occ-datenight.jpg}" width="900" height="675" loading="lazy"
-                                     alt="An intimate two-person table by a shuttered window, set for dinner">
+                                     alt="An intimate two-person table by a shuttered window">
                             </figure>
                             <div class="home-occasion-card-body">
-                                <h3 class="home-occasion-title">Date nights &amp; small dinners</h3>
-                                <p class="home-occasion-desc">A quiet table for two, or a few seats for people you want close.</p>
+                                <h3 class="home-occasion-title">Brunch &amp; tables for two</h3>
+                                <p class="home-occasion-desc">A weekend brunch, a weekday lunch, or a quiet dinner for two.</p>
                                 <a class="home-occasion-link" th:href="@{/reservation}">
                                     Reserve <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
                                 </a>
@@ -236,7 +420,7 @@ Experience the true taste of home. We blend authentic family recipes with a warm
                             </figure>
                             <div class="home-occasion-card-body">
                                 <h3 class="home-occasion-title">Family gatherings</h3>
-                                <p class="home-occasion-desc">Birthdays, visits, and longer dinners around one table.</p>
+                                <p class="home-occasion-desc">Birthdays, Sunday lunches, and big tables of people catching up.</p>
                                 <a class="home-occasion-link" th:href="@{/reservation}">
                                     Reserve <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
                                 </a>
@@ -250,8 +434,8 @@ Experience the true taste of home. We blend authentic family recipes with a warm
                                      alt="A long communal table laid with candles and place settings for a private dinner">
                             </figure>
                             <div class="home-occasion-card-body">
-                                <h3 class="home-occasion-title">Private dining</h3>
-                                <p class="home-occasion-desc">A more personal setting for small celebrations and special plans.</p>
+                                <h3 class="home-occasion-title">Corporate &amp; private</h3>
+                                <p class="home-occasion-desc">Team dinners, celebrations, and gatherings that need their own space.</p>
                                 <a class="home-occasion-link" th:href="@{/reservation}">
                                     Reserve <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
                                 </a>

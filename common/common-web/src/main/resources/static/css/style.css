@@ -4,7 +4,8 @@
     --dark: #26373B;        /* Dark Blue-Grey */
     --coffee: #6F4A35;      /* Coffee Bean */
     --charcoal: #2E4348;    /* Charcoal Blue */
-    --surface: #FDFBF8;
+    --surface: #FDFBF8;     /* warm off-white */
+    --surface-2: #F7F1E9;   /* slightly warmer surface for section rhythm */
 
     --primary-10: rgba(176,114,74,.10);
     --primary-05: rgba(176,114,74,.05);
@@ -171,8 +172,112 @@ tbody tr:last-child td {
     padding: 4rem 0;
 }
 
-.home-intro-section {
+.home-page .home-section .script {
+    font-size: 1.25rem;
+}
+
+.home-page .home-section h2 {
+    font-size: 3.125rem;
+}
+
+/* ---- About — At Flavor da Casa: heading, image slider, stats ---- */
+.home-about-section {
     background: var(--surface);
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+}
+
+/* Heading clearly larger than the subheading */
+.home-about-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.25rem, 1.4rem + 3.4vw, 3.4rem);
+    line-height: 1.08;
+}
+
+@media (min-width: 992px) {
+    .home-about-heading {
+        white-space: nowrap;
+    }
+}
+
+/* Narrow the subheading so it sits on about two lines */
+.home-about-sub {
+    max-width: 60rem;
+    margin-inline: auto;
+    font-size: 1.05rem;
+    text-wrap: balance;
+}
+
+/* Full-bleed slider — spans the viewport like the hero/navbar (body has overflow-x: hidden) */
+.home-about-slider {
+    overflow: hidden;
+    width: 100vw;
+    margin: 2.5rem 0;
+    padding: 0 1rem;
+}
+
+.home-about-track {
+    display: flex;
+}
+
+.home-about-slide {
+    flex: 0 0 33.3333%;
+    max-width: 33.3333%;
+    padding: 0 0.6rem;
+}
+
+.home-about-slide img {
+    width: 100%;
+    height: clamp(340px, 33vw, 560px);
+    object-fit: cover;
+    object-position: center 30%;
+    border-radius: 0.5rem;
+    display: block;
+}
+
+/* Reduced motion: no auto-slide — let the strip scroll manually */
+.home-about-slider.is-scrollable {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+}
+
+.home-about-slider.is-scrollable .home-about-slide {
+    scroll-snap-align: start;
+}
+
+/* Stats band */
+.home-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    text-align: center;
+}
+
+.home-stat {
+    padding: 0 0.5rem;
+}
+
+.home-stat-figure {
+    display: block;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.75rem, 1.8rem + 3vw, 3.75rem);
+    line-height: 1;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+
+.home-stat-label {
+    display: block;
+    color: var(--accent-color);
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+}
+
+@media (max-width: 767.98px) {
+    .home-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.75rem 1rem;
+    }
 }
 
 .home-section-heading {
@@ -420,10 +525,9 @@ tbody tr:last-child td {
     box-shadow: none;
 }
 
-/* ---- 2. Menu — browsable by course ---- */
+/* ---- 2. From the kitchen — menu showcase (course image cards) ---- */
 .home-menu-section {
-    background: var(--surface);
-    border-top: 1px solid rgba(176, 114, 74, 0.12);
+    background: var(--surface-2);
 }
 
 .home-menu-note {
@@ -432,96 +536,89 @@ tbody tr:last-child td {
     font-style: italic;
 }
 
-.home-menu-list {
-    counter-reset: menu;
-    border-top: 1px solid rgba(176, 114, 74, 0.2);
+/* Course card grid — a visual, browsable food showcase */
+.home-courses {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
 }
 
-.home-menu-row {
-    border-bottom: 1px solid rgba(176, 114, 74, 0.2);
-}
-
-.home-menu-rowlink {
-    display: flex;
-    align-items: center;
-    gap: 1.1rem;
-    padding: 1rem 0.25rem;
+.home-course-card {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-10);
+    box-shadow: 0 1px 2px rgba(38, 55, 59, 0.05);
     text-decoration: none;
-    border-radius: 0.25rem;
-    transition: background .25s ease, padding .25s ease;
+    transition: transform .4s ease, box-shadow .4s ease;
 }
 
-.home-menu-rowlink:hover,
-.home-menu-rowlink:focus-visible {
-    background: rgba(176, 114, 74, 0.06);
-    padding-left: 0.6rem;
-    padding-right: 0.6rem;
+.home-course-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 48px rgba(38, 55, 59, 0.16);
 }
 
-.home-menu-index {
-    flex-shrink: 0;
-    min-width: 1.6rem;
-    align-self: flex-start;
-    padding-top: 0.2rem;
-    color: var(--primary);
-    font-family: 'Playfair Display', serif;
-    font-weight: 700;
-    font-size: 0.95rem;
+.home-course-card:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 2px;
 }
 
-.home-menu-index::before {
-    counter-increment: menu;
-    content: counter(menu, decimal-leading-zero);
+.home-course-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .6s ease;
 }
 
-.home-menu-text {
-    flex: 1 1 auto;
+.home-course-card:hover .home-course-img,
+.home-course-card:focus-visible .home-course-img {
+    transform: scale(1.05);
 }
 
-.home-menu-name {
-    display: block;
-    font-family: 'Playfair Display', serif;
-    font-size: 1.2rem;
-    color: var(--dark);
-    margin-bottom: 0.15rem;
-    transition: color .25s ease;
-}
-
-.home-menu-desc {
-    display: block;
-    color: var(--accent-color);
-    font-size: 0.95rem;
-}
-
-.home-menu-arrow {
-    flex-shrink: 0;
-    color: var(--primary);
-    opacity: 0;
-    transform: translateX(-4px);
-    transition: opacity .25s ease, transform .25s ease;
-}
-
-.home-menu-rowlink:hover .home-menu-name,
-.home-menu-rowlink:focus-visible .home-menu-name {
-    color: var(--primary);
-}
-
-.home-menu-rowlink:hover .home-menu-arrow,
-.home-menu-rowlink:focus-visible .home-menu-arrow {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-/* ---- 3. Reservation — active booking path ---- */
-.home-reservation-section {
+.home-course-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.1rem 1.2rem;
     background:
-        linear-gradient(180deg, var(--surface) 0%, rgba(176, 114, 74, 0.05) 100%);
+        linear-gradient(to top,
+            rgba(38, 55, 59, 0.88) 0%,
+            rgba(38, 55, 59, 0.45) 40%,
+            rgba(38, 55, 59, 0) 72%);
+}
+
+.home-course-name {
+    display: block;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    color: var(--light);
+    margin-bottom: 0.2rem;
+}
+
+.home-course-desc {
+    display: block;
+    color: rgba(237, 209, 178, 0.92);
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+@media (max-width: 575.98px) {
+    .home-courses {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* ---- 4. Occasions — real photo cards ---- */
 .home-occasions-section {
     background: var(--surface);
-    border-top: 1px solid rgba(176, 114, 74, 0.12);
+    padding-top: 6rem;
+    padding-bottom: 6rem;
 }
 
 .home-occasion-card {
@@ -667,6 +764,191 @@ tbody tr:last-child td {
     transform: translateX(4px);
 }
 
+/* ---- 5. Testimonials — centered carousel, slide by slide ---- */
+.home-testimonials-section {
+    background: var(--surface-2);
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+}
+
+.home-testimonials-section .home-section-heading {
+    margin-bottom: 2rem;
+}
+
+.home-testimonial-carousel {
+    max-width: 70rem;
+    margin: 0 auto;
+    padding: 0 clamp(5rem, 10vw, 8rem);
+}
+
+.home-quote {
+    text-align: center;
+    max-width: 44rem;
+    margin: 0 auto;
+    padding: 1rem 0.5rem;
+}
+
+.home-quote-mark {
+    display: block;
+    font-family: 'Playfair Display', serif;
+    font-size: 8rem;
+    line-height: 1;
+    color: var(--primary);
+    margin-bottom: -3rem;
+    padding-bottom: 0;
+}
+
+.home-quote-text {
+    font-family: 'Playfair Display', serif;
+    color: var(--dark);
+    font-size: 1.75rem;
+    line-height: 1.5;
+    margin-bottom: 1.75rem;
+}
+
+.home-quote-person {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: center;
+}
+
+.home-quote-avatar {
+    flex-shrink: 0;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--surface-2);
+    border: 1px solid var(--border-10);
+}
+
+.home-quote-name {
+    display: block;
+    font-family: 'Playfair Display', serif;
+    color: var(--dark);
+    font-size: 1.05rem;
+}
+
+.home-quote-meta {
+    display: block;
+    color: var(--accent-color);
+    font-size: 0.85rem;
+}
+
+/* Plain brand-tinted carousel controls */
+.home-testimonial-carousel .carousel-control-prev,
+.home-testimonial-carousel .carousel-control-next {
+    width: 4rem;
+    align-items: center;
+    padding-top: 0;
+    opacity: 1;
+}
+
+.home-testimonial-carousel .carousel-control-prev-icon,
+.home-testimonial-carousel .carousel-control-next-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    padding: 0;
+    background: none;
+    border-top: 2px solid var(--primary);
+    border-left: 2px solid var(--primary);
+}
+
+.home-testimonial-carousel .carousel-control-prev-icon {
+    transform: rotate(-45deg);
+}
+
+.home-testimonial-carousel .carousel-control-next-icon {
+    transform: rotate(135deg);
+}
+
+@media (max-width: 767.98px) {
+    .home-testimonial-carousel {
+        padding: 0 1.5rem;
+    }
+    .home-quote-text {
+        font-size: 1.25rem;
+    }
+    .home-testimonial-carousel .carousel-control-prev,
+    .home-testimonial-carousel .carousel-control-next {
+        display: none;
+    }
+}
+
+/* ---- 6. FAQ ---- */
+.home-faq-section {
+    background: var(--surface);
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+}
+
+.home-faq-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    gap: 4rem;
+    align-items: start;
+}
+
+@media (max-width: 991.98px) {
+    .home-faq-layout {
+        grid-template-columns: 1fr;
+        gap: 2.75rem;
+    }
+}
+
+.home-faq-item {
+    border-bottom: 1px solid rgba(176, 114, 74, 0.2);
+}
+
+.home-faq-item > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.15rem 0.25rem;
+    cursor: pointer;
+    list-style: none;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    color: var(--dark);
+}
+
+.home-faq-item > summary::-webkit-details-marker {
+    display: none;
+}
+
+.home-faq-item > summary::after {
+    content: "\002B"; /* + */
+    flex-shrink: 0;
+    color: var(--primary);
+    font-size: 1.4rem;
+    line-height: 1;
+    transition: transform .25s ease;
+}
+
+.home-faq-item[open] > summary::after {
+    content: "\2212"; /* − */
+}
+
+.home-faq-item > summary:hover {
+    color: var(--primary);
+}
+
+.home-faq-answer {
+    padding: 0 0.25rem 1.25rem;
+    color: var(--accent-color);
+    margin-bottom: 0;
+    max-width: 46rem;
+}
+
+.home-faq-answer a {
+    color: var(--primary);
+    font-weight: 600;
+    text-underline-offset: 3px;
+}
+
 /* ---- Footer seam ---- */
 /* Keep a clean edge where the last section meets the dark footer on the
    homepage: drop the light footer top-border that shows as a seam. */
@@ -683,9 +965,8 @@ tbody tr:last-child td {
 
 /* Hover/transition effects respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
-    .home-menu-rowlink,
-    .home-menu-name,
-    .home-menu-arrow,
+    .home-course-card,
+    .home-course-img,
     .home-occasion-card,
     .home-occasion-card .home-media-wide img,
     .home-occasion-link,
@@ -695,17 +976,12 @@ tbody tr:last-child td {
     .home-event-link i {
         transition: none;
     }
-    .home-menu-rowlink:hover {
-        padding-left: 0.25rem;
-        padding-right: 0.25rem;
-    }
-    .home-menu-rowlink:hover .home-menu-arrow {
-        transform: none;
-    }
+    .home-course-card:hover,
     .home-occasion-card:hover,
     .home-event-card:hover {
         transform: none;
     }
+    .home-course-card:hover .home-course-img,
     .home-occasion-card:hover .home-media-wide img {
         transform: none;
     }
