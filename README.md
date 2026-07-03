@@ -1,5 +1,8 @@
 # Flavor da Casa
 
+[![README](https://img.shields.io/badge/README-111827?style=for-the-badge)](./README.md)
+[![Contributors](https://img.shields.io/badge/Contributors-e5e7eb?style=for-the-badge&logoColor=333333)](./CONTRIBUTORS.md)
+
 A multi-module restaurant reservation and operations platform built with Spring Boot. Guests request a table without an account, staff review and approve requests from a filtered queue, and a token-secured REST API exposes the same operations for downstream integrations.
 
 Built as an NBCC coursework project (Winter 2026) using Agile/Jira sprint cycles.
