@@ -9,7 +9,7 @@ Flavor da Casa was built collaboratively as an NBCC coursework project (Winter 2
 
 - GitHub: [@briancabello](https://github.com/briancabello)
 - Role: Full-Stack Developer
-- Owned: the multi-module Maven architecture and Clean Architecture boundaries, the authentication and validation layers, and the dining room (seating and table) model.
+- Owned: the multi-module Maven architecture and Clean Architecture boundaries, the authentication and validation layers, the dining room (seating and table) model, and the REST API layer (`restaurant/rest-api`).
 
 ## Matheus Camilo Ferraro
 
