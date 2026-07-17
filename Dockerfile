@@ -5,7 +5,7 @@ WORKDIR /workspace
 COPY . .
 
 RUN mvn -pl app-web -am clean install -DskipTests \
-    && mvn -pl app-web org.springframework.boot:spring-boot-maven-plugin:4.0.3:repackage -DskipTests
+    && mvn -f app-web/pom.xml package org.springframework.boot:spring-boot-maven-plugin:4.0.3:repackage -DskipTests
 
 
 FROM eclipse-temurin:21-jre
